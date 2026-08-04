@@ -1,0 +1,153 @@
+import { useMemo } from "react";
+import type { TreeNode } from "../types";
+import { getPathLabel, isOnSelectedPath } from "../utils/mapUtils";
+import {
+  buildGraphLayout,
+  isOnGraphPath,
+  NODE_H,
+  NODE_W,
+} from "../utils/graphLayout";
+
+interface Props {
+  nodes: TreeNode[];
+  selectedKeyword: string | null;
+  onSelect: (keyword: string, procedures: TreeNode["procedures"]) => void;
+}
+
+export function HwGraphMap({ nodes, selectedKeyword, onSelect }: Props) {
+  const layout = useMemo(() => buildGraphLayout(nodes), [nodes]);
+
+  const nodeMap = useMemo(() => {
+    const m = new Map<string, (typeof layout.nodes)[0]>();
+    layout.nodes.forEach((n) => m.set(n.id, n));
+    return m;
+  }, [layout.nodes]);
+
+  return (
+    <div className="hw-graph-wrap">
+      <div className="map-legend graph-legend">
+        <span className="legend-item">
+          <span className="legend-dot region" /> Click node to navigate
+        </span>
+      </div>
+
+      <div className="hw-graph-scroll">
+        <svg
+          className="hw-graph-svg"
+          width={layout.width}
+          height={layout.height}
+          viewBox={`0 0 ${layout.width} ${layout.height}`}
+          role="img"
+          aria-label="Hardware keyword graph"
+        >
+          <defs>
+            <marker
+              id="edge-dot"
+              viewBox="0 0 6 6"
+              refX="3"
+              refY="3"
+              markerWidth="4"
+              markerHeight="4"
+            >
+              <circle cx="3" cy="3" r="2" className="graph-edge-dot" />
+            </marker>
+          </defs>
+
+          {/* Edges */}
+          <g className="graph-edges">
+            {layout.edges.map((edge) => {
+              const from = nodeMap.get(edge.from);
+              const to = nodeMap.get(edge.to);
+              if (!from || !to) return null;
+              const active =
+                isOnGraphPath(edge.from, selectedKeyword) &&
+                isOnGraphPath(edge.to, selectedKeyword);
+              return (
+                <line
+                  key={`${edge.from}-${edge.to}`}
+                  x1={from.x}
+                  y1={from.y + NODE_H / 2}
+                  x2={to.x}
+                  y2={to.y - NODE_H / 2}
+                  className={`graph-edge ${active ? "active" : ""}`}
+                />
+              );
+            })}
+          </g>
+
+          {/* Nodes */}
+          <g className="graph-nodes">
+            {layout.nodes.map((n) => {
+              const isSelected = selectedKeyword === n.id;
+              const onPath = isOnSelectedPath(n.id, selectedKeyword);
+              const empty = n.total === 0;
+              const x = n.x - NODE_W / 2;
+              const y = n.y - NODE_H / 2;
+
+              return (
+                <g
+                  key={n.id}
+                  className={`graph-node-g ${onPath ? "on-path" : ""} ${isSelected ? "selected" : ""} ${empty ? "empty" : ""}`}
+                  transform={`translate(${x}, ${y})`}
+                  onClick={() => onSelect(n.id, n.procedures)}
+                  style={{ cursor: "pointer" }}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      onSelect(n.id, n.procedures);
+                    }
+                  }}
+                >
+                  <rect
+                    className="graph-node-rect"
+                    width={NODE_W}
+                    height={NODE_H}
+                    rx={8}
+                    ry={8}
+                  />
+                  <text
+                    className="graph-node-label"
+                    x={NODE_W / 2}
+                    y={NODE_H / 2 - (n.count > 0 ? 4 : 0)}
+                    textAnchor="middle"
+                    dominantBaseline="middle"
+                  >
+                    {n.label.length > 10 ? `${n.label.slice(0, 9)}…` : n.label}
+                  </text>
+                  {n.total > 0 && (
+                    <text
+                      className="graph-node-count"
+                      x={NODE_W / 2}
+                      y={NODE_H / 2 + 10}
+                      textAnchor="middle"
+                      dominantBaseline="middle"
+                    >
+                      {n.total}
+                    </text>
+                  )}
+                  {isSelected && (
+                    <circle
+                      className="graph-node-pin"
+                      cx={NODE_W / 2}
+                      cy={-8}
+                      r={5}
+                    />
+                  )}
+                </g>
+              );
+            })}
+          </g>
+        </svg>
+      </div>
+
+      {selectedKeyword && (
+        <div className="map-path-strip">
+          <span className="path-label">Path</span>
+          <code>{getPathLabel(selectedKeyword)}</code>
+        </div>
+      )}
+    </div>
+  );
+}

@@ -1,0 +1,23 @@
+{
+  "app_title": "CoachMAP",
+  "modules": ["AAA", "BBB", "CCC", "DDD", "EEE", "FFF"],
+  "parts": {
+    "SSS": {
+      "label": "SSS",
+      "machine_types": ["Z1", "Z2", "Z3", "Z4", "Z5"]
+    },
+    "TTT": {
+      "label": "TTT",
+      "machine_types": ["Q1", "Q2", "Q3", "Q4", "Q5"]
+    }
+  },
+  "data_paths": {
+    "csv_dir": "data/csv",
+    "tree_dir": "data/trees"
+  },
+  "defaults": {
+    "module": "AAA",
+    "part": "SSS",
+    "machine_type": "Z1"
+  }
+}
