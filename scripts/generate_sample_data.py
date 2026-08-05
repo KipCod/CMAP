@@ -259,13 +259,16 @@ def write_trees():
     tree_dir = ROOT / CONFIG["data_paths"]["tree_dir"]
     tree_dir.mkdir(parents=True, exist_ok=True)
     count = 0
-    for part, machine in all_tree_keys():
-        hw_path = tree_dir / f"tree_hw_{part}_{machine}.txt"
-        hw_path.write_text(build_hw_tree(part, machine), encoding="utf-8")
-        other_path = tree_dir / f"tree_other_{part}_{machine}.txt"
-        other_path.write_text(build_other_tree(part, machine), encoding="utf-8")
-        count += 2
-    print(f"Wrote {count} tree files")
+    for module in CONFIG["modules"]:
+        mod_dir = tree_dir / module
+        mod_dir.mkdir(parents=True, exist_ok=True)
+        for part, machine in all_tree_keys():
+            hw_path = mod_dir / f"hw-{part}-{machine}.txt"
+            hw_path.write_text(build_hw_tree(part, machine), encoding="utf-8")
+            other_path = mod_dir / f"other-{part}-{machine}.txt"
+            other_path.write_text(build_other_tree(part, machine), encoding="utf-8")
+            count += 2
+    print(f"Wrote {count} tree files (per-module folders)")
 
 
 def write_csvs():
@@ -304,7 +307,7 @@ def write_csvs():
                         "link": f"https://example.com/proc/{module}/{part}/{machine}/{link_sfx}",
                     })
 
-                path = csv_dir / f"{module}_{part}_{machine}.csv"
+                path = csv_dir / f"{module}-{part}-{machine}.csv"
                 with path.open("w", newline="", encoding="utf-8") as f:
                     writer = csv.DictWriter(f, fieldnames=["name", "title", "tag", "link"])
                     writer.writeheader()
@@ -343,7 +346,7 @@ def write_module_all_csvs():
                 "link": f"https://example.com/proc/{module}/all/{i:02d}",
             })
 
-        path = csv_dir / f"procedures_{module}_all.csv"
+        path = csv_dir / f"procedures-{module}-all.csv"
         with path.open("w", newline="", encoding="utf-8") as f:
             writer = csv.DictWriter(f, fieldnames=["name", "title", "link"])
             writer.writeheader()

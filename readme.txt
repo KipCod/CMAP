@@ -62,23 +62,33 @@ HW MAP / Support MAP에서 keyword를 선택하면 해당 Procedure 목록을 �
 4. 입력 데이터 형식
 ================================================================================
 
-[Config CSV]  data/csv/{module}_{part}_{machine}.csv
+[Config CSV]  data/csv/{module}-{part}-{machine}.csv
+  (구형 fallback: {module}_{part}_{machine}.csv)
+  machine_type에 _ 포함 가능 (예: Z_1 → AAA-SSS-Z_1.csv)
   컬럼 (순서·대소문자 무관): name, title, tag, link
-  tag     : 세미콜론(;) 구분, 대소문자 무시 exact match
+  tag     : 세미콜론(;) 또는 쉼표(,) 구분, 대소문자 무시 exact match
   빈 tag  : REST 로 처리
   name    : 9자리 고정 (마침표 제외). 예: aaa001.hw001 → aaa001hw001 = 9자
 
-[Module-wide CSV]  data/csv/procedures_{module}_all.csv
+[Module-wide CSV]  data/csv/procedures-{module}-all.csv
+  (구형 fallback: procedures_{module}_all.csv)
   컬럼: name, title, link  (tag 없음)
   모든 machine type 통합 input. MAP 매핑 없음, 검색 전용.
   일반 config CSV에 같은 (module, name) 이 없을 때만
   검색 결과 "no config" 패널에 표시.
 
-[HW Tree]  data/trees/tree_hw_{part}_{machine}.txt
-  탭 들여쓰기 계층. keyword = 대문자.
+[HW Tree]  data/trees/{module}/hw-{part}-{machine}.txt
+  (구형 fallback: data/trees/tree_hw_{part}_{machine}.txt — 모듈 공유)
+  탭 또는 스페이스 들여쓰기 계층. keyword = 대문자.
+  모듈마다 keyword map 이 다를 수 있음 → 반드시 모듈 폴더 사용 권장.
 
-[Support Tree]  data/trees/tree_other_{part}_{machine}.txt
+[Support Tree]  data/trees/{module}/other-{part}-{machine}.txt
+  (구형 fallback: tree_other_{part}_{machine}.txt)
   동일 형식.
+
+[데이터 경로 마이그레이션 (구형 → 신형 복사)]
+  python scripts/migrate_data_paths.py
+  → 기존 CSV/tree 를 신형 파일명·모듈 폴더로 복사 (원본 유지)
 
 [매핑 규칙]
   - tag → HW tree 우선, 나머지 → Other tree
@@ -98,7 +108,11 @@ Main    :
 
 HW MAP:
   - Graph View / Tree View 전환
+  - Full View: 전체 화면 그래프 + Screenshot (PNG)
   - Tree View: vertical bar 위계, Expand all / Collapse all
+
+Procedures:
+  - 동일 name 이 다른 machine_type 에도 있으면 "Also on: …" 표시
 
 Support MAP:
   - chip-grid 계층, 처음엔 전부 접힘, Expand all / Collapse all
@@ -114,6 +128,8 @@ Cart:
   GET /api/view?module=&part=&machine=
   GET /api/search?q=&module=&part=&machine=
       → { scoped, global, module_all }
+  GET /api/name-machines?module=&part=
+      → { [procedureName]: [machineType, ...] }
 
 ================================================================================
 7. 수정해야 하는 파일 (작업별)
@@ -202,6 +218,10 @@ Cart:
   - Support/HW Expand all → 전체 depth 토글
   - procedures_{module}_all.csv + 검색 "no config" 패널
   - 검색 결과: name 링크 + [config] title 한 줄, name 9자 고정 폭
+  - 모듈별 tree 폴더 + {module}-{part}-{machine} 파일명
+  - HW MAP Full View + 스크린캡처
+  - Procedures: 동일 name 의 다른 machine_type 표시
+  - tree 탭/스페이스 혼용 들여쓰기 지원, CSV BOM·쉼표 tag 구분 지원
 
 ================================================================================
 END

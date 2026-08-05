@@ -49,6 +49,14 @@ def search(
     return store.search(q, module, part, machine)
 
 
+@app.get("/api/name-machines")
+def name_machines(
+    module: str = Query(...),
+    part: str = Query(...),
+):
+    return store.get_name_machines(module, part)
+
+
 if FRONTEND_DIST.exists():
     app.mount("/assets", StaticFiles(directory=FRONTEND_DIST / "assets"), name="assets")
 

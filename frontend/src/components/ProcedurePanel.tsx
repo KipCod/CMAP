@@ -26,6 +26,8 @@ interface Props {
   mapKind: MapKind;
   cartIds: Set<string>;
   onAddToCart: (p: Procedure) => void;
+  nameMachines: Record<string, string[]>;
+  currentMachine: string;
 }
 
 export function ProcedurePanel({
@@ -34,6 +36,8 @@ export function ProcedurePanel({
   mapKind,
   cartIds,
   onAddToCart,
+  nameMachines,
+  currentMachine,
 }: Props) {
   const [height, setHeight] = useState(loadHeight);
   const dragging = useRef(false);
@@ -124,6 +128,8 @@ export function ProcedurePanel({
           {procedures.map((p) => {
             const id = procedureId(p);
             const inCart = cartIds.has(id);
+            const allMachines = nameMachines[p.name] ?? [p.machine_type];
+            const otherMachines = allMachines.filter((m) => m !== currentMachine);
             return (
               <li key={id} className="procedure-card">
                 <div className="procedure-card-top">
@@ -152,6 +158,11 @@ export function ProcedurePanel({
                   </button>
                 </div>
                 <div className="proc-title">{p.title}</div>
+                {otherMachines.length > 0 && (
+                  <div className="proc-other-machines">
+                    Also on: {otherMachines.join(", ")}
+                  </div>
+                )}
                 <div className="proc-tags">
                   {p.tags.map((t) => (
                     <span key={t} className="tag-chip">

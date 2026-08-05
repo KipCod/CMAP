@@ -9,9 +9,10 @@ interface Props {
   nodes: TreeNode[];
   selectedKeyword: string | null;
   onSelect: (keyword: string, procedures: TreeNode["procedures"]) => void;
+  onOpenFullView: () => void;
 }
 
-export function HwMapPanel({ nodes, selectedKeyword, onSelect }: Props) {
+export function HwMapPanel({ nodes, selectedKeyword, onSelect, onOpenFullView }: Props) {
   const [viewMode, setViewMode] = useState<HwViewMode>("graph");
   const treeExpanded = useHwTreeExpanded(nodes);
 
@@ -49,6 +50,14 @@ export function HwMapPanel({ nodes, selectedKeyword, onSelect }: Props) {
           onClick={() => setViewMode("tree")}
         >
           Tree View
+        </button>
+        <button
+          type="button"
+          className="hw-view-btn hw-view-btn-full"
+          onClick={onOpenFullView}
+          title="Open full-screen HW graph"
+        >
+          Full View
         </button>
       </div>
 

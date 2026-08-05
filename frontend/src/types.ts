@@ -46,5 +46,6 @@ export interface SearchResult {
   module_all: Procedure[];
 }
 
+export type NameMachineIndex = Record<string, string[]>;
 export type Theme = "light" | "dark";
 export type MapKind = "hw" | "other";

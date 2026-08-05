@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { fetchConfig, fetchSearch, fetchView } from "./api";
+import { fetchConfig, fetchNameMachines, fetchSearch, fetchView } from "./api";
 import { CartPanel } from "./components/CartPanel";
+import { HwGraphFullView } from "./components/HwGraphFullView";
 import { HwMapPanel } from "./components/HwMapPanel";
 import { AppMark, GraphNodes, GridMap } from "./components/NavIcons";
 import { NavBreadcrumb } from "./components/NavBreadcrumb";
@@ -8,7 +9,7 @@ import { ProcedurePanel } from "./components/ProcedurePanel";
 import { UserManualPanel } from "./components/UserManualPanel";
 import { SearchBar } from "./components/SearchBar";
 import { SupportZoneMap, useSupportExpanded } from "./components/SupportZoneMap";
-import type { AppConfig, MapKind, Procedure, Theme, ViewData } from "./types";
+import type { AppConfig, MapKind, NameMachineIndex, Procedure, Theme, ViewData } from "./types";
 import { loadCart, procedureId, saveCart } from "./utils/cartUtils";
 import "./styles.css";
 
@@ -35,6 +36,8 @@ function App() {
   const [cart, setCart] = useState<Procedure[]>(() => loadCart());
   const [cartOpen, setCartOpen] = useState(false);
   const [manualOpen, setManualOpen] = useState(false);
+  const [hwGraphFullOpen, setHwGraphFullOpen] = useState(false);
+  const [nameMachines, setNameMachines] = useState<NameMachineIndex>({});
 
   const otherExpanded = useSupportExpanded(view?.other_tree ?? []);
 
@@ -60,6 +63,11 @@ function App() {
     setSelectedKeyword(null);
     setSelectedProcedures([]);
   }, [module, part, machine]);
+
+  useEffect(() => {
+    if (!module || !part) return;
+    fetchNameMachines(module, part).then(setNameMachines).catch(() => setNameMachines({}));
+  }, [module, part]);
 
   useEffect(() => {
     if (!searchQuery.trim() || !module || !part || !machine) {
@@ -153,9 +161,10 @@ function App() {
             <button
               key={m}
               type="button"
-              className={`module-tab ${!manualOpen && module === m ? "active" : ""}`}
+              className={`module-tab ${!manualOpen && !hwGraphFullOpen && module === m ? "active" : ""}`}
               onClick={() => {
                 setManualOpen(false);
+                setHwGraphFullOpen(false);
                 setModule(m);
               }}
             >
@@ -189,7 +198,10 @@ function App() {
           <button
             type="button"
             className={`manual-tab ${manualOpen ? "active" : ""}`}
-            onClick={() => setManualOpen((v) => !v)}
+            onClick={() => {
+              setManualOpen((v) => !v);
+              setHwGraphFullOpen(false);
+            }}
             aria-pressed={manualOpen}
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -228,6 +240,14 @@ function App() {
             </header>
             <UserManualPanel />
           </>
+        ) : hwGraphFullOpen ? (
+          <HwGraphFullView
+            nodes={view?.hw_tree ?? []}
+            selectedKeyword={selectedMap === "hw" ? selectedKeyword : null}
+            onSelect={handleSelect("hw")}
+            onClose={() => setHwGraphFullOpen(false)}
+            contextLabel={contextLabel}
+          />
         ) : (
           <>
         <header className="top-bar">
@@ -315,6 +335,10 @@ function App() {
                         nodes={view.hw_tree}
                         selectedKeyword={selectedMap === "hw" ? selectedKeyword : null}
                         onSelect={handleSelect("hw")}
+                        onOpenFullView={() => {
+                          setHwGraphFullOpen(true);
+                          setManualOpen(false);
+                        }}
                       />
                     ) : (
                       <p className="empty-hint">Loading map…</p>
@@ -383,6 +407,8 @@ function App() {
             mapKind={selectedMap}
             cartIds={cartIds}
             onAddToCart={addToCart}
+            nameMachines={nameMachines}
+            currentMachine={machine}
           />
         </div>
 

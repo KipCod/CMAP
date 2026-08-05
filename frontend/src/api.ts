@@ -1,4 +1,4 @@
-import type { AppConfig, SearchResult, ViewData } from "./types";
+import type { AppConfig, NameMachineIndex, SearchResult, ViewData } from "./types";
 
 const API = "/api";
 
@@ -28,5 +28,15 @@ export async function fetchSearch(
   const params = new URLSearchParams({ q, module, part, machine });
   const res = await fetch(`${API}/search?${params}`);
   if (!res.ok) throw new Error("Failed to search");
+  return res.json();
+}
+
+export async function fetchNameMachines(
+  module: string,
+  part: string
+): Promise<NameMachineIndex> {
+  const params = new URLSearchParams({ module, part });
+  const res = await fetch(`${API}/name-machines?${params}`);
+  if (!res.ok) throw new Error("Failed to load name index");
   return res.json();
 }
