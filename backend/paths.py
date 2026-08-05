@@ -15,14 +15,26 @@ def config_csv_path(csv_dir: Path, module: str, part: str, machine: str) -> Path
     return new
 
 
-def module_all_csv_path(csv_dir: Path, module: str) -> Path:
-    new = csv_dir / f"procedures-{module}-all.csv"
+def part_all_csv_path(csv_dir: Path, module: str, part: str) -> Path:
+    """Part-scoped no-config CSV: {module}-{part}-all.csv"""
+    new = csv_dir / f"{module}-{part}-all.csv"
     if new.exists():
         return new
-    legacy = csv_dir / f"procedures_{module}_all.csv"
-    if legacy.exists():
-        return legacy
+    legacy_module = csv_dir / f"procedures-{module}-all.csv"
+    if legacy_module.exists():
+        return legacy_module
+    legacy_module2 = csv_dir / f"procedures_{module}_all.csv"
+    if legacy_module2.exists():
+        return legacy_module2
     return new
+
+
+def module_all_csv_path(csv_dir: Path, module: str) -> Path:
+    """Deprecated — use part_all_csv_path."""
+    legacy_module = csv_dir / f"procedures-{module}-all.csv"
+    if legacy_module.exists():
+        return legacy_module
+    return csv_dir / f"procedures_{module}_all.csv"
 
 
 def tree_path(tree_dir: Path, module: str, part: str, machine: str, kind: str) -> Path:

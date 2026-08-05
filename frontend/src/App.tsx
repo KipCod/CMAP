@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { fetchConfig, fetchNameMachines, fetchSearch, fetchView } from "./api";
 import { CartPanel } from "./components/CartPanel";
+import { DataWarningsBanner } from "./components/DataWarningsBanner";
 import { HwGraphFullView } from "./components/HwGraphFullView";
 import { HwMapPanel } from "./components/HwMapPanel";
 import { AppMark, GraphNodes, GridMap } from "./components/NavIcons";
@@ -9,10 +10,17 @@ import { ProcedurePanel } from "./components/ProcedurePanel";
 import { UserManualPanel } from "./components/UserManualPanel";
 import { SearchBar } from "./components/SearchBar";
 import { SupportZoneMap, useSupportExpanded } from "./components/SupportZoneMap";
+import { EMPTY_TREE_NODES } from "./constants";
 import type { AppConfig, MapKind, NameMachineIndex, Procedure, Theme, ViewData } from "./types";
 import { loadCart, procedureId, saveCart } from "./utils/cartUtils";
+import {
+  loadPresentationMode,
+  loadSidebarCollapsed,
+  savePresentationMode,
+  saveSidebarCollapsed,
+} from "./utils/layoutPrefs";
+import { findNodeByPath, findProcedureOnMap } from "./utils/mapNavigation";
 import "./styles.css";
-
 type CollapsedZone = "hw" | "other" | null;
 
 function App() {
@@ -38,10 +46,55 @@ function App() {
   const [manualOpen, setManualOpen] = useState(false);
   const [hwGraphFullOpen, setHwGraphFullOpen] = useState(false);
   const [nameMachines, setNameMachines] = useState<NameMachineIndex>({});
+  const [mapFilter, setMapFilter] = useState("");
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(loadSidebarCollapsed);
+  const [presentationMode, setPresentationMode] = useState(loadPresentationMode);
 
-  const otherExpanded = useSupportExpanded(view?.other_tree ?? []);
+  const clearSelectionRef = useRef(false);
+  const selectedKeywordRef = useRef<string | null>(null);
+  const selectedMapRef = useRef<MapKind>("hw");
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
+  const mapContextKey = useMemo(
+    () => (module && part && machine ? `${module}|${part}|${machine}` : ""),
+    [module, part, machine]
+  );
+  const hwTree = view?.hw_tree ?? EMPTY_TREE_NODES;
+  const otherTree = view?.other_tree ?? EMPTY_TREE_NODES;
+  const otherExpanded = useSupportExpanded(otherTree, mapContextKey);
   const cartIds = useMemo(() => new Set(cart.map(procedureId)), [cart]);
+
+  useEffect(() => {
+    selectedKeywordRef.current = selectedKeyword;
+    selectedMapRef.current = selectedMap;
+  }, [selectedKeyword, selectedMap]);
+
+  useEffect(() => {
+    saveSidebarCollapsed(sidebarCollapsed);
+  }, [sidebarCollapsed]);
+
+  useEffect(() => {
+    savePresentationMode(presentationMode);
+  }, [presentationMode]);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      const tag = (e.target as HTMLElement)?.tagName;
+      const inField = tag === "INPUT" || tag === "TEXTAREA" || (e.target as HTMLElement)?.isContentEditable;
+      if (e.key === "/" && !inField) {
+        e.preventDefault();
+        searchInputRef.current?.focus();
+      }
+      if (e.key === "Escape") {
+        setHwGraphFullOpen(false);
+        setManualOpen(false);
+        setCartOpen(false);
+        searchInputRef.current?.blur();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
@@ -51,18 +104,50 @@ function App() {
   useEffect(() => {
     fetchConfig().then((cfg) => {
       setConfig(cfg);
-      setModule(cfg.defaults.module);
+      const defaultModule =
+        cfg.modules.find((m) => m.name === cfg.defaults.module && m.active) ??
+        cfg.modules.find((m) => m.active);
+      setModule(defaultModule?.name ?? cfg.defaults.module);
       setPart(cfg.defaults.part);
       setMachine(cfg.defaults.machine_type);
     });
   }, []);
 
   useEffect(() => {
-    if (!module || !part || !machine) return;
-    fetchView(module, part, machine).then(setView);
-    setSelectedKeyword(null);
-    setSelectedProcedures([]);
-  }, [module, part, machine]);
+    if (!mapContextKey) {
+      setView(null);
+      return;
+    }
+
+    let cancelled = false;
+    const [mod, prt, mach] = mapContextKey.split("|");
+    fetchView(mod, prt, mach).then((v) => {
+      if (cancelled) return;
+      setView(v);
+      if (clearSelectionRef.current) {
+        clearSelectionRef.current = false;
+        setSelectedKeyword(null);
+        setSelectedProcedures([]);
+        return;
+      }
+      const path = selectedKeywordRef.current;
+      const map = selectedMapRef.current;
+      if (!path) return;
+
+      const tree = map === "hw" ? v.hw_tree : v.other_tree;
+      const node = findNodeByPath(tree, path);
+      if (node) {
+        setSelectedProcedures(node.procedures);
+        return;
+      }
+      selectedKeywordRef.current = null;
+      setSelectedKeyword(null);
+      setSelectedProcedures([]);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [mapContextKey]);
 
   useEffect(() => {
     if (!module || !part) return;
@@ -96,14 +181,47 @@ function App() {
 
   const contextLabel = `${module} · ${part} · ${machine}`;
 
-  const handleSelect = useCallback(
-    (map: MapKind) => (keyword: string, procedures: Procedure[]) => {
+  const navigateToKeyword = useCallback(
+    (map: MapKind, keyword: string, procedures: Procedure[]) => {
       setSelectedMap(map);
       setSelectedKeyword(keyword);
       setSelectedProcedures(procedures);
       if (map === "other") otherExpanded.expandToPath(keyword);
     },
     [otherExpanded.expandToPath]
+  );
+
+  const jumpToTag = useCallback(
+    (tag: string) => {
+      if (!view) return;
+      const loc = findProcedureOnMap(view.hw_tree, view.other_tree, {
+        name: "",
+        title: "",
+        tags: [tag],
+        link: "",
+        module,
+        part,
+        machine_type: machine,
+      });
+      if (loc) navigateToKeyword(loc.mapKind, loc.path, loc.procedures);
+    },
+    [view, module, part, machine, navigateToKeyword]
+  );
+
+  const jumpProcedureToMap = useCallback(
+    (proc: Procedure) => {
+      if (!view) return;
+      const loc = findProcedureOnMap(view.hw_tree, view.other_tree, proc);
+      if (loc) navigateToKeyword(loc.mapKind, loc.path, loc.procedures);
+    },
+    [view, navigateToKeyword]
+  );
+
+  const handleSelect = useCallback(
+    (map: MapKind) => (keyword: string, procedures: Procedure[]) => {
+      navigateToKeyword(map, keyword, procedures);
+    },
+    [navigateToKeyword]
   );
 
   const addToCart = useCallback((p: Procedure) => {
@@ -134,9 +252,22 @@ function App() {
   };
 
   const handlePartChange = (nextPart: string) => {
+    clearSelectionRef.current = true;
     setPart(nextPart);
     const types = config?.parts[nextPart]?.machine_types ?? [];
     if (types.length > 0) setMachine(types[0]);
+  };
+
+  const handleMachineChange = (nextMachine: string) => {
+    clearSelectionRef.current = false;
+    setMachine(nextMachine);
+  };
+
+  const handleModuleSelect = (name: string) => {
+    clearSelectionRef.current = true;
+    setManualOpen(false);
+    setHwGraphFullOpen(false);
+    setModule(name);
   };
 
   const hwCollapsed = collapsedZone === "hw";
@@ -147,29 +278,28 @@ function App() {
   }
 
   return (
-    <div className="app-shell">
-      <aside className="sidebar">
+    <div className={`app-shell ${sidebarCollapsed ? "sidebar-collapsed" : ""} ${presentationMode ? "presentation-mode" : ""}`}>
+      {!presentationMode && (
+      <aside className={`sidebar ${sidebarCollapsed ? "is-collapsed" : ""}`}>
         <div className="sidebar-brand">
           <div className="brand-row">
             <AppMark size={22} className="brand-mark" />
             <h1>{config.app_title}</h1>
           </div>
-          <p className="sidebar-tagline">Procedure Map</p>
+          <p className="sidebar-tagline">Procedure Navigation</p>
         </div>        <nav className="module-nav" aria-label="Modules">
           <span className="nav-section-label">Modules</span>
           {config.modules.map((m) => (
             <button
-              key={m}
+              key={m.name}
               type="button"
-              className={`module-tab ${!manualOpen && !hwGraphFullOpen && module === m ? "active" : ""}`}
-              onClick={() => {
-                setManualOpen(false);
-                setHwGraphFullOpen(false);
-                setModule(m);
-              }}
+              disabled={!m.active}
+              className={`module-tab ${!m.active ? "inactive" : ""} ${!manualOpen && !hwGraphFullOpen && module === m.name ? "active" : ""}`}
+              onClick={() => handleModuleSelect(m.name)}
+              title={m.active ? m.name : `${m.name} (inactive)`}
             >
               <span className="module-dot" />
-              {m}
+              {m.name}
             </button>
           ))}
         </nav>
@@ -230,6 +360,17 @@ function App() {
           </div>
         </div>
       </aside>
+      )}
+
+      <button
+        type="button"
+        className="sidebar-toggle"
+        onClick={() => setSidebarCollapsed((v) => !v)}
+        title={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+        aria-label={sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+      >
+        {sidebarCollapsed ? "›" : "‹"}
+      </button>
 
       <main className="main">
         {manualOpen ? (
@@ -242,7 +383,7 @@ function App() {
           </>
         ) : hwGraphFullOpen ? (
           <HwGraphFullView
-            nodes={view?.hw_tree ?? []}
+            nodes={hwTree}
             selectedKeyword={selectedMap === "hw" ? selectedKeyword : null}
             onSelect={handleSelect("hw")}
             onClose={() => setHwGraphFullOpen(false)}
@@ -251,6 +392,7 @@ function App() {
         ) : (
           <>
         <header className="top-bar">
+          <div className="top-bar-row">
           <div className="selectors">
             <div className="selector-group">
               <span className="selector-label">Part</span>
@@ -275,13 +417,32 @@ function App() {
                     key={mt}
                     type="button"
                     className={`chip ${machine === mt ? "active" : ""}`}
-                    onClick={() => setMachine(mt)}
+                    onClick={() => handleMachineChange(mt)}
                   >
                     {mt}
                   </button>
                 ))}
               </div>
             </div>
+          </div>
+          <div className="top-bar-actions">
+            <input
+              type="search"
+              className="map-filter-input"
+              placeholder="Filter MAP keywords…"
+              value={mapFilter}
+              onChange={(e) => setMapFilter(e.target.value)}
+              aria-label="Filter MAP keywords"
+            />
+            <button
+              type="button"
+              className={`layout-mode-btn ${presentationMode ? "active" : ""}`}
+              onClick={() => setPresentationMode((v) => !v)}
+              title="Presentation mode"
+            >
+              {presentationMode ? "Exit focus" : "Focus"}
+            </button>
+          </div>
           </div>
           <NavBreadcrumb
             module={module}
@@ -291,6 +452,8 @@ function App() {
             keywordPath={selectedKeyword}
           />
         </header>
+
+        <DataWarningsBanner warnings={view?.warnings ?? []} />
 
         <div className="content">
           <section
@@ -332,13 +495,15 @@ function App() {
                   <div className="map-scroll">
                     {view ? (
                       <HwMapPanel
-                        nodes={view.hw_tree}
+                        nodes={hwTree}
                         selectedKeyword={selectedMap === "hw" ? selectedKeyword : null}
                         onSelect={handleSelect("hw")}
                         onOpenFullView={() => {
                           setHwGraphFullOpen(true);
                           setManualOpen(false);
                         }}
+                        mapFilter={mapFilter}
+                        mapContextKey={mapContextKey}
                       />
                     ) : (
                       <p className="empty-hint">Loading map…</p>
@@ -384,13 +549,14 @@ function App() {
                   <div className="map-scroll">
                     {view ? (
                       <SupportZoneMap
-                        nodes={view.other_tree}
+                        nodes={otherTree}
                         selectedKeyword={selectedMap === "other" ? selectedKeyword : null}
                         onSelect={handleSelect("other")}
                         expanded={otherExpanded.expanded}
                         onToggle={otherExpanded.toggle}
                         onExpandAllTop={otherExpanded.expandAllTop}
                         onCollapseAllTop={otherExpanded.collapseAllTop}
+                        mapFilter={mapFilter}
                       />
                     ) : (
                       <p className="empty-hint">Loading map…</p>
@@ -409,9 +575,12 @@ function App() {
             onAddToCart={addToCart}
             nameMachines={nameMachines}
             currentMachine={machine}
+            onTagClick={jumpToTag}
+            onSwitchMachine={handleMachineChange}
           />
         </div>
 
+        {!presentationMode && (
         <footer className="search-dock">
           <SearchBar
             query={searchQuery}
@@ -421,9 +590,15 @@ function App() {
             moduleAll={searchModuleAll}
             contextLabel={contextLabel}
             module={module}
+            part={part}
             loading={searchLoading}
+            cartIds={cartIds}
+            onAddToCart={addToCart}
+            onShowOnMap={jumpProcedureToMap}
+            searchInputRef={searchInputRef}
           />
         </footer>
+        )}
           </>
         )}
       </main>

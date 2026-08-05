@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { TreeNode } from "../types";
 import { countTotal, getPathLabel, isOnSelectedPath, collectExpandablePaths } from "../utils/mapUtils";
+import { nodeMatchesMapFilter } from "../utils/mapNavigation";
 
 interface Props {
   nodes: TreeNode[];
@@ -10,6 +11,7 @@ interface Props {
   onToggle: (keyword: string) => void;
   onExpandAllTop: () => void;
   onCollapseAllTop: () => void;
+  mapFilter?: string;
 }
 
 function KeywordChip({
@@ -17,20 +19,23 @@ function KeywordChip({
   path,
   selectedKeyword,
   onSelect,
+  mapFilter = "",
 }: {
   node: TreeNode;
   path: string;
   selectedKeyword: string | null;
   onSelect: Props["onSelect"];
+  mapFilter?: string;
 }) {
   const total = countTotal(node);
   const isSelected = selectedKeyword === path;
   const onPath = isOnSelectedPath(path, selectedKeyword);
+  const filterDim = mapFilter.trim() && !nodeMatchesMapFilter(node, path, mapFilter);
 
   return (
     <button
       type="button"
-      className={`support-chip ${isSelected ? "selected" : ""} ${onPath ? "on-path" : ""} ${total === 0 ? "empty" : ""}`}
+      className={`support-chip ${isSelected ? "selected" : ""} ${onPath ? "on-path" : ""} ${total === 0 ? "empty" : ""} ${filterDim ? "filter-dim" : ""}`}
       onClick={() => onSelect(path, node.procedures)}
       title={path}
     >
@@ -48,6 +53,7 @@ function SupportBranch({
   onSelect,
   expanded,
   onToggle,
+  mapFilter = "",
 }: {
   node: TreeNode;
   path: string;
@@ -56,19 +62,21 @@ function SupportBranch({
   onSelect: Props["onSelect"];
   expanded: Set<string>;
   onToggle: (path: string) => void;
+  mapFilter?: string;
 }) {
   const hasChildren = node.children.length > 0;
   const isOpen = expanded.has(path);
   const total = countTotal(node);
   const isSelected = selectedKeyword === path;
   const onPath = isOnSelectedPath(path, selectedKeyword);
+  const filterDim = mapFilter.trim() && !nodeMatchesMapFilter(node, path, mapFilter);
 
   const branches = node.children.filter((c) => c.children.length > 0);
   const leaves = node.children.filter((c) => c.children.length === 0);
 
   return (
     <div
-      className={`support-branch depth-${depth} ${onPath ? "on-path" : ""}`}
+      className={`support-branch depth-${depth} ${onPath ? "on-path" : ""} ${filterDim ? "filter-dim" : ""}`}
       style={{ ["--depth" as string]: String(depth) }}
     >
       <div className={`support-branch-header ${isSelected ? "selected" : ""}`}>
@@ -105,6 +113,7 @@ function SupportBranch({
                     path={leafPath}
                     selectedKeyword={selectedKeyword}
                     onSelect={onSelect}
+                    mapFilter={mapFilter}
                   />
                 );
               })}
@@ -122,6 +131,7 @@ function SupportBranch({
                 onSelect={onSelect}
                 expanded={expanded}
                 onToggle={onToggle}
+                mapFilter={mapFilter}
               />
             );
           })}
@@ -139,6 +149,7 @@ export function SupportZoneMap({
   onToggle,
   onExpandAllTop,
   onCollapseAllTop,
+  mapFilter = "",
 }: Props) {
   return (
     <div className="support-zone-map">
@@ -161,10 +172,12 @@ export function SupportZoneMap({
         const branches = region.children.filter((c) => c.children.length > 0);
         const leaves = region.children.filter((c) => c.children.length === 0);
 
+        const filterDim = mapFilter.trim() && !nodeMatchesMapFilter(region, path, mapFilter);
+
         return (
           <section
             key={path}
-            className={`support-region ${onPath ? "on-path" : ""} ${isOpen ? "open" : ""}`}
+            className={`support-region ${onPath ? "on-path" : ""} ${isOpen ? "open" : ""} ${filterDim ? "filter-dim" : ""}`}
           >
             <header className={`support-region-header ${isSelected ? "selected" : ""}`}>
               <button
@@ -198,6 +211,7 @@ export function SupportZoneMap({
                           path={leafPath}
                           selectedKeyword={selectedKeyword}
                           onSelect={onSelect}
+                          mapFilter={mapFilter}
                         />
                       );
                     })}
@@ -213,6 +227,7 @@ export function SupportZoneMap({
                     onSelect={onSelect}
                     expanded={expanded}
                     onToggle={onToggle}
+                    mapFilter={mapFilter}
                   />
                 ))}
               </div>
@@ -231,25 +246,25 @@ export function SupportZoneMap({
   );
 }
 
-export function useSupportExpanded(nodes: TreeNode[]) {
+export function useSupportExpanded(nodes: TreeNode[], contextKey: string) {
   const [expanded, setExpanded] = useState(() => new Set<string>());
 
   const expandablePaths = useMemo(() => collectExpandablePaths(nodes), [nodes]);
 
   useEffect(() => {
     setExpanded(new Set());
-  }, [nodes]);
+  }, [contextKey]);
 
-  const toggle = (key: string) => {
+  const toggle = useCallback((key: string) => {
     setExpanded((prev) => {
       const next = new Set(prev);
       if (next.has(key)) next.delete(key);
       else next.add(key);
       return next;
     });
-  };
+  }, []);
 
-  const expandToPath = (path: string) => {
+  const expandToPath = useCallback((path: string) => {
     const parts = path.split("/");
     setExpanded((prev) => {
       const next = new Set(prev);
@@ -260,7 +275,7 @@ export function useSupportExpanded(nodes: TreeNode[]) {
       }
       return next;
     });
-  };
+  }, []);
 
   const expandAllTop = useCallback(() => {
     setExpanded(new Set(expandablePaths));

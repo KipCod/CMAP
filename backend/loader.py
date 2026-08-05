@@ -8,15 +8,18 @@ import re
 from copy import deepcopy
 from pathlib import Path
 
+from backend.config_utils import module_names, normalize_modules
 from backend.models import ConfigContext, Procedure, TreeNode
-from backend.paths import config_csv_path, module_all_csv_path, tree_path
+from backend.paths import config_csv_path, part_all_csv_path, tree_path
 
 ROOT = Path(__file__).resolve().parent.parent
 
 
 def load_config() -> dict:
     path = ROOT / "config.json"
-    return json.loads(path.read_text(encoding="utf-8"))
+    data = json.loads(path.read_text(encoding="utf-8"))
+    data["modules"] = normalize_modules(data.get("modules"))
+    return data
 
 
 def normalize_tag(tag: str) -> str:
@@ -51,7 +54,7 @@ def parse_csv_row(row: dict[str, str], module: str, part: str, machine: str) -> 
     )
 
 
-def parse_module_all_row(row: dict[str, str], module: str) -> Procedure:
+def parse_module_all_row(row: dict[str, str], module: str, part: str) -> Procedure:
     lower = normalize_row(row)
     return Procedure(
         name=lower.get("name", "").strip(),
@@ -59,7 +62,7 @@ def parse_module_all_row(row: dict[str, str], module: str) -> Procedure:
         tags=[],
         link=lower.get("link", "").strip(),
         module=module,
-        part="ALL",
+        part=part,
         machine_type="ALL",
         source="module_all",
     )
@@ -167,11 +170,37 @@ def clone_tree(nodes: list[TreeNode]) -> list[TreeNode]:
 
 
 def matches_query(query: str, *parts: str) -> bool:
+    """Legacy helper — prefer procedure_matches_query for Procedure rows."""
     tokens = query.split()
     if not tokens:
         return False
     haystack = " ".join(parts).lower()
     return all(token in haystack for token in tokens)
+
+
+def procedure_matches_query(query: str, proc: Procedure) -> bool:
+    """Match name, title, or tags only — not config path fields."""
+    q = query.strip().lower()
+    if not q:
+        return False
+
+    name = proc.name.lower()
+    title = proc.title.lower()
+    tags = [t.lower() for t in proc.tags]
+
+    tokens = q.split()
+    if len(tokens) == 1 and re.fullmatch(r"[a-z0-9_]+", tokens[0]):
+        token = tokens[0]
+        if token in name or token in title:
+            return True
+        return any(token == tag for tag in tags)
+
+    def token_hits(token: str) -> bool:
+        if token in name or token in title:
+            return True
+        return any(token == tag or token in tag for tag in tags)
+
+    return all(token_hits(token) for token in tokens)
 
 
 class DataStore:
@@ -182,7 +211,7 @@ class DataStore:
         self.other_trees: dict[str, list[TreeNode]] = {}
         self.all_procedures: list[Procedure] = []
         self.module_all_procedures: list[Procedure] = []
-        self.config_procedure_keys: set[tuple[str, str]] = set()
+        self.config_procedure_keys: set[tuple[str, str, str]] = set()
         # (module, part, name) -> sorted machine types
         self.name_machines: dict[tuple[str, str, str], set[str]] = {}
         self._load_all()
@@ -195,7 +224,7 @@ class DataStore:
         csv_dir = ROOT / self.config["data_paths"]["csv_dir"]
         tree_dir = ROOT / self.config["data_paths"]["tree_dir"]
 
-        for module in self.config["modules"]:
+        for module in module_names(self.config["modules"]):
             for part, part_cfg in self.config["parts"].items():
                 for machine in part_cfg["machine_types"]:
                     ck = self.csv_key(module, part, machine)
@@ -213,7 +242,7 @@ class DataStore:
                                     continue
                                 procedures.append(proc)
                                 self.all_procedures.append(proc)
-                                self.config_procedure_keys.add((proc.module, proc.name))
+                                self.config_procedure_keys.add((proc.module, proc.part, proc.name))
                                 key = (proc.module, proc.part, proc.name)
                                 self.name_machines.setdefault(key, set()).add(machine)
 
@@ -234,24 +263,45 @@ class DataStore:
                     self.hw_trees[ck] = hw_copy
                     self.other_trees[ck] = other_copy
 
-        for module in self.config["modules"]:
-            csv_path = module_all_csv_path(csv_dir, module)
-            if not csv_path.exists():
-                continue
-            with csv_path.open(encoding="utf-8-sig", newline="") as f:
-                reader = csv.DictReader(f)
-                for row in reader:
-                    proc = parse_module_all_row(row, module)
-                    if not proc.name:
-                        continue
-                    self.module_all_procedures.append(proc)
-                    self.all_procedures.append(proc)
+        for module in module_names(self.config["modules"]):
+            for part in self.config["parts"]:
+                csv_path = part_all_csv_path(csv_dir, module, part)
+                if not csv_path.exists():
+                    continue
+                with csv_path.open(encoding="utf-8-sig", newline="") as f:
+                    reader = csv.DictReader(f)
+                    for row in reader:
+                        proc = parse_module_all_row(row, module, part)
+                        if not proc.name:
+                            continue
+                        self.module_all_procedures.append(proc)
+                        self.all_procedures.append(proc)
+
+    def _collect_warnings(
+        self, csv_dir: Path, tree_dir: Path, module: str, part: str, machine: str
+    ) -> list[str]:
+        warnings: list[str] = []
+        csv_path = config_csv_path(csv_dir, module, part, machine)
+        if not csv_path.exists():
+            warnings.append(f"Missing config CSV: {csv_path.name}")
+        for kind, label in (("hw", "HW tree"), ("other", "Support tree")):
+            tp = tree_path(tree_dir, module, part, machine, kind)
+            if not tp.exists():
+                rel = tp.as_posix().split("data/", 1)[-1] if "data/" in tp.as_posix() else tp.name
+                warnings.append(f"Missing {label}: data/{rel}")
+        part_all = part_all_csv_path(csv_dir, module, part)
+        if not part_all.exists():
+            warnings.append(f"Missing part-all CSV: {part_all.name}")
+        return warnings
 
     def get_view(self, module: str, part: str, machine: str) -> dict:
         ck = self.csv_key(module, part, machine)
+        csv_dir = ROOT / self.config["data_paths"]["csv_dir"]
+        tree_dir = ROOT / self.config["data_paths"]["tree_dir"]
         return {
             "hw_tree": [n.to_dict() for n in self.hw_trees[ck]],
             "other_tree": [n.to_dict() for n in self.other_trees[ck]],
+            "warnings": self._collect_warnings(csv_dir, tree_dir, module, part, machine),
         }
 
     def get_name_machines(self, module: str, part: str) -> dict[str, list[str]]:
@@ -275,34 +325,29 @@ class DataStore:
             if proc.source != "config":
                 continue
 
-            if not matches_query(
-                q,
-                proc.name,
-                proc.title,
-                " ".join(proc.tags),
-                proc.module,
-                proc.part,
-                proc.machine_type,
-            ):
+            if proc.module != module:
+                continue
+
+            if not procedure_matches_query(q, proc):
                 continue
 
             item = proc.to_dict()
             in_scope = (
-                proc.module == module
-                and proc.part == part
+                proc.part == part
                 and proc.machine_type == machine
             )
-            global_results.append(item)
+            if proc.part == part:
+                global_results.append(item)
             if in_scope:
                 scoped.append(item)
 
         for proc in self.module_all_procedures:
-            if proc.module != module:
+            if proc.module != module or proc.part != part:
                 continue
-            if (proc.module, proc.name) in self.config_procedure_keys:
+            if (proc.module, proc.part, proc.name) in self.config_procedure_keys:
                 continue
 
-            if not matches_query(q, proc.name, proc.title, proc.module):
+            if not procedure_matches_query(q, proc):
                 continue
 
             module_all_results.append(proc.to_dict())

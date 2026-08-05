@@ -1,6 +1,11 @@
+export interface ModuleEntry {
+  name: string;
+  active: boolean;
+}
+
 export interface AppConfig {
   app_title: string;
-  modules: string[];
+  modules: ModuleEntry[];
   parts: Record<
     string,
     {
@@ -38,6 +43,7 @@ export interface TreeNode {
 export interface ViewData {
   hw_tree: TreeNode[];
   other_tree: TreeNode[];
+  warnings?: string[];
 }
 
 export interface SearchResult {

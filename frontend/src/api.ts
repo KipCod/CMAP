@@ -2,6 +2,8 @@ import type { AppConfig, NameMachineIndex, SearchResult, ViewData } from "./type
 
 const API = "/api";
 
+const inflightViews = new Map<string, Promise<ViewData>>();
+
 export async function fetchConfig(): Promise<AppConfig> {
   const res = await fetch(`${API}/config`);
   if (!res.ok) throw new Error("Failed to load config");
@@ -13,10 +15,22 @@ export async function fetchView(
   part: string,
   machine: string
 ): Promise<ViewData> {
+  const key = `${module}|${part}|${machine}`;
+  const pending = inflightViews.get(key);
+  if (pending) return pending;
+
   const params = new URLSearchParams({ module, part, machine });
-  const res = await fetch(`${API}/view?${params}`);
-  if (!res.ok) throw new Error("Failed to load view");
-  return res.json();
+  const promise = fetch(`${API}/view?${params}`)
+    .then((res) => {
+      if (!res.ok) throw new Error("Failed to load view");
+      return res.json() as Promise<ViewData>;
+    })
+    .finally(() => {
+      inflightViews.delete(key);
+    });
+
+  inflightViews.set(key, promise);
+  return promise;
 }
 
 export async function fetchSearch(

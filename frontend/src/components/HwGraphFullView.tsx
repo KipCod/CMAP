@@ -3,6 +3,7 @@ import type { TreeNode } from "../types";
 import { getPathLabel } from "../utils/mapUtils";
 import { downloadSvgAsPng } from "../utils/screenshot";
 import { HwGraphCanvas } from "./HwGraphCanvas";
+import { ZoomPanViewport } from "./ZoomPanViewport";
 
 interface Props {
   nodes: TreeNode[];
@@ -55,14 +56,16 @@ export function HwGraphFullView({
 
       <div className="hw-graph-full-scroll">
         {hasNodes ? (
-          <HwGraphCanvas
-            nodes={nodes}
-            selectedKeyword={selectedKeyword}
-            onSelect={onSelect}
-            compactLabels={false}
-            svgRef={svgRef}
-            svgClassName="hw-graph-svg hw-graph-svg-full"
-          />
+          <ZoomPanViewport className="hw-graph-full-zoom">
+            <HwGraphCanvas
+              nodes={nodes}
+              selectedKeyword={selectedKeyword}
+              onSelect={onSelect}
+              compactLabels={false}
+              svgRef={svgRef}
+              svgClassName="hw-graph-svg hw-graph-svg-full"
+            />
+          </ZoomPanViewport>
         ) : (
           <p className="empty-hint">No HW tree data for this configuration.</p>
         )}

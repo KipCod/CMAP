@@ -7,6 +7,7 @@ import {
   getPathLabel,
   isOnSelectedPath,
 } from "../utils/mapUtils";
+import { nodeMatchesMapFilter } from "../utils/mapNavigation";
 
 interface Props {
   nodes: TreeNode[];
@@ -16,6 +17,7 @@ interface Props {
   onToggle: (keyword: string) => void;
   onExpandAllTop: () => void;
   onCollapseAllTop: () => void;
+  mapFilter?: string;
 }
 
 export function HwTreeMap({
@@ -26,6 +28,7 @@ export function HwTreeMap({
   onToggle,
   onExpandAllTop,
   onCollapseAllTop,
+  mapFilter = "",
 }: Props) {
   const flat = useMemo(
     () => flattenVisibleTree(nodes, expanded),
@@ -55,11 +58,12 @@ export function HwTreeMap({
           const isSelected = selectedKeyword === path;
           const onPath = isOnSelectedPath(path, selectedKeyword);
           const isRoot = depth === 0;
+          const filterDim = mapFilter.trim() && !nodeMatchesMapFilter(node, path, mapFilter);
 
           return (
             <div
               key={path}
-              className={`hw-tree-row-wrap ${onPath ? "on-path" : ""} ${isRoot ? "is-root" : ""}`}
+              className={`hw-tree-row-wrap ${onPath ? "on-path" : ""} ${isRoot ? "is-root" : ""} ${filterDim ? "filter-dim" : ""}`}
               role="treeitem"
               aria-expanded={hasChildren ? isOpen : undefined}
               style={{ ["--depth" as string]: String(depth) }}
@@ -117,23 +121,23 @@ export function HwTreeMap({
   );
 }
 
-export function useHwTreeExpanded(nodes: TreeNode[]) {
+export function useHwTreeExpanded(nodes: TreeNode[], contextKey: string) {
   const [expanded, setExpanded] = useState(() => new Set<string>());
 
   const expandablePaths = useMemo(() => collectExpandablePaths(nodes), [nodes]);
 
   useEffect(() => {
     setExpanded(new Set());
-  }, [nodes]);
+  }, [contextKey]);
 
-  const toggle = (key: string) => {
+  const toggle = useCallback((key: string) => {
     setExpanded((prev) => {
       const next = new Set(prev);
       if (next.has(key)) next.delete(key);
       else next.add(key);
       return next;
     });
-  };
+  }, []);
 
   const expandToPath = useCallback((path: string) => {
     const parts = path.split("/");

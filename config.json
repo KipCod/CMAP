@@ -1,6 +1,13 @@
 {
   "app_title": "CoachMAP",
-  "modules": ["AAA", "BBB", "CCC", "DDD", "EEE", "FFF"],
+  "modules": [
+    { "name": "AAA", "active": true },
+    { "name": "BBB", "active": false },
+    { "name": "CCC", "active": false },
+    { "name": "DDD", "active": false },
+    { "name": "EEE", "active": false },
+    { "name": "FFF", "active": false }
+  ],
   "parts": {
     "SSS": {
       "label": "SSS",

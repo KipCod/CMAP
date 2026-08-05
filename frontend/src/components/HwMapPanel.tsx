@@ -10,11 +10,20 @@ interface Props {
   selectedKeyword: string | null;
   onSelect: (keyword: string, procedures: TreeNode["procedures"]) => void;
   onOpenFullView: () => void;
+  mapFilter?: string;
+  mapContextKey: string;
 }
 
-export function HwMapPanel({ nodes, selectedKeyword, onSelect, onOpenFullView }: Props) {
+export function HwMapPanel({
+  nodes,
+  selectedKeyword,
+  onSelect,
+  onOpenFullView,
+  mapFilter = "",
+  mapContextKey,
+}: Props) {
   const [viewMode, setViewMode] = useState<HwViewMode>("graph");
-  const treeExpanded = useHwTreeExpanded(nodes);
+  const treeExpanded = useHwTreeExpanded(nodes, mapContextKey);
 
   useEffect(() => {
     if (selectedKeyword) {
@@ -66,6 +75,7 @@ export function HwMapPanel({ nodes, selectedKeyword, onSelect, onOpenFullView }:
           nodes={nodes}
           selectedKeyword={selectedKeyword}
           onSelect={handleSelect}
+          mapFilter={mapFilter}
         />
       ) : (
         <HwTreeMap
@@ -76,6 +86,7 @@ export function HwMapPanel({ nodes, selectedKeyword, onSelect, onOpenFullView }:
           onToggle={treeExpanded.toggle}
           onExpandAllTop={treeExpanded.expandAllTop}
           onCollapseAllTop={treeExpanded.collapseAllTop}
+          mapFilter={mapFilter}
         />
       )}
     </div>

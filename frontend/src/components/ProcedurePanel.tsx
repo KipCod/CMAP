@@ -3,6 +3,7 @@ import type { MapKind, Procedure } from "../types";
 import { getPathLabel } from "../utils/mapUtils";
 import { procedureId } from "../utils/cartUtils";
 import { RoutePin } from "./NavIcons";
+import { ProcedurePreview } from "./ProcedurePreview";
 
 const STORAGE_KEY = "coachmap-procedure-height";
 const DEFAULT_HEIGHT = 240;
@@ -28,6 +29,8 @@ interface Props {
   onAddToCart: (p: Procedure) => void;
   nameMachines: Record<string, string[]>;
   currentMachine: string;
+  onTagClick?: (tag: string) => void;
+  onSwitchMachine?: (machine: string) => void;
 }
 
 export function ProcedurePanel({
@@ -38,6 +41,8 @@ export function ProcedurePanel({
   onAddToCart,
   nameMachines,
   currentMachine,
+  onTagClick,
+  onSwitchMachine,
 }: Props) {
   const [height, setHeight] = useState(loadHeight);
   const dragging = useRef(false);
@@ -133,14 +138,17 @@ export function ProcedurePanel({
             return (
               <li key={id} className="procedure-card">
                 <div className="procedure-card-top">
-                  <a
-                    href={p.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="proc-name proc-name-link"
-                  >
-                    {p.name}
-                  </a>
+                  <div className="procedure-preview-wrap">
+                    <a
+                      href={p.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="proc-name proc-name-link"
+                    >
+                      {p.name}
+                    </a>
+                    <ProcedurePreview procedure={p} query="" />
+                  </div>
                   <button
                     type="button"
                     className={`cart-add-btn ${inCart ? "in-cart" : ""}`}
@@ -160,14 +168,32 @@ export function ProcedurePanel({
                 <div className="proc-title">{p.title}</div>
                 {otherMachines.length > 0 && (
                   <div className="proc-other-machines">
-                    Also on: {otherMachines.join(", ")}
+                    Also on:{" "}
+                    {otherMachines.map((m, i) => (
+                      <span key={m}>
+                        {i > 0 && ", "}
+                        <button
+                          type="button"
+                          className="proc-machine-link"
+                          onClick={() => onSwitchMachine?.(m)}
+                        >
+                          {m}
+                        </button>
+                      </span>
+                    ))}
                   </div>
                 )}
                 <div className="proc-tags">
                   {p.tags.map((t) => (
-                    <span key={t} className="tag-chip">
+                    <button
+                      key={t}
+                      type="button"
+                      className="tag-chip tag-chip-btn"
+                      onClick={() => onTagClick?.(t)}
+                      title={`Jump to ${t} on MAP`}
+                    >
                       {t}
-                    </span>
+                    </button>
                   ))}
                 </div>
               </li>

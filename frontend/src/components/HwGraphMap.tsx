@@ -6,22 +6,20 @@ interface Props {
   nodes: TreeNode[];
   selectedKeyword: string | null;
   onSelect: (keyword: string, procedures: TreeNode["procedures"]) => void;
+  mapFilter?: string;
 }
 
-export function HwGraphMap({ nodes, selectedKeyword, onSelect }: Props) {
+export function HwGraphMap({ nodes, selectedKeyword, onSelect, mapFilter = "" }: Props) {
   return (
     <div className="hw-graph-wrap">
-      <div className="map-legend graph-legend">
-        <span className="legend-item">
-          <span className="legend-dot region" /> Click node to navigate
-        </span>
-      </div>
+      <p className="graph-hint">Click node to navigate</p>
 
       <div className="hw-graph-scroll">
         <HwGraphCanvas
           nodes={nodes}
           selectedKeyword={selectedKeyword}
           onSelect={onSelect}
+          mapFilter={mapFilter}
         />
       </div>
 

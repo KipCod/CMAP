@@ -7,6 +7,10 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 CONFIG = json.loads((ROOT / "config.json").read_text(encoding="utf-8"))
 
+from backend.config_utils import module_names, normalize_modules
+
+MODULES = module_names(normalize_modules(CONFIG.get("modules")))
+
 # ---------------------------------------------------------------------------
 # Tree builders (tab-indented)
 # ---------------------------------------------------------------------------
@@ -259,7 +263,7 @@ def write_trees():
     tree_dir = ROOT / CONFIG["data_paths"]["tree_dir"]
     tree_dir.mkdir(parents=True, exist_ok=True)
     count = 0
-    for module in CONFIG["modules"]:
+    for module in MODULES:
         mod_dir = tree_dir / module
         mod_dir.mkdir(parents=True, exist_ok=True)
         for part, machine in all_tree_keys():
@@ -277,7 +281,7 @@ def write_csvs():
     count = 0
     total_rows = 0
 
-    for module in CONFIG["modules"]:
+    for module in MODULES:
         prefix = module_prefix(module)
         for part, part_cfg in CONFIG["parts"].items():
             for machine in part_cfg["machine_types"]:
@@ -318,42 +322,46 @@ def write_csvs():
     print(f"Wrote {count} CSV files ({total_rows} total procedure rows)")
 
 
-def write_module_all_csvs():
+def write_part_all_csvs():
     csv_dir = ROOT / CONFIG["data_paths"]["csv_dir"]
     csv_dir.mkdir(parents=True, exist_ok=True)
     count = 0
 
-    module_all_titles = [
+    part_all_titles = [
         "Cross-machine Safety Interlock Reference",
-        "Module-wide Firmware Compatibility Matrix",
+        "Part-wide Firmware Compatibility Matrix",
         "Shared Operator Checklist (All Machine Types)",
         "Global Parameter Export and Import Guide",
         "Unified Alarm Code Master List",
         "Multi-tool Preventive Maintenance Schedule",
         "Standard Naming Convention for Procedures",
-        "Module Release Notes and Change Log Index",
+        "Part Release Notes and Change Log Index",
         "Fleet-wide Configuration Backup Procedure",
         "All-machine Diagnostic Data Collection Runbook",
     ]
 
-    for module in CONFIG["modules"]:
+    part_suffix = {"SSS": "sa", "TTT": "ta"}
+
+    for module in MODULES:
         prefix = module_prefix(module)
-        rows = []
-        for i, title in enumerate(module_all_titles, start=1):
-            rows.append({
-                "name": f"{prefix}.all{i:02d}",
-                "title": f"[{module}/all] {title}",
-                "link": f"https://example.com/proc/{module}/all/{i:02d}",
-            })
+        for part in CONFIG["parts"]:
+            suffix = part_suffix.get(part, part.lower()[:1])
+            rows = []
+            for i, title in enumerate(part_all_titles, start=1):
+                rows.append({
+                    "name": f"{prefix}.{suffix}all{i:02d}",
+                    "title": f"[{module}/{part}/all] {title}",
+                    "link": f"https://example.com/proc/{module}/{part}/all/{i:02d}",
+                })
 
-        path = csv_dir / f"procedures-{module}-all.csv"
-        with path.open("w", newline="", encoding="utf-8") as f:
-            writer = csv.DictWriter(f, fieldnames=["name", "title", "link"])
-            writer.writeheader()
-            writer.writerows(rows)
-        count += 1
+            path = csv_dir / f"{module}-{part}-all.csv"
+            with path.open("w", newline="", encoding="utf-8") as f:
+                writer = csv.DictWriter(f, fieldnames=["name", "title", "link"])
+                writer.writeheader()
+                writer.writerows(rows)
+            count += 1
 
-    print(f"Wrote {count} module-all CSV files")
+    print(f"Wrote {count} part-all CSV files ({module}-{part}-all.csv)")
 
 
 def print_stats():
@@ -374,4 +382,4 @@ if __name__ == "__main__":
     print_stats()
     write_trees()
     write_csvs()
-    write_module_all_csvs()
+    write_part_all_csvs()

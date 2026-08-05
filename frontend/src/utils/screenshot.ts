@@ -1,12 +1,59 @@
+const SVG_PRESENTATION_PROPS = [
+  "fill",
+  "stroke",
+  "stroke-width",
+  "stroke-linecap",
+  "stroke-linejoin",
+  "opacity",
+  "font-size",
+  "font-weight",
+  "font-family",
+] as const;
+
+function inlineSvgStyles(source: SVGSVGElement, target: SVGSVGElement): void {
+  const sourceNodes = [source, ...Array.from(source.querySelectorAll("*"))];
+  const targetNodes = [target, ...Array.from(target.querySelectorAll("*"))];
+
+  for (let i = 0; i < sourceNodes.length; i += 1) {
+    const src = sourceNodes[i];
+    const tgt = targetNodes[i] as SVGElement | undefined;
+    if (!tgt) continue;
+
+    const computed = getComputedStyle(src);
+    const styleParts: string[] = [];
+
+    for (const prop of SVG_PRESENTATION_PROPS) {
+      const value = computed.getPropertyValue(prop);
+      if (!value) continue;
+      styleParts.push(`${prop}:${value}`);
+      if (prop === "fill" || prop === "stroke" || prop === "stroke-width" || prop === "opacity") {
+        tgt.setAttribute(prop, value);
+      }
+    }
+
+    if (styleParts.length > 0) {
+      tgt.setAttribute("style", styleParts.join(";"));
+    }
+  }
+}
+
 export async function downloadSvgAsPng(
   svg: SVGSVGElement,
   filename: string
 ): Promise<void> {
   const clone = svg.cloneNode(true) as SVGSVGElement;
+  clone.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+
+  inlineSvgStyles(svg, clone);
+
   const bg = document.createElementNS("http://www.w3.org/2000/svg", "rect");
   bg.setAttribute("width", "100%");
   bg.setAttribute("height", "100%");
-  bg.setAttribute("fill", getComputedStyle(document.documentElement).getPropertyValue("--bg-panel").trim() || "#13131a");
+  bg.setAttribute(
+    "fill",
+    getComputedStyle(document.documentElement).getPropertyValue("--bg-panel").trim() ||
+      "#13131a"
+  );
   clone.insertBefore(bg, clone.firstChild);
 
   const serializer = new XMLSerializer();

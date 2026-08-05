@@ -1,5 +1,6 @@
 import { useMemo, useRef, type Ref } from "react";
 import type { TreeNode } from "../types";
+import { pathMatchesMapFilter } from "../utils/mapNavigation";
 import { isOnSelectedPath } from "../utils/mapUtils";
 import {
   buildGraphLayout,
@@ -17,6 +18,7 @@ interface Props {
   compactLabels?: boolean;
   svgClassName?: string;
   svgRef?: Ref<SVGSVGElement>;
+  mapFilter?: string;
 }
 
 export function HwGraphCanvas({
@@ -27,6 +29,7 @@ export function HwGraphCanvas({
   compactLabels = true,
   svgClassName = "hw-graph-svg",
   svgRef,
+  mapFilter = "",
 }: Props) {
   const layout = useMemo(
     () => layoutProp ?? buildGraphLayout(nodes),
@@ -84,11 +87,12 @@ export function HwGraphCanvas({
             compactLabels && n.label.length > 10
               ? `${n.label.slice(0, 9)}…`
               : n.label;
+          const filterDim = mapFilter.trim() && !pathMatchesMapFilter(n.id, mapFilter);
 
           return (
             <g
               key={n.id}
-              className={`graph-node-g ${onPath ? "on-path" : ""} ${isSelected ? "selected" : ""} ${empty ? "empty" : ""}`}
+              className={`graph-node-g ${onPath ? "on-path" : ""} ${isSelected ? "selected" : ""} ${empty ? "empty" : ""} ${filterDim ? "filter-dim" : ""}`}
               transform={`translate(${x}, ${y})`}
               onClick={() => onSelect(n.id, n.procedures)}
               style={{ cursor: "pointer" }}
