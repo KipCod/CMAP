@@ -1462,6 +1462,7 @@ button {
   flex-direction: column;
   min-height: 0;
   position: relative;
+  z-index: 5;
 }
 
 .procedure-resize-handle {
@@ -1627,6 +1628,8 @@ button {
   border: 1px solid var(--border);
   background: var(--bg-panel);
   min-width: 0;
+  position: relative;
+  overflow: visible;
 }
 
 .proc-name {
@@ -2808,6 +2811,12 @@ button {
 .search-item-actions .favorite-picker {
   bottom: auto;
   top: calc(100% + 6px);
+}
+
+.favorite-picker-portal {
+  right: auto;
+  bottom: auto;
+  max-width: min(280px, calc(100vw - 16px));
 }
 
 .favorite-picker-title {

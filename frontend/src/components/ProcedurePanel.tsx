@@ -166,6 +166,7 @@ export function ProcedurePanel({
                       mapMeta={favoriteMapMeta}
                       onAdd={(folderId) => onFavoriteAdd(folderId, p)}
                       onCreateFolder={onFavoriteCreateFolder}
+                      pickerPlacement="below"
                     />
                   )}
                   <button

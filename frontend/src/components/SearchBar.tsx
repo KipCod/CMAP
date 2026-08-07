@@ -129,6 +129,7 @@ function ResultList({
                     mapMeta={resolveMapMeta?.(p) ?? null}
                     onAdd={(folderId) => onFavoriteAdd(folderId, p)}
                     onCreateFolder={onFavoriteCreateFolder}
+                    pickerPlacement="below"
                   />
                 )}
                 <button
