@@ -8,6 +8,7 @@ import re
 from copy import deepcopy
 from pathlib import Path
 
+from backend.app_paths import get_config_path, resolve_data_path
 from backend.config_utils import module_names, normalize_modules
 from backend.models import ConfigContext, Procedure, TreeNode
 from backend.paths import config_csv_path, part_all_csv_path, tree_path
@@ -16,7 +17,9 @@ ROOT = Path(__file__).resolve().parent.parent
 
 
 def load_config() -> dict:
-    path = ROOT / "config.json"
+    path = get_config_path()
+    if not path.exists():
+        raise FileNotFoundError(f"config.json not found: {path}")
     data = json.loads(path.read_text(encoding="utf-8"))
     data["modules"] = normalize_modules(data.get("modules"))
     return data
@@ -221,8 +224,8 @@ class DataStore:
         return f"{module}_{part}_{machine}"
 
     def _load_all(self) -> None:
-        csv_dir = ROOT / self.config["data_paths"]["csv_dir"]
-        tree_dir = ROOT / self.config["data_paths"]["tree_dir"]
+        csv_dir = resolve_data_path(self.config, "csv_dir")
+        tree_dir = resolve_data_path(self.config, "tree_dir")
 
         for module in module_names(self.config["modules"]):
             for part, part_cfg in self.config["parts"].items():
@@ -296,8 +299,8 @@ class DataStore:
 
     def get_view(self, module: str, part: str, machine: str) -> dict:
         ck = self.csv_key(module, part, machine)
-        csv_dir = ROOT / self.config["data_paths"]["csv_dir"]
-        tree_dir = ROOT / self.config["data_paths"]["tree_dir"]
+        csv_dir = resolve_data_path(self.config, "csv_dir")
+        tree_dir = resolve_data_path(self.config, "tree_dir")
         return {
             "hw_tree": [n.to_dict() for n in self.hw_trees[ck]],
             "other_tree": [n.to_dict() for n in self.other_trees[ck]],

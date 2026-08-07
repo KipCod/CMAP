@@ -5,6 +5,9 @@ export interface ModuleEntry {
 
 export interface AppConfig {
   app_title: string;
+  faq_url?: string;
+  /** Base for data_paths — relative to app root (exe dir) or absolute path */
+  data_root?: string;
   modules: ModuleEntry[];
   parts: Record<
     string,

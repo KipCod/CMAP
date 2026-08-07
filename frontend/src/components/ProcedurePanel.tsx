@@ -4,6 +4,8 @@ import { getPathLabel } from "../utils/mapUtils";
 import { procedureId } from "../utils/cartUtils";
 import { RoutePin } from "./NavIcons";
 import { ProcedurePreview } from "./ProcedurePreview";
+import { FavoriteStarButton } from "./FavoriteStarButton";
+import type { FavoriteFolder } from "../utils/favorites";
 
 const STORAGE_KEY = "coachmap-procedure-height";
 const DEFAULT_HEIGHT = 240;
@@ -31,6 +33,10 @@ interface Props {
   currentMachine: string;
   onTagClick?: (tag: string) => void;
   onSwitchMachine?: (machine: string) => void;
+  favoriteFolders?: FavoriteFolder[];
+  onFavoriteAdd?: (folderId: string, proc: Procedure) => void;
+  onFavoriteCreateFolder?: (name: string) => string;
+  favoriteMapMeta?: { mapKind: MapKind; keywordPath: string } | null;
 }
 
 export function ProcedurePanel({
@@ -43,6 +49,10 @@ export function ProcedurePanel({
   currentMachine,
   onTagClick,
   onSwitchMachine,
+  favoriteFolders = [],
+  onFavoriteAdd,
+  onFavoriteCreateFolder,
+  favoriteMapMeta = null,
 }: Props) {
   const [height, setHeight] = useState(loadHeight);
   const dragging = useRef(false);
@@ -149,6 +159,15 @@ export function ProcedurePanel({
                     </a>
                     <ProcedurePreview procedure={p} query="" />
                   </div>
+                  {onFavoriteAdd && onFavoriteCreateFolder && (
+                    <FavoriteStarButton
+                      procedure={p}
+                      folders={favoriteFolders}
+                      mapMeta={favoriteMapMeta}
+                      onAdd={(folderId) => onFavoriteAdd(folderId, p)}
+                      onCreateFolder={onFavoriteCreateFolder}
+                    />
+                  )}
                   <button
                     type="button"
                     className={`cart-add-btn ${inCart ? "in-cart" : ""}`}

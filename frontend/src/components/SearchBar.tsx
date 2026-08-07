@@ -1,8 +1,10 @@
 import { useRef } from "react";
-import type { Procedure } from "../types";
+import type { MapKind, Procedure } from "../types";
 import { procedureId } from "../utils/cartUtils";
 import { highlightText } from "../utils/searchHighlight";
 import { RoutePin } from "./NavIcons";
+import { FavoriteStarButton } from "./FavoriteStarButton";
+import type { FavoriteFolder } from "../utils/favorites";
 
 interface Props {
   query: string;
@@ -18,6 +20,10 @@ interface Props {
   onAddToCart: (p: Procedure) => void;
   onShowOnMap?: (p: Procedure) => void;
   searchInputRef?: React.RefObject<HTMLInputElement>;
+  favoriteFolders?: FavoriteFolder[];
+  onFavoriteAdd?: (folderId: string, proc: Procedure) => void;
+  onFavoriteCreateFolder?: (name: string) => string;
+  resolveMapMeta?: (proc: Procedure) => { mapKind: MapKind; keywordPath: string } | null;
 }
 
 function partAllConfigLabel(module: string, part: string): string {
@@ -46,12 +52,20 @@ function ResultList({
   cartIds,
   onAddToCart,
   onShowOnMap,
+  favoriteFolders = [],
+  onFavoriteAdd,
+  onFavoriteCreateFolder,
+  resolveMapMeta,
 }: {
   items: Procedure[];
   query: string;
   cartIds: Set<string>;
   onAddToCart: (p: Procedure) => void;
   onShowOnMap?: (p: Procedure) => void;
+  favoriteFolders?: FavoriteFolder[];
+  onFavoriteAdd?: (folderId: string, proc: Procedure) => void;
+  onFavoriteCreateFolder?: (name: string) => string;
+  resolveMapMeta?: (proc: Procedure) => { mapKind: MapKind; keywordPath: string } | null;
 }) {
   if (items.length === 0) {
     return <p className="search-empty">No matches.</p>;
@@ -63,6 +77,10 @@ function ResultList({
         const title = procedureDisplayTitle(p);
         const id = procedureId(p);
         const inCart = cartIds.has(id);
+        const canMap =
+          onShowOnMap &&
+          p.source !== "module_all" &&
+          p.machine_type !== "ALL";
         return (
           <li
             key={`${p.source ?? "config"}-${p.module}-${p.part}-${p.machine_type}-${p.name}`}
@@ -93,16 +111,25 @@ function ResultList({
                 )}
               </div>
               <div className="search-item-actions">
-                {onShowOnMap && (
+                {canMap && (
                   <button
                     type="button"
                     className="search-map-btn"
-                    onClick={() => onShowOnMap(p)}
+                    onClick={() => onShowOnMap!(p)}
                     title="Show on MAP"
                     aria-label="Show on MAP"
                   >
                     <RoutePin size={14} />
                   </button>
+                )}
+                {onFavoriteAdd && onFavoriteCreateFolder && (
+                  <FavoriteStarButton
+                    procedure={p}
+                    folders={favoriteFolders}
+                    mapMeta={resolveMapMeta?.(p) ?? null}
+                    onAdd={(folderId) => onFavoriteAdd(folderId, p)}
+                    onCreateFolder={onFavoriteCreateFolder}
+                  />
                 )}
                 <button
                   type="button"
@@ -142,6 +169,10 @@ export function SearchBar({
   onAddToCart,
   onShowOnMap,
   searchInputRef,
+  favoriteFolders,
+  onFavoriteAdd,
+  onFavoriteCreateFolder,
+  resolveMapMeta,
 }: Props) {
   const localRef = useRef<HTMLInputElement>(null);
   const inputRef = searchInputRef ?? localRef;
@@ -175,6 +206,10 @@ export function SearchBar({
                   cartIds={cartIds}
                   onAddToCart={onAddToCart}
                   onShowOnMap={onShowOnMap}
+                  favoriteFolders={favoriteFolders}
+                  onFavoriteAdd={onFavoriteAdd}
+                  onFavoriteCreateFolder={onFavoriteCreateFolder}
+                  resolveMapMeta={resolveMapMeta}
                 />
               )}
             </section>
@@ -193,6 +228,10 @@ export function SearchBar({
                   cartIds={cartIds}
                   onAddToCart={onAddToCart}
                   onShowOnMap={onShowOnMap}
+                  favoriteFolders={favoriteFolders}
+                  onFavoriteAdd={onFavoriteAdd}
+                  onFavoriteCreateFolder={onFavoriteCreateFolder}
+                  resolveMapMeta={resolveMapMeta}
                 />
               )}
             </section>
@@ -211,6 +250,10 @@ export function SearchBar({
                   cartIds={cartIds}
                   onAddToCart={onAddToCart}
                   onShowOnMap={onShowOnMap}
+                  favoriteFolders={favoriteFolders}
+                  onFavoriteAdd={onFavoriteAdd}
+                  onFavoriteCreateFolder={onFavoriteCreateFolder}
+                  resolveMapMeta={resolveMapMeta}
                 />
               )}
             </section>

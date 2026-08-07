@@ -1,8 +1,7 @@
 import type { MapKind, Procedure, TreeNode } from "../types";
-import { parsePath } from "./mapUtils";
 
 export function findNodeByPath(nodes: TreeNode[], path: string): TreeNode | null {
-  const parts = parsePath(path);
+  const parts = path.split("/").filter(Boolean);
   let level = nodes;
   let found: TreeNode | null = null;
   for (const part of parts) {
@@ -48,16 +47,56 @@ export function findKeywordLocation(
   return null;
 }
 
+function findProcedureInTree(
+  nodes: TreeNode[],
+  procName: string,
+  mapKind: MapKind,
+  prefix = ""
+): { mapKind: MapKind; path: string; procedures: Procedure[] } | null {
+  const target = procName.toLowerCase();
+  let best: { mapKind: MapKind; path: string; procedures: Procedure[] } | null = null;
+
+  for (const node of nodes) {
+    const path = prefix ? `${prefix}/${node.keyword}` : node.keyword;
+    if (node.procedures.some((p) => p.name.toLowerCase() === target)) {
+      best = { mapKind, path, procedures: node.procedures };
+    }
+    const deeper = findProcedureInTree(node.children, procName, mapKind, path);
+    if (deeper) best = deeper;
+  }
+  return best;
+}
+
 export function findProcedureOnMap(
   hwTree: TreeNode[],
   otherTree: TreeNode[],
   proc: Procedure
 ): { mapKind: MapKind; path: string; procedures: Procedure[] } | null {
+  if (proc.source === "module_all" || proc.machine_type === "ALL") {
+    return null;
+  }
+
+  const byName = findProcedureInTree(hwTree, proc.name, "hw");
+  if (byName) return byName;
+
+  const otherByName = findProcedureInTree(otherTree, proc.name, "other");
+  if (otherByName) return otherByName;
+
   for (const tag of proc.tags) {
     const loc = findKeywordLocation(hwTree, otherTree, tag);
     if (loc) return loc;
   }
   return null;
+}
+
+export function resolveProcedureMapMeta(
+  hwTree: TreeNode[],
+  otherTree: TreeNode[],
+  proc: Procedure
+): { mapKind: MapKind; keywordPath: string } | null {
+  const loc = findProcedureOnMap(hwTree, otherTree, proc);
+  if (!loc) return null;
+  return { mapKind: loc.mapKind, keywordPath: loc.path };
 }
 
 export function pathMatchesMapFilter(path: string, filter: string): boolean {

@@ -91,6 +91,7 @@ coachmap/
   backend/
     main.py           FastAPI 앱, 정적 dist 서빙
     loader.py         CSV/Tree load, search, warnings
+    app_paths.py      app root, config.json, data_root 해석 (PyInstaller 대응)
     models.py         Procedure, TreeNode
     paths.py          파일 경로 규칙
     config_utils.py   modules normalize (구형 배열 호환)
@@ -117,7 +118,59 @@ coachmap/
                      구형 ["AAA","BBB"] → normalize_modules() 가 active:true 처리
   parts            : Part별 machine_types (SSS: Z1~Z5, TTT: Q1~Q5)
   defaults         : 시작 module / part / machine_type
-  data_paths       : csv_dir, tree_dir
+  data_root        : CSV/tree 기준 루트 (기본 "." = app root 와 동일 폴더)
+                     상대 경로 → app root 기준, 절대 경로도 가능
+  data_paths       : csv_dir, tree_dir (data_root 아래 상대 경로)
+  faq_url          : (optional) sidebar FAQ 외부 링크
+
+[경로 해석 우선순위 — backend/app_paths.py]
+  app root (config.json 위치):
+    1. 환경변수 COACHMAP_HOME
+    2. PyInstaller exe 가 있는 폴더 (frozen)
+    3. 개발 시: coachmap/ 프로젝트 루트
+  config.json 경로:
+    - 기본: {app root}/config.json
+    - override: 환경변수 COACHMAP_CONFIG
+
+[예시 — exe 옆에 data/ 두기 (권장)]
+  CoachMAP.exe
+  config.json          ← "data_root": ".", "data_paths": { "csv_dir": "data/csv", ... }
+  data/csv/
+  data/trees/
+
+[예시 — 데이터만 다른 드라이브]
+  config.json 에 "data_root": "D:/CoachMAPData" 설정
+  → D:/CoachMAPData/data/csv, ... (data_paths 상대 경로 유지)
+
+[예시 — exe 는 USB, 데이터는 PC 고정]
+  set COACHMAP_HOME=D:\MyCoachMAP
+  → D:\MyCoachMAP\config.json + data/ 사용 (exe 위치와 무관)
+
+================================================================================
+4b. PyInstaller 배포 (exe + portable)
+================================================================================
+
+  빌드 시 (개발 PC 1회):
+    cd frontend && npm run build
+    pyinstaller ... (CoachMAP.exe 생성, frontend/dist 는 번들에 포함)
+
+  배포 폴더 (exe 를 다른 위치로 복사 가능):
+    CoachMAP.exe
+    config.json
+    data/
+      csv/
+      trees/
+
+  ※ Node.js 는 빌드할 때만 필요. exe 실행·사용자 PC에는 Python 런타임+번들만 필요.
+  ※ config.json 은 exe 와 같은 폴더에 두면 별도 경로 지정 불필요.
+  ※ one-file exe 는 시작 시 압축 해제로 느릴 수 있음 → --onedir 권장.
+
+  실행 속도 개선 아이디어:
+    - --onedir (폴더 배포): one-file 보다 시작 빠름
+    - portable zip (exe+config+data 한 묶음) 으로 배포
+    - startup preload 범위 축소 (필요 모듈만 lazy load)
+    - Windows Defender 예외 등록 (회사 정책 허용 시)
+    - Nuitka 등 대안 컴파일러 검토 (빌드 복잡도 ↑)
 
 ================================================================================
 5. UI 기능 (현재 버전 — 2026-08-05)
@@ -126,7 +179,12 @@ coachmap/
 [Sidebar]
   - Modules 탭 (activate/deactivate 반영)
   - Cart (localStorage persist)
+  - Favorites (폴더별 localStorage, ★ 버튼으로 procedure 추가)
+    · + 새 폴더 (이름 입력 prompt)
+    · 폴더 ✎ rename, ↓ export, ↑ import (폴더명 유지·procedure만 병합)
+    · Favorites 헤더 ▸/▾ 토글, 폴더 많으면 섹션만 스크롤
   - User Manual 탭 → main 전체를 매뉴얼 뷰로 전환
+  - FAQ 링크 (config faq_url)
   - Light / Dark theme
   - Sidebar 접기 토글 (‹/›)
   - Presentation(Focus) 모드: sidebar+search 숨김, MAP 집중
@@ -215,6 +273,8 @@ coachmap/
 
   coachmap-theme              light | dark
   coachmap-cart               Cart JSON
+  coachmap-favorites          Favorites folders JSON
+  coachmap-favorites-section-open  Favorites sidebar 접힘 (true/false)
   coachmap-procedure-height   Procedures 패널 높이(px)
   coachmap-sidebar-collapsed  sidebar 접힘
   coachmap-presentation-mode  Focus 모드
@@ -242,6 +302,12 @@ coachmap/
 ================================================================================
 10. 최근 변경 이력
 ================================================================================
+
+2026-08-07
+  - Favorites: 폴더 이름 지정, rename, 폴더별 export/import, 섹션 토글·스크롤
+  - config data_root + app_paths (PyInstaller exe 옆 config/data)
+  - FAQ sidebar link (faq_url)
+  - Show on MAP cross-machine jump, FavoritesPanel
 
 2026-08-05 (이번 push)
   - 사용성: MAP filter, tag→MAP, search highlight, Show on MAP, preview

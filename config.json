@@ -18,6 +18,7 @@
       "machine_types": ["Q1", "Q2", "Q3", "Q4", "Q5"]
     }
   },
+  "data_root": ".",
   "data_paths": {
     "csv_dir": "data/csv",
     "tree_dir": "data/trees"
@@ -26,5 +27,6 @@
     "module": "AAA",
     "part": "SSS",
     "machine_type": "Z1"
-  }
+  },
+  "faq_url": "https://example.com/coachmap-faq"
 }

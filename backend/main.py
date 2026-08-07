@@ -11,7 +11,17 @@ from fastapi.staticfiles import StaticFiles
 
 from backend.loader import DataStore
 
-ROOT = Path(__file__).resolve().parent.parent
+from backend.app_paths import get_app_root
+
+def _bundle_root() -> Path:
+    """Code/static bundle root (PyInstaller _MEIPASS or project root)."""
+    import sys
+
+    if getattr(sys, "frozen", False):
+        return Path(sys._MEIPASS)
+    return Path(__file__).resolve().parent.parent
+
+ROOT = _bundle_root()
 FRONTEND_DIST = ROOT / "frontend" / "dist"
 
 app = FastAPI(title="CoachMAP")
@@ -27,7 +37,9 @@ app.add_middleware(
 
 @app.get("/api/config")
 def get_config():
-    return store.config
+    cfg = dict(store.config)
+    cfg["_app_root"] = str(get_app_root())
+    return cfg
 
 
 @app.get("/api/view")
