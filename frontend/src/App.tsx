@@ -10,6 +10,7 @@ import { AppMark, GraphNodes, GridMap } from "./components/NavIcons";
 import { NavBreadcrumb } from "./components/NavBreadcrumb";
 import { ProcedurePanel } from "./components/ProcedurePanel";
 import { UserManualPanel } from "./components/UserManualPanel";
+import { MapKeywordFilter } from "./components/MapKeywordFilter";
 import { SearchBar } from "./components/SearchBar";
 import { SupportZoneMap, useSupportExpanded } from "./components/SupportZoneMap";
 import { EMPTY_TREE_NODES } from "./constants";
@@ -18,10 +19,19 @@ import { loadCart, procedureId, saveCart } from "./utils/cartUtils";
 import {
   loadPresentationMode,
   loadSidebarCollapsed,
+  loadMapLayoutMode,
+  saveMapLayoutMode,
   savePresentationMode,
   saveSidebarCollapsed,
+  type MapLayoutMode,
 } from "./utils/layoutPrefs";
-import { findNodeByPath, findProcedureOnMap, resolveProcedureMapMeta } from "./utils/mapNavigation";
+import {
+  findNodeByPath,
+  findKeywordLocation,
+  findProcedureOnMap,
+  mapHasFilterMatch,
+  resolveProcedureMapMeta,
+} from "./utils/mapNavigation";
 import {
   addToFolder,
   createFolder,
@@ -61,6 +71,10 @@ function App() {
   const [hwGraphFullOpen, setHwGraphFullOpen] = useState(false);
   const [nameMachines, setNameMachines] = useState<NameMachineIndex>({});
   const [mapFilter, setMapFilter] = useState("");
+  const [mapFilterNotice, setMapFilterNotice] = useState<string | null>(null);
+  const [mapLayoutMode, setMapLayoutMode] = useState<MapLayoutMode>(loadMapLayoutMode);
+  const [mapJumpPulsePath, setMapJumpPulsePath] = useState<string | null>(null);
+  const [mapJumpPulseProcedureId, setMapJumpPulseProcedureId] = useState<string | null>(null);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(loadSidebarCollapsed);
   const [presentationMode, setPresentationMode] = useState(loadPresentationMode);
   const [favoriteFolders, setFavoriteFolders] = useState<FavoriteFolder[]>(() => loadFavorites());
@@ -72,6 +86,8 @@ function App() {
   const searchInputRef = useRef<HTMLInputElement>(null);
   const pendingMapJumpRef = useRef<Procedure | null>(null);
   const favoritesImportRef = useRef<HTMLInputElement>(null);
+  const mapJumpPulseTimerRef = useRef<number | null>(null);
+  const mapJumpProcTimerRef = useRef<number | null>(null);
 
   const mapContextKey = useMemo(
     () => (module && part && machine ? `${module}|${part}|${machine}` : ""),
@@ -99,6 +115,17 @@ function App() {
   useEffect(() => {
     savePresentationMode(presentationMode);
   }, [presentationMode]);
+
+  useEffect(() => {
+    saveMapLayoutMode(mapLayoutMode);
+    if (mapLayoutMode === "tab") {
+      setCollapsedZone(null);
+    }
+  }, [mapLayoutMode]);
+
+  useEffect(() => {
+    if (!mapFilter.trim()) setMapFilterNotice(null);
+  }, [mapFilter]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -165,6 +192,19 @@ function App() {
           setSelectedKeyword(loc.path);
           setSelectedProcedures(loc.procedures);
           if (loc.mapKind === "other") otherExpanded.expandToPath(loc.path);
+          setMapJumpPulsePath(loc.path);
+          setMapJumpPulseProcedureId(procedureId(pending));
+          if (mapJumpPulseTimerRef.current) window.clearTimeout(mapJumpPulseTimerRef.current);
+          mapJumpPulseTimerRef.current = window.setTimeout(() => {
+            setMapJumpPulsePath(null);
+            mapJumpPulseTimerRef.current = null;
+          }, 3200);
+          if (mapJumpProcTimerRef.current) window.clearTimeout(mapJumpProcTimerRef.current);
+          mapJumpProcTimerRef.current = window.setTimeout(() => {
+            setMapJumpPulseProcedureId(null);
+            mapJumpProcTimerRef.current = null;
+          }, 3200);
+          if (mapLayoutMode === "tab") setSelectedMap(loc.mapKind);
           return;
         }
       }
@@ -236,6 +276,38 @@ function App() {
     [otherExpanded.expandToPath]
   );
 
+  const triggerMapJumpPulse = useCallback(
+    (mapKind: MapKind, path: string, highlightProc?: Procedure) => {
+      if (mapLayoutMode === "tab") setSelectedMap(mapKind);
+      setMapJumpPulsePath(path);
+      if (highlightProc) {
+        setMapJumpPulseProcedureId(procedureId(highlightProc));
+      }
+      if (mapJumpPulseTimerRef.current) window.clearTimeout(mapJumpPulseTimerRef.current);
+      mapJumpPulseTimerRef.current = window.setTimeout(() => {
+        setMapJumpPulsePath(null);
+        mapJumpPulseTimerRef.current = null;
+      }, 3200);
+      if (highlightProc) {
+        if (mapJumpProcTimerRef.current) window.clearTimeout(mapJumpProcTimerRef.current);
+        mapJumpProcTimerRef.current = window.setTimeout(() => {
+          setMapJumpPulseProcedureId(null);
+          mapJumpProcTimerRef.current = null;
+        }, 3200);
+      }
+    },
+    [mapLayoutMode]
+  );
+
+  const completeMapJump = useCallback(
+    (mapKind: MapKind, path: string, procedures: Procedure[], highlightProc?: Procedure) => {
+      navigateToKeyword(mapKind, path, procedures);
+      triggerMapJumpPulse(mapKind, path, highlightProc);
+      searchInputRef.current?.blur();
+    },
+    [navigateToKeyword, triggerMapJumpPulse]
+  );
+
   const jumpToTag = useCallback(
     (tag: string) => {
       if (!view) return;
@@ -271,7 +343,7 @@ function App() {
           pendingMapJumpRef.current = null;
           selectedKeywordRef.current = loc.path;
           selectedMapRef.current = loc.mapKind;
-          navigateToKeyword(loc.mapKind, loc.path, loc.procedures);
+          completeMapJump(loc.mapKind, loc.path, loc.procedures, proc);
           return;
         }
       }
@@ -295,7 +367,7 @@ function App() {
         setMachine(proc.machine_type);
       }
     },
-    [module, part, machine, view, config, navigateToKeyword]
+    [module, part, machine, view, config, completeMapJump]
   );
 
   const resolveMapMeta = useCallback(
@@ -375,6 +447,29 @@ function App() {
     }
   }, [selectedFolder]);
 
+  const handleMapKeywordSubmit = useCallback(() => {
+    const q = mapFilter.trim();
+    if (!q) {
+      setMapFilterNotice(null);
+      return;
+    }
+    if (!view) return;
+
+    const loc = findKeywordLocation(hwTree, otherTree, q);
+    if (loc) {
+      navigateToKeyword(loc.mapKind, loc.path, loc.procedures);
+      setMapFilterNotice(null);
+      if (mapLayoutMode === "tab") setSelectedMap(loc.mapKind);
+      return;
+    }
+
+    if (!mapHasFilterMatch(hwTree, otherTree, q)) {
+      setMapFilterNotice("No keyword on MAP");
+    } else {
+      setMapFilterNotice("No exact keyword match");
+    }
+  }, [mapFilter, view, hwTree, otherTree, navigateToKeyword, mapLayoutMode]);
+
   const handleSelect = useCallback(
     (map: MapKind) => (keyword: string, procedures: Procedure[]) => {
       navigateToKeyword(map, keyword, procedures);
@@ -429,8 +524,10 @@ function App() {
     setModule(name);
   };
 
-  const hwCollapsed = collapsedZone === "hw";
-  const otherCollapsed = collapsedZone === "other";
+  const hwCollapsed = mapLayoutMode === "split" && collapsedZone === "hw";
+  const otherCollapsed = mapLayoutMode === "split" && collapsedZone === "other";
+  const showHwPanel = mapLayoutMode === "split" ? !hwCollapsed : selectedMap === "hw";
+  const showOtherPanel = mapLayoutMode === "split" ? !otherCollapsed : selectedMap === "other";
 
   if (!config) {
     return <div className="loading-screen">Loading CoachMAP…</div>;
@@ -708,13 +805,25 @@ function App() {
             </div>
           </div>
           <div className="top-bar-actions">
-            <input
-              type="search"
-              className="map-filter-input"
-              placeholder="Filter MAP keywords…"
-              value={mapFilter}
-              onChange={(e) => setMapFilter(e.target.value)}
-              aria-label="Filter MAP keywords"
+            <SearchBar
+              variant="topbar"
+              query={searchQuery}
+              onQueryChange={setSearchQuery}
+              scoped={searchScoped}
+              global={searchGlobal}
+              moduleAll={searchModuleAll}
+              contextLabel={contextLabel}
+              module={module}
+              part={part}
+              loading={searchLoading}
+              cartIds={cartIds}
+              onAddToCart={addToCart}
+              onShowOnMap={jumpProcedureToMap}
+              searchInputRef={searchInputRef}
+              favoriteFolders={favoriteFolders}
+              onFavoriteAdd={handleFavoriteAdd}
+              onFavoriteCreateFolder={handleCreateFavoriteFolder}
+              resolveMapMeta={resolveMapMeta}
             />
             <button
               type="button"
@@ -738,11 +847,66 @@ function App() {
         <DataWarningsBanner warnings={view?.warnings ?? []} />
 
         <div className="content">
+          <div className="maps-toolbar">
+              <div className="maps-toolbar-block maps-toolbar-layout">
+                <span className="maps-toolbar-label">MAP layout</span>
+                <div className="maps-toolbar-controls">
+                  <button
+                    type="button"
+                    className={`layout-mode-btn ${mapLayoutMode === "split" ? "active" : ""}`}
+                    onClick={() => setMapLayoutMode("split")}
+                    title="Show HW and Support side by side"
+                  >
+                    Split
+                  </button>
+                  <button
+                    type="button"
+                    className={`layout-mode-btn ${mapLayoutMode === "tab" ? "active" : ""}`}
+                    onClick={() => setMapLayoutMode("tab")}
+                    title="Show one MAP at a time (wider graph)"
+                  >
+                    Tab
+                  </button>
+                </div>
+              </div>
+              {mapLayoutMode === "tab" && (
+                <div className="maps-toolbar-block maps-toolbar-select-map">
+                  <span className="maps-toolbar-label">Select MAP</span>
+                  <div className="map-tab-switch" role="tablist" aria-label="MAP view">
+                    <button
+                      type="button"
+                      role="tab"
+                      aria-selected={selectedMap === "hw"}
+                      className={`map-tab-btn hw ${selectedMap === "hw" ? "active" : ""}`}
+                      onClick={() => setSelectedMap("hw")}
+                    >
+                      HW MAP
+                    </button>
+                    <button
+                      type="button"
+                      role="tab"
+                      aria-selected={selectedMap === "other"}
+                      className={`map-tab-btn other ${selectedMap === "other" ? "active" : ""}`}
+                      onClick={() => setSelectedMap("other")}
+                    >
+                      Support MAP
+                    </button>
+                  </div>
+                </div>
+              )}
+              <MapKeywordFilter
+                value={mapFilter}
+                onChange={setMapFilter}
+                onSubmit={handleMapKeywordSubmit}
+                notice={mapFilterNotice}
+              />
+          </div>
+
           <section
-            className={`maps ${hwCollapsed ? "hw-collapsed" : ""} ${otherCollapsed ? "other-collapsed" : ""}`}
+            className={`maps ${mapLayoutMode === "tab" ? "maps-tab-mode" : ""} ${hwCollapsed ? "hw-collapsed" : ""} ${otherCollapsed ? "other-collapsed" : ""}`}
           >
             <div
-              className={`map-panel map-panel-hw ${selectedMap === "hw" ? "focused" : ""} ${hwCollapsed ? "collapsed" : "expanded"}`}
+              className={`map-panel map-panel-hw ${selectedMap === "hw" ? "focused" : ""} ${hwCollapsed ? "collapsed" : "expanded"} ${!showHwPanel ? "map-panel-hidden" : ""}`}
             >
               {hwCollapsed ? (
                 <button
@@ -764,6 +928,7 @@ function App() {
                       <h2>HW MAP</h2>
                       <p className="map-zone-desc">machine hardware hierarchy graph</p>
                     </div>
+                    {mapLayoutMode === "split" && (
                     <button
                       type="button"
                       className="zone-collapse-btn"
@@ -773,6 +938,7 @@ function App() {
                     >
                       ◀
                     </button>
+                    )}
                   </header>
                   <div className="map-scroll">
                     {view ? (
@@ -785,6 +951,7 @@ function App() {
                           setManualOpen(false);
                         }}
                         mapFilter={mapFilter}
+                        mapJumpPulsePath={mapJumpPulsePath}
                         mapContextKey={mapContextKey}
                       />
                     ) : (
@@ -796,7 +963,7 @@ function App() {
             </div>
 
             <div
-              className={`map-panel map-panel-other ${selectedMap === "other" ? "focused" : ""} ${otherCollapsed ? "collapsed" : "expanded"}`}
+              className={`map-panel map-panel-other ${selectedMap === "other" ? "focused" : ""} ${otherCollapsed ? "collapsed" : "expanded"} ${!showOtherPanel ? "map-panel-hidden" : ""}`}
             >
               {otherCollapsed ? (
                 <button
@@ -818,6 +985,7 @@ function App() {
                       <h2>Support MAP</h2>
                       <p className="map-zone-desc">module&apos;s important keywords</p>
                     </div>
+                    {mapLayoutMode === "split" && (
                     <button
                       type="button"
                       className="zone-collapse-btn"
@@ -827,6 +995,7 @@ function App() {
                     >
                       ▶
                     </button>
+                    )}
                   </header>
                   <div className="map-scroll">
                     {view ? (
@@ -839,6 +1008,7 @@ function App() {
                         onExpandAllTop={otherExpanded.expandAllTop}
                         onCollapseAllTop={otherExpanded.collapseAllTop}
                         mapFilter={mapFilter}
+                        mapJumpPulsePath={mapJumpPulsePath}
                       />
                     ) : (
                       <p className="empty-hint">Loading map…</p>
@@ -867,32 +1037,9 @@ function App() {
                 ? { mapKind: selectedMap, keywordPath: selectedKeyword }
                 : null
             }
+            jumpHighlightProcedureId={mapJumpPulseProcedureId}
           />
         </div>
-
-        {!presentationMode && (
-        <footer className="search-dock">
-          <SearchBar
-            query={searchQuery}
-            onQueryChange={setSearchQuery}
-            scoped={searchScoped}
-            global={searchGlobal}
-            moduleAll={searchModuleAll}
-            contextLabel={contextLabel}
-            module={module}
-            part={part}
-            loading={searchLoading}
-            cartIds={cartIds}
-            onAddToCart={addToCart}
-            onShowOnMap={jumpProcedureToMap}
-            searchInputRef={searchInputRef}
-            favoriteFolders={favoriteFolders}
-            onFavoriteAdd={handleFavoriteAdd}
-            onFavoriteCreateFolder={handleCreateFavoriteFolder}
-            resolveMapMeta={resolveMapMeta}
-          />
-        </footer>
-        )}
           </>
         )}
       </main>

@@ -1,4 +1,4 @@
-import { useMemo, useRef, type Ref } from "react";
+import { useEffect, useMemo, useRef, type Ref } from "react";
 import type { TreeNode } from "../types";
 import { pathMatchesMapFilter } from "../utils/mapNavigation";
 import { isOnSelectedPath } from "../utils/mapUtils";
@@ -19,6 +19,7 @@ interface Props {
   svgClassName?: string;
   svgRef?: Ref<SVGSVGElement>;
   mapFilter?: string;
+  mapJumpPulsePath?: string | null;
 }
 
 export function HwGraphCanvas({
@@ -30,6 +31,7 @@ export function HwGraphCanvas({
   svgClassName = "hw-graph-svg",
   svgRef,
   mapFilter = "",
+  mapJumpPulsePath = null,
 }: Props) {
   const layout = useMemo(
     () => layoutProp ?? buildGraphLayout(nodes),
@@ -44,6 +46,21 @@ export function HwGraphCanvas({
 
   const localRef = useRef<SVGSVGElement>(null);
   const ref = svgRef ?? localRef;
+
+  useEffect(() => {
+    const scrollTarget = selectedKeyword ?? mapJumpPulsePath;
+    if (!scrollTarget) return;
+    const node = layout.nodes.find((n) => n.id === scrollTarget);
+    if (!node) return;
+    const svgEl = localRef.current ?? (typeof ref === "object" && ref && "current" in ref ? ref.current : null);
+    const scrollEl = svgEl?.closest(".hw-graph-scroll") as HTMLElement | null;
+    if (!scrollEl) return;
+    scrollEl.scrollTo({
+      left: Math.max(0, node.x - scrollEl.clientWidth / 2),
+      top: Math.max(0, node.y - scrollEl.clientHeight / 2),
+      behavior: "smooth",
+    });
+  }, [selectedKeyword, mapJumpPulsePath, layout.nodes, ref]);
 
   return (
     <svg
@@ -80,6 +97,7 @@ export function HwGraphCanvas({
         {layout.nodes.map((n) => {
           const isSelected = selectedKeyword === n.id;
           const onPath = isOnSelectedPath(n.id, selectedKeyword);
+          const jumpPulse = mapJumpPulsePath === n.id;
           const empty = n.total === 0;
           const x = n.x - NODE_W / 2;
           const y = n.y - NODE_H / 2;
@@ -87,12 +105,18 @@ export function HwGraphCanvas({
             compactLabels && n.label.length > 10
               ? `${n.label.slice(0, 9)}…`
               : n.label;
-          const filterDim = mapFilter.trim() && !pathMatchesMapFilter(n.id, mapFilter);
+          const filterActive = mapFilter.trim().length > 0;
+          const filterMatch = filterActive && pathMatchesMapFilter(n.id, mapFilter);
+          const filterStrong =
+            filterActive &&
+            (pathMatchesMapFilter(n.id, mapFilter) &&
+              n.label.toLowerCase().includes(mapFilter.trim().toLowerCase()));
+          const filterDim = filterActive && !filterMatch;
 
           return (
             <g
               key={n.id}
-              className={`graph-node-g ${onPath ? "on-path" : ""} ${isSelected ? "selected" : ""} ${empty ? "empty" : ""} ${filterDim ? "filter-dim" : ""}`}
+              className={`graph-node-g ${onPath ? "on-path" : ""} ${isSelected ? "selected" : ""} ${empty ? "empty" : ""} ${filterDim ? "filter-dim" : ""} ${filterMatch ? "filter-match" : ""} ${filterStrong ? "filter-match-strong" : ""} ${jumpPulse ? "map-jump-pulse" : ""}`}
               transform={`translate(${x}, ${y})`}
               onClick={() => onSelect(n.id, n.procedures)}
               style={{ cursor: "pointer" }}

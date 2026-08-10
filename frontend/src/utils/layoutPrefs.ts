@@ -1,6 +1,18 @@
 const SIDEBAR_KEY = "coachmap-sidebar-collapsed";
 const PRESENTATION_KEY = "coachmap-presentation-mode";
 const FAVORITES_SECTION_KEY = "coachmap-favorites-section-open";
+const MAP_LAYOUT_KEY = "coachmap-map-layout";
+
+export type MapLayoutMode = "split" | "tab";
+
+export function loadMapLayoutMode(): MapLayoutMode {
+  const v = localStorage.getItem(MAP_LAYOUT_KEY);
+  return v === "tab" ? "tab" : "split";
+}
+
+export function saveMapLayoutMode(mode: MapLayoutMode): void {
+  localStorage.setItem(MAP_LAYOUT_KEY, mode);
+}
 
 export function loadSidebarCollapsed(): boolean {
   return localStorage.getItem(SIDEBAR_KEY) === "1";

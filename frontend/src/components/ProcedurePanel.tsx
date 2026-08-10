@@ -8,7 +8,7 @@ import { FavoriteStarButton } from "./FavoriteStarButton";
 import type { FavoriteFolder } from "../utils/favorites";
 
 const STORAGE_KEY = "coachmap-procedure-height";
-const DEFAULT_HEIGHT = 240;
+const DEFAULT_HEIGHT = 180;
 const MIN_HEIGHT = 120;
 const MAX_HEIGHT = 560;
 
@@ -37,6 +37,7 @@ interface Props {
   onFavoriteAdd?: (folderId: string, proc: Procedure) => void;
   onFavoriteCreateFolder?: (name: string) => string;
   favoriteMapMeta?: { mapKind: MapKind; keywordPath: string } | null;
+  jumpHighlightProcedureId?: string | null;
 }
 
 export function ProcedurePanel({
@@ -53,12 +54,19 @@ export function ProcedurePanel({
   onFavoriteAdd,
   onFavoriteCreateFolder,
   favoriteMapMeta = null,
+  jumpHighlightProcedureId = null,
 }: Props) {
   const [height, setHeight] = useState(loadHeight);
   const dragging = useRef(false);
+  const highlightRef = useRef<HTMLLIElement>(null);
 
   const hasSelection = Boolean(keywordPath);
   const hasProcedures = hasSelection && procedures.length > 0;
+
+  useEffect(() => {
+    if (!jumpHighlightProcedureId || !highlightRef.current) return;
+    highlightRef.current.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }, [jumpHighlightProcedureId, procedures]);
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, String(height));
@@ -145,8 +153,13 @@ export function ProcedurePanel({
             const inCart = cartIds.has(id);
             const allMachines = nameMachines[p.name] ?? [p.machine_type];
             const otherMachines = allMachines.filter((m) => m !== currentMachine);
+            const highlight = jumpHighlightProcedureId === id;
             return (
-              <li key={id} className="procedure-card">
+              <li
+                key={id}
+                ref={highlight ? highlightRef : undefined}
+                className={`procedure-card ${highlight ? "map-jump-procedure-highlight" : ""}`}
+              >
                 <div className="procedure-card-top">
                   <div className="procedure-preview-wrap">
                     <a

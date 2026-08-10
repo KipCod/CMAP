@@ -7,7 +7,7 @@ import {
   getPathLabel,
   isOnSelectedPath,
 } from "../utils/mapUtils";
-import { nodeMatchesMapFilter } from "../utils/mapNavigation";
+import { nodeMatchesMapFilter, nodeDirectMatchesMapFilter } from "../utils/mapNavigation";
 
 interface Props {
   nodes: TreeNode[];
@@ -18,6 +18,7 @@ interface Props {
   onExpandAllTop: () => void;
   onCollapseAllTop: () => void;
   mapFilter?: string;
+  mapJumpPulsePath?: string | null;
 }
 
 export function HwTreeMap({
@@ -29,11 +30,21 @@ export function HwTreeMap({
   onExpandAllTop,
   onCollapseAllTop,
   mapFilter = "",
+  mapJumpPulsePath = null,
 }: Props) {
   const flat = useMemo(
     () => flattenVisibleTree(nodes, expanded),
     [nodes, expanded]
   );
+
+  useEffect(() => {
+    const scrollTarget = selectedKeyword ?? mapJumpPulsePath;
+    if (!scrollTarget) return;
+    const el = document.querySelector(
+      `[data-tree-path="${CSS.escape(scrollTarget)}"]`
+    ) as HTMLElement | null;
+    el?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+  }, [selectedKeyword, mapJumpPulsePath]);
 
   return (
     <div className="hw-tree-map">
@@ -58,12 +69,17 @@ export function HwTreeMap({
           const isSelected = selectedKeyword === path;
           const onPath = isOnSelectedPath(path, selectedKeyword);
           const isRoot = depth === 0;
-          const filterDim = mapFilter.trim() && !nodeMatchesMapFilter(node, path, mapFilter);
+          const filterActive = mapFilter.trim().length > 0;
+          const filterMatch = filterActive && nodeMatchesMapFilter(node, path, mapFilter);
+          const filterStrong = filterActive && nodeDirectMatchesMapFilter(node, path, mapFilter);
+          const filterDim = filterActive && !filterMatch;
+          const jumpPulse = mapJumpPulsePath === path;
 
           return (
             <div
               key={path}
-              className={`hw-tree-row-wrap ${onPath ? "on-path" : ""} ${isRoot ? "is-root" : ""} ${filterDim ? "filter-dim" : ""}`}
+              data-tree-path={path}
+              className={`hw-tree-row-wrap ${onPath ? "on-path" : ""} ${isRoot ? "is-root" : ""} ${filterDim ? "filter-dim" : ""} ${filterMatch ? "filter-match" : ""} ${filterStrong ? "filter-match-strong" : ""} ${jumpPulse ? "map-jump-pulse" : ""}`}
               role="treeitem"
               aria-expanded={hasChildren ? isOpen : undefined}
               style={{ ["--depth" as string]: String(depth) }}

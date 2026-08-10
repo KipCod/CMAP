@@ -67,6 +67,29 @@ function findProcedureInTree(
   return best;
 }
 
+function findProcedureByTagMatch(
+  nodes: TreeNode[],
+  procName: string,
+  tag: string,
+  mapKind: MapKind,
+  prefix = ""
+): { mapKind: MapKind; path: string; procedures: Procedure[] } | null {
+  const target = procName.toLowerCase();
+  const tagUpper = tag.trim().toUpperCase();
+  let best: { mapKind: MapKind; path: string; procedures: Procedure[] } | null = null;
+
+  for (const node of nodes) {
+    const path = prefix ? `${prefix}/${node.keyword}` : node.keyword;
+    const hasProc = node.procedures.some((p) => p.name.toLowerCase() === target);
+    if (hasProc && node.keyword.toUpperCase() === tagUpper) {
+      best = { mapKind, path, procedures: node.procedures };
+    }
+    const deeper = findProcedureByTagMatch(node.children, procName, tag, mapKind, path);
+    if (deeper) best = deeper;
+  }
+  return best;
+}
+
 export function findProcedureOnMap(
   hwTree: TreeNode[],
   otherTree: TreeNode[],
@@ -76,6 +99,8 @@ export function findProcedureOnMap(
     return null;
   }
 
+  const target = proc.name.toLowerCase();
+
   const byName = findProcedureInTree(hwTree, proc.name, "hw");
   if (byName) return byName;
 
@@ -83,9 +108,19 @@ export function findProcedureOnMap(
   if (otherByName) return otherByName;
 
   for (const tag of proc.tags) {
-    const loc = findKeywordLocation(hwTree, otherTree, tag);
-    if (loc) return loc;
+    const hwTag = findProcedureByTagMatch(hwTree, proc.name, tag, "hw");
+    if (hwTag) return hwTag;
+    const otherTag = findProcedureByTagMatch(otherTree, proc.name, tag, "other");
+    if (otherTag) return otherTag;
   }
+
+  for (const tag of proc.tags) {
+    const loc = findKeywordLocation(hwTree, otherTree, tag);
+    if (loc?.procedures.some((p) => p.name.toLowerCase() === target)) {
+      return loc;
+    }
+  }
+
   return null;
 }
 
@@ -119,4 +154,38 @@ export function nodeMatchesMapFilter(
     const childPath = path ? `${path}/${child.keyword}` : child.keyword;
     return nodeMatchesMapFilter(child, childPath, filter);
   });
+}
+
+export function nodeDirectMatchesMapFilter(
+  node: TreeNode,
+  path: string,
+  filter: string
+): boolean {
+  const f = filter.trim().toLowerCase();
+  if (!f) return false;
+  return (
+    node.keyword.toLowerCase().includes(f) ||
+    node.display.toLowerCase().includes(f) ||
+    path.toLowerCase().includes(f)
+  );
+}
+
+export function treeHasMapFilterMatch(nodes: TreeNode[], filter: string, prefix = ""): boolean {
+  const f = filter.trim();
+  if (!f) return true;
+  for (const node of nodes) {
+    const path = prefix ? `${prefix}/${node.keyword}` : node.keyword;
+    if (nodeMatchesMapFilter(node, path, f)) return true;
+  }
+  return false;
+}
+
+export function mapHasFilterMatch(
+  hwTree: TreeNode[],
+  otherTree: TreeNode[],
+  filter: string
+): boolean {
+  const f = filter.trim();
+  if (!f) return true;
+  return treeHasMapFilterMatch(hwTree, f) || treeHasMapFilterMatch(otherTree, f);
 }

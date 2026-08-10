@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { TreeNode } from "../types";
 import { countTotal, getPathLabel, isOnSelectedPath, collectExpandablePaths } from "../utils/mapUtils";
-import { nodeMatchesMapFilter } from "../utils/mapNavigation";
+import { nodeMatchesMapFilter, nodeDirectMatchesMapFilter } from "../utils/mapNavigation";
 
 interface Props {
   nodes: TreeNode[];
@@ -12,6 +12,7 @@ interface Props {
   onExpandAllTop: () => void;
   onCollapseAllTop: () => void;
   mapFilter?: string;
+  mapJumpPulsePath?: string | null;
 }
 
 function KeywordChip({
@@ -20,22 +21,29 @@ function KeywordChip({
   selectedKeyword,
   onSelect,
   mapFilter = "",
+  mapJumpPulsePath = null,
 }: {
   node: TreeNode;
   path: string;
   selectedKeyword: string | null;
   onSelect: Props["onSelect"];
   mapFilter?: string;
+  mapJumpPulsePath?: string | null;
 }) {
   const total = countTotal(node);
   const isSelected = selectedKeyword === path;
   const onPath = isOnSelectedPath(path, selectedKeyword);
-  const filterDim = mapFilter.trim() && !nodeMatchesMapFilter(node, path, mapFilter);
+  const filterActive = mapFilter.trim().length > 0;
+  const filterMatch = filterActive && nodeMatchesMapFilter(node, path, mapFilter);
+  const filterStrong = filterActive && nodeDirectMatchesMapFilter(node, path, mapFilter);
+  const filterDim = filterActive && !filterMatch;
+  const jumpPulse = mapJumpPulsePath === path;
 
   return (
     <button
       type="button"
-      className={`support-chip ${isSelected ? "selected" : ""} ${onPath ? "on-path" : ""} ${total === 0 ? "empty" : ""} ${filterDim ? "filter-dim" : ""}`}
+      data-support-path={path}
+      className={`support-chip ${isSelected ? "selected" : ""} ${onPath ? "on-path" : ""} ${total === 0 ? "empty" : ""} ${filterDim ? "filter-dim" : ""} ${filterMatch ? "filter-match" : ""} ${filterStrong ? "filter-match-strong" : ""} ${jumpPulse ? "map-jump-pulse" : ""}`}
       onClick={() => onSelect(path, node.procedures)}
       title={path}
     >
@@ -54,6 +62,7 @@ function SupportBranch({
   expanded,
   onToggle,
   mapFilter = "",
+  mapJumpPulsePath = null,
 }: {
   node: TreeNode;
   path: string;
@@ -63,20 +72,25 @@ function SupportBranch({
   expanded: Set<string>;
   onToggle: (path: string) => void;
   mapFilter?: string;
+  mapJumpPulsePath?: string | null;
 }) {
   const hasChildren = node.children.length > 0;
   const isOpen = expanded.has(path);
   const total = countTotal(node);
   const isSelected = selectedKeyword === path;
   const onPath = isOnSelectedPath(path, selectedKeyword);
-  const filterDim = mapFilter.trim() && !nodeMatchesMapFilter(node, path, mapFilter);
+  const filterActive = mapFilter.trim().length > 0;
+  const filterMatch = filterActive && nodeMatchesMapFilter(node, path, mapFilter);
+  const filterStrong = filterActive && nodeDirectMatchesMapFilter(node, path, mapFilter);
+  const filterDim = filterActive && !filterMatch;
+  const jumpPulse = mapJumpPulsePath === path;
 
   const branches = node.children.filter((c) => c.children.length > 0);
   const leaves = node.children.filter((c) => c.children.length === 0);
 
   return (
     <div
-      className={`support-branch depth-${depth} ${onPath ? "on-path" : ""} ${filterDim ? "filter-dim" : ""}`}
+      className={`support-branch depth-${depth} ${onPath ? "on-path" : ""} ${filterDim ? "filter-dim" : ""} ${filterMatch ? "filter-match" : ""} ${filterStrong ? "filter-match-strong" : ""} ${jumpPulse ? "map-jump-pulse" : ""}`}
       style={{ ["--depth" as string]: String(depth) }}
     >
       <div className={`support-branch-header ${isSelected ? "selected" : ""}`}>
@@ -114,6 +128,7 @@ function SupportBranch({
                     selectedKeyword={selectedKeyword}
                     onSelect={onSelect}
                     mapFilter={mapFilter}
+                    mapJumpPulsePath={mapJumpPulsePath}
                   />
                 );
               })}
@@ -132,6 +147,7 @@ function SupportBranch({
                 expanded={expanded}
                 onToggle={onToggle}
                 mapFilter={mapFilter}
+                mapJumpPulsePath={mapJumpPulsePath}
               />
             );
           })}
@@ -150,7 +166,17 @@ export function SupportZoneMap({
   onExpandAllTop,
   onCollapseAllTop,
   mapFilter = "",
+  mapJumpPulsePath = null,
 }: Props) {
+  useEffect(() => {
+    const scrollTarget = selectedKeyword ?? mapJumpPulsePath;
+    if (!scrollTarget) return;
+    const el = document.querySelector(
+      `[data-support-path="${CSS.escape(scrollTarget)}"]`
+    ) as HTMLElement | null;
+    el?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+  }, [selectedKeyword, mapJumpPulsePath]);
+
   return (
     <div className="support-zone-map">
       {nodes.length > 0 && (
@@ -172,14 +198,19 @@ export function SupportZoneMap({
         const branches = region.children.filter((c) => c.children.length > 0);
         const leaves = region.children.filter((c) => c.children.length === 0);
 
-        const filterDim = mapFilter.trim() && !nodeMatchesMapFilter(region, path, mapFilter);
+        const filterActive = mapFilter.trim().length > 0;
+        const filterMatch = filterActive && nodeMatchesMapFilter(region, path, mapFilter);
+        const filterStrong = filterActive && nodeDirectMatchesMapFilter(region, path, mapFilter);
+        const filterDim = filterActive && !filterMatch;
+        const jumpPulse = mapJumpPulsePath === path;
 
         return (
           <section
             key={path}
-            className={`support-region ${onPath ? "on-path" : ""} ${isOpen ? "open" : ""} ${filterDim ? "filter-dim" : ""}`}
+            data-support-path={path}
+            className={`support-region ${onPath ? "on-path" : ""} ${isOpen ? "open" : ""} ${filterDim ? "filter-dim" : ""} ${filterMatch ? "filter-match" : ""} ${filterStrong ? "filter-match-strong" : ""} ${jumpPulse ? "map-jump-pulse" : ""}`}
           >
-            <header className={`support-region-header ${isSelected ? "selected" : ""}`}>
+            <header className={`support-region-header ${isSelected ? "selected" : ""} ${jumpPulse ? "map-jump-pulse" : ""}`}>
               <button
                 type="button"
                 className="support-expand"
@@ -212,6 +243,7 @@ export function SupportZoneMap({
                           selectedKeyword={selectedKeyword}
                           onSelect={onSelect}
                           mapFilter={mapFilter}
+                          mapJumpPulsePath={mapJumpPulsePath}
                         />
                       );
                     })}
@@ -228,6 +260,7 @@ export function SupportZoneMap({
                     expanded={expanded}
                     onToggle={onToggle}
                     mapFilter={mapFilter}
+                    mapJumpPulsePath={mapJumpPulsePath}
                   />
                 ))}
               </div>
