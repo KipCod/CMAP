@@ -2,20 +2,24 @@
   "app_title": "CoachMAP",
   "modules": [
     { "name": "AAA", "active": true },
-    { "name": "BBB", "active": false },
-    { "name": "CCC", "active": false },
-    { "name": "DDD", "active": false },
+    { "name": "BBB", "active": true },
+    { "name": "CCC", "active": true },
+    { "name": "DDD", "active": true },
     { "name": "EEE", "active": false },
     { "name": "FFF", "active": false }
   ],
   "parts": {
     "SSS": {
-      "label": "SSS",
+      "label": "SSS (vacuum/gas)",
       "machine_types": ["Z1", "Z2", "Z3", "Z4", "Z5"]
     },
     "TTT": {
-      "label": "TTT",
+      "label": "TTT (conveyor/robot)",
       "machine_types": ["Q1", "Q2", "Q3", "Q4", "Q5"]
+    },
+    "UUU": {
+      "label": "UUU (compact demo)",
+      "machine_types": ["M1", "M2", "M3"]
     }
   },
   "data_root": ".",

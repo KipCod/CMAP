@@ -9,3 +9,9 @@ aaa.saall07,[AAA/SSS/all] Standard Naming Convention for Procedures,https://exam
 aaa.saall08,[AAA/SSS/all] Part Release Notes and Change Log Index,https://example.com/proc/AAA/SSS/all/08
 aaa.saall09,[AAA/SSS/all] Fleet-wide Configuration Backup Procedure,https://example.com/proc/AAA/SSS/all/09
 aaa.saall10,[AAA/SSS/all] All-machine Diagnostic Data Collection Runbook,https://example.com/proc/AAA/SSS/all/10
+aaa.saall11,[AAA/SSS/all] 한글 공통 절차 — 전 config 적용 가이드,https://example.com/proc/AAA/SSS/all/11
+aaa.saall12,[AAA/SSS/all] Training bundle — no MAP mapping (part-all only),https://example.com/proc/AAA/SSS/all/12
+aaa.saall13,[AAA/SSS/all] Legacy migration checklist (deprecated paths),https://example.com/proc/AAA/SSS/all/13
+aaa.saall14,[AAA/SSS/all] Quarterly audit template for all machines,https://example.com/proc/AAA/SSS/all/14
+aaa.saall15,[AAA/SSS/all] Shared spare-parts and consumables index,https://example.com/proc/AAA/SSS/all/15
+aaa001.hw001,[AAA/SSS/all] Duplicate name shadow (config wins in search),https://example.com/proc/AAA/SSS/all/shadow

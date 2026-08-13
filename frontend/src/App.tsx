@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { fetchConfig, fetchNameMachines, fetchSearch, fetchView } from "./api";
+import { fetchConfig, fetchNameMachines, fetchProcedureVariants, fetchSearch, fetchView } from "./api";
 import { CartPanel } from "./components/CartPanel";
 import { DataWarningsBanner } from "./components/DataWarningsBanner";
 import { FavoritesPanel } from "./components/FavoritesPanel";
@@ -17,28 +17,30 @@ import { EMPTY_TREE_NODES } from "./constants";
 import type { AppConfig, MapKind, NameMachineIndex, Procedure, Theme, ViewData } from "./types";
 import { loadCart, procedureId, saveCart } from "./utils/cartUtils";
 import {
-  loadPresentationMode,
   loadSidebarCollapsed,
   loadMapLayoutMode,
   saveMapLayoutMode,
-  savePresentationMode,
   saveSidebarCollapsed,
   type MapLayoutMode,
 } from "./utils/layoutPrefs";
 import {
   findNodeByPath,
   findKeywordLocation,
-  findProcedureOnMap,
+  findAllProcedureOnMap,
   mapHasFilterMatch,
+  pickPrimaryProcedureLocation,
+  pulsePathsForLocation,
   resolveProcedureMapMeta,
 } from "./utils/mapNavigation";
 import {
+  addManyToFolder,
   addToFolder,
   createFolder,
   deleteFolder,
   exportSingleFolder,
   importIntoFolder,
   loadFavorites,
+  missingVariantsInFolder,
   removeFavoriteEntry,
   renameFolder,
   promptFolderName,
@@ -73,10 +75,9 @@ function App() {
   const [mapFilter, setMapFilter] = useState("");
   const [mapFilterNotice, setMapFilterNotice] = useState<string | null>(null);
   const [mapLayoutMode, setMapLayoutMode] = useState<MapLayoutMode>(loadMapLayoutMode);
-  const [mapJumpPulsePath, setMapJumpPulsePath] = useState<string | null>(null);
+  const [mapJumpPulsePaths, setMapJumpPulsePaths] = useState<string[]>([]);
   const [mapJumpPulseProcedureId, setMapJumpPulseProcedureId] = useState<string | null>(null);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(loadSidebarCollapsed);
-  const [presentationMode, setPresentationMode] = useState(loadPresentationMode);
   const [favoriteFolders, setFavoriteFolders] = useState<FavoriteFolder[]>(() => loadFavorites());
   const [selectedFolderId, setSelectedFolderId] = useState<string | null>(null);
 
@@ -111,10 +112,6 @@ function App() {
   useEffect(() => {
     saveSidebarCollapsed(sidebarCollapsed);
   }, [sidebarCollapsed]);
-
-  useEffect(() => {
-    savePresentationMode(presentationMode);
-  }, [presentationMode]);
 
   useEffect(() => {
     saveMapLayoutMode(mapLayoutMode);
@@ -184,19 +181,24 @@ function App() {
         pending.machine_type === mach
       ) {
         pendingMapJumpRef.current = null;
-        const loc = findProcedureOnMap(v.hw_tree, v.other_tree, pending);
+        const allLocs = findAllProcedureOnMap(v.hw_tree, v.other_tree, pending);
+        const loc = pickPrimaryProcedureLocation(allLocs, v.hw_tree, v.other_tree);
         if (loc) {
+          const pulsePaths = pulsePathsForLocation(allLocs, loc);
           selectedKeywordRef.current = loc.path;
           selectedMapRef.current = loc.mapKind;
           setSelectedMap(loc.mapKind);
           setSelectedKeyword(loc.path);
           setSelectedProcedures(loc.procedures);
-          if (loc.mapKind === "other") otherExpanded.expandToPath(loc.path);
-          setMapJumpPulsePath(loc.path);
+          if (loc.mapKind === "other") {
+            for (const p of pulsePaths) otherExpanded.expandToPath(p);
+          }
+          if (mapLayoutMode === "split") setCollapsedZone(null);
+          setMapJumpPulsePaths(pulsePaths);
           setMapJumpPulseProcedureId(procedureId(pending));
           if (mapJumpPulseTimerRef.current) window.clearTimeout(mapJumpPulseTimerRef.current);
           mapJumpPulseTimerRef.current = window.setTimeout(() => {
-            setMapJumpPulsePath(null);
+            setMapJumpPulsePaths([]);
             mapJumpPulseTimerRef.current = null;
           }, 3200);
           if (mapJumpProcTimerRef.current) window.clearTimeout(mapJumpProcTimerRef.current);
@@ -277,15 +279,16 @@ function App() {
   );
 
   const triggerMapJumpPulse = useCallback(
-    (mapKind: MapKind, path: string, highlightProc?: Procedure) => {
+    (mapKind: MapKind, paths: string[], highlightProc?: Procedure) => {
       if (mapLayoutMode === "tab") setSelectedMap(mapKind);
-      setMapJumpPulsePath(path);
+      if (mapLayoutMode === "split") setCollapsedZone(null);
+      setMapJumpPulsePaths(paths);
       if (highlightProc) {
         setMapJumpPulseProcedureId(procedureId(highlightProc));
       }
       if (mapJumpPulseTimerRef.current) window.clearTimeout(mapJumpPulseTimerRef.current);
       mapJumpPulseTimerRef.current = window.setTimeout(() => {
-        setMapJumpPulsePath(null);
+        setMapJumpPulsePaths([]);
         mapJumpPulseTimerRef.current = null;
       }, 3200);
       if (highlightProc) {
@@ -300,29 +303,31 @@ function App() {
   );
 
   const completeMapJump = useCallback(
-    (mapKind: MapKind, path: string, procedures: Procedure[], highlightProc?: Procedure) => {
+    (
+      mapKind: MapKind,
+      path: string,
+      procedures: Procedure[],
+      highlightProc?: Procedure,
+      pulsePaths?: string[]
+    ) => {
+      const paths = pulsePaths ?? [path];
       navigateToKeyword(mapKind, path, procedures);
-      triggerMapJumpPulse(mapKind, path, highlightProc);
+      if (mapKind === "other") {
+        for (const p of paths) otherExpanded.expandToPath(p);
+      }
+      triggerMapJumpPulse(mapKind, paths, highlightProc);
       searchInputRef.current?.blur();
     },
-    [navigateToKeyword, triggerMapJumpPulse]
+    [navigateToKeyword, triggerMapJumpPulse, otherExpanded.expandToPath]
   );
 
   const jumpToTag = useCallback(
     (tag: string) => {
       if (!view) return;
-      const loc = findProcedureOnMap(view.hw_tree, view.other_tree, {
-        name: "",
-        title: "",
-        tags: [tag],
-        link: "",
-        module,
-        part,
-        machine_type: machine,
-      });
+      const loc = findKeywordLocation(view.hw_tree, view.other_tree, tag);
       if (loc) navigateToKeyword(loc.mapKind, loc.path, loc.procedures);
     },
-    [view, module, part, machine, navigateToKeyword]
+    [view, navigateToKeyword]
   );
 
   const jumpProcedureToMap = useCallback(
@@ -338,12 +343,19 @@ function App() {
         proc.module === module && proc.part === part && proc.machine_type === machine;
 
       if (sameContext && view) {
-        const loc = findProcedureOnMap(view.hw_tree, view.other_tree, proc);
+        const allLocs = findAllProcedureOnMap(view.hw_tree, view.other_tree, proc);
+        const loc = pickPrimaryProcedureLocation(allLocs, view.hw_tree, view.other_tree);
         if (loc) {
           pendingMapJumpRef.current = null;
           selectedKeywordRef.current = loc.path;
           selectedMapRef.current = loc.mapKind;
-          completeMapJump(loc.mapKind, loc.path, loc.procedures, proc);
+          completeMapJump(
+            loc.mapKind,
+            loc.path,
+            loc.procedures,
+            proc,
+            pulsePathsForLocation(allLocs, loc)
+          );
           return;
         }
       }
@@ -396,6 +408,63 @@ function App() {
       setFavoriteFolders((prev) => addToFolder(prev, folderId, proc, meta ?? undefined));
     },
     [resolveMapMeta, view, module, part, machine]
+  );
+
+  const favoriteMetaFor = useCallback(
+    (p: Procedure) => {
+      if (p.module !== module || p.part !== part || p.machine_type !== machine || !view) {
+        return undefined;
+      }
+      return resolveProcedureMapMeta(view.hw_tree, view.other_tree, p) ?? undefined;
+    },
+    [module, part, machine, view]
+  );
+
+  const handleFavoriteExpandConfigs = useCallback(
+    async (proc: Procedure) => {
+      if (!selectedFolderId) return;
+      if (proc.source === "module_all" || proc.machine_type === "ALL") return;
+      try {
+        const variants = await fetchProcedureVariants(proc.name, proc.module, proc.part);
+        setFavoriteFolders((prev) => {
+          const folder = prev.find((f) => f.id === selectedFolderId);
+          if (!folder) return prev;
+          const missing = missingVariantsInFolder(folder, variants);
+          if (missing.length === 0) return prev;
+          return addManyToFolder(prev, selectedFolderId, missing, favoriteMetaFor);
+        });
+      } catch {
+        /* keep folder unchanged */
+      }
+    },
+    [selectedFolderId, favoriteMetaFor]
+  );
+
+  const handleFavoriteExpandAllVisible = useCallback(
+    async (procedures: Procedure[]) => {
+      if (!selectedFolderId) return;
+      const names = [...new Set(procedures.map((p) => p.name))];
+      let accumulated: Procedure[] = [];
+      for (const name of names) {
+        const sample = procedures.find((p) => p.name === name);
+        if (!sample || sample.source === "module_all" || sample.machine_type === "ALL") continue;
+        try {
+          const variants = await fetchProcedureVariants(name, sample.module, sample.part);
+          accumulated = accumulated.concat(variants);
+        } catch {
+          /* skip name */
+        }
+      }
+      if (accumulated.length === 0) return;
+      setFavoriteFolders((prev) => {
+        const folder = prev.find((f) => f.id === selectedFolderId);
+        if (!folder) return prev;
+        const missing = missingVariantsInFolder(folder, accumulated);
+        if (missing.length === 0) return prev;
+        return addManyToFolder(prev, selectedFolderId, missing, favoriteMetaFor);
+      });
+    },
+    [selectedFolderId, favoriteMetaFor]
   );
 
   const handleSelectFavoriteFolder = useCallback((folderId: string) => {
@@ -526,16 +595,15 @@ function App() {
 
   const hwCollapsed = mapLayoutMode === "split" && collapsedZone === "hw";
   const otherCollapsed = mapLayoutMode === "split" && collapsedZone === "other";
-  const showHwPanel = mapLayoutMode === "split" ? !hwCollapsed : selectedMap === "hw";
-  const showOtherPanel = mapLayoutMode === "split" ? !otherCollapsed : selectedMap === "other";
+  const showHwPanel = mapLayoutMode === "tab" ? selectedMap === "hw" : true;
+  const showOtherPanel = mapLayoutMode === "tab" ? selectedMap === "other" : true;
 
   if (!config) {
     return <div className="loading-screen">Loading CoachMAP…</div>;
   }
 
   return (
-    <div className={`app-shell ${sidebarCollapsed ? "sidebar-collapsed" : ""} ${presentationMode ? "presentation-mode" : ""}`}>
-      {!presentationMode && (
+    <div className={`app-shell ${sidebarCollapsed ? "sidebar-collapsed" : ""}`}>
       <aside className={`sidebar ${sidebarCollapsed ? "is-collapsed" : ""}`}>
         <div className="sidebar-brand">
           <div className="brand-row">
@@ -651,7 +719,6 @@ function App() {
           </div>
         </div>
       </aside>
-      )}
 
       <button
         type="button"
@@ -757,6 +824,8 @@ function App() {
                 onRemove={handleRemoveFavoriteEntry}
                 onRename={handleRenameSelectedFolder}
                 onShowOnMap={jumpProcedureToMap}
+                onExpandToAllConfigs={handleFavoriteExpandConfigs}
+                onExpandAllVisible={handleFavoriteExpandAllVisible}
               />
             </div>
           </>
@@ -825,14 +894,6 @@ function App() {
               onFavoriteCreateFolder={handleCreateFavoriteFolder}
               resolveMapMeta={resolveMapMeta}
             />
-            <button
-              type="button"
-              className={`layout-mode-btn ${presentationMode ? "active" : ""}`}
-              onClick={() => setPresentationMode((v) => !v)}
-              title="Presentation mode"
-            >
-              {presentationMode ? "Exit focus" : "Focus"}
-            </button>
           </div>
           </div>
           <NavBreadcrumb
@@ -951,7 +1012,7 @@ function App() {
                           setManualOpen(false);
                         }}
                         mapFilter={mapFilter}
-                        mapJumpPulsePath={mapJumpPulsePath}
+                        mapJumpPulsePaths={mapJumpPulsePaths}
                         mapContextKey={mapContextKey}
                       />
                     ) : (
@@ -1008,7 +1069,7 @@ function App() {
                         onExpandAllTop={otherExpanded.expandAllTop}
                         onCollapseAllTop={otherExpanded.collapseAllTop}
                         mapFilter={mapFilter}
-                        mapJumpPulsePath={mapJumpPulsePath}
+                        mapJumpPulsePaths={mapJumpPulsePaths}
                       />
                     ) : (
                       <p className="empty-hint">Loading map…</p>

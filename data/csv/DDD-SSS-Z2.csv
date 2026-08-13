@@ -1,150 +1,159 @@
 name,title,tag,link
-ddd001.hw001,[DDD/SSS/Z2] Servo AXIS_X Homing,MOTOR; SERVO; AXIS_X,https://example.com/proc/DDD/SSS/Z2/homing-axis_x
-ddd002.hw002,[DDD/SSS/Z2] Servo AXIS_X Jog Mode,MOTOR; SERVO; AXIS_X,https://example.com/proc/DDD/SSS/Z2/jog-axis_x
-ddd003.hw003,[DDD/SSS/Z2] Servo AXIS_Y Homing,MOTOR; SERVO; AXIS_Y,https://example.com/proc/DDD/SSS/Z2/homing-axis_y
-ddd004.hw004,[DDD/SSS/Z2] Servo AXIS_Y Jog Mode,MOTOR; SERVO; AXIS_Y,https://example.com/proc/DDD/SSS/Z2/jog-axis_y
-ddd005.hw005,[DDD/SSS/Z2] Servo AXIS_Z Homing,MOTOR; SERVO; AXIS_Z,https://example.com/proc/DDD/SSS/Z2/homing-axis_z
-ddd006.hw006,[DDD/SSS/Z2] Servo AXIS_Z Jog Mode,MOTOR; SERVO; AXIS_Z,https://example.com/proc/DDD/SSS/Z2/jog-axis_z
-ddd007.hw007,[DDD/SSS/Z2] Servo AXIS_R Homing,MOTOR; SERVO; AXIS_R,https://example.com/proc/DDD/SSS/Z2/homing-axis_r
-ddd008.hw008,[DDD/SSS/Z2] Servo AXIS_R Jog Mode,MOTOR; SERVO; AXIS_R,https://example.com/proc/DDD/SSS/Z2/jog-axis_r
-ddd009.hw009,[DDD/SSS/Z2] Servo AXIS_T Homing,MOTOR; SERVO; AXIS_T,https://example.com/proc/DDD/SSS/Z2/homing-axis_t
-ddd010.hw010,[DDD/SSS/Z2] Servo AXIS_T Jog Mode,MOTOR; SERVO; AXIS_T,https://example.com/proc/DDD/SSS/Z2/jog-axis_t
-ddd011.hw011,[DDD/SSS/Z2] Stepper FEED_A Setup,MOTOR; STEPPER; FEED_A,https://example.com/proc/DDD/SSS/Z2/stepper-feed_a
-ddd012.hw012,[DDD/SSS/Z2] Stepper FEED_B Setup,MOTOR; STEPPER; FEED_B,https://example.com/proc/DDD/SSS/Z2/stepper-feed_b
-ddd013.hw013,[DDD/SSS/Z2] Stepper FEED_C Setup,MOTOR; STEPPER; FEED_C,https://example.com/proc/DDD/SSS/Z2/stepper-feed_c
-ddd014.hw014,[DDD/SSS/Z2] Spindle SP_01 Speed Tune,MOTOR; SPINDLE; SP_01,https://example.com/proc/DDD/SSS/Z2/spindle-sp_01
-ddd015.hw015,[DDD/SSS/Z2] Spindle SP_02 Speed Tune,MOTOR; SPINDLE; SP_02,https://example.com/proc/DDD/SSS/Z2/spindle-sp_02
-ddd016.hw016,[DDD/SSS/Z2] Spindle SP_03 Speed Tune— full sequence with safety interlock verification and post-run validation,MOTOR; SPINDLE; SP_03,https://example.com/proc/DDD/SSS/Z2/spindle-sp_03
-ddd017.hw017,[DDD/SSS/Z2] Proximity Sensor PROX_01 Adjust,SENSOR; PROXIMITY; PROX_01,https://example.com/proc/DDD/SSS/Z2/prox-01
-ddd018.hw018,[DDD/SSS/Z2] Proximity Sensor PROX_02 Adjust,SENSOR; PROXIMITY; PROX_02,https://example.com/proc/DDD/SSS/Z2/prox-02
-ddd019.hw019,[DDD/SSS/Z2] Proximity Sensor PROX_03 Adjust,SENSOR; PROXIMITY; PROX_03,https://example.com/proc/DDD/SSS/Z2/prox-03
-ddd020.hw020,[DDD/SSS/Z2] Proximity Sensor PROX_04 Adjust,SENSOR; PROXIMITY; PROX_04,https://example.com/proc/DDD/SSS/Z2/prox-04
-ddd021.hw021,[DDD/SSS/Z2] Proximity Sensor PROX_05 Adjust,SENSOR; PROXIMITY; PROX_05,https://example.com/proc/DDD/SSS/Z2/prox-05
-ddd022.hw022,[DDD/SSS/Z2] Proximity Sensor PROX_06 Adjust,SENSOR; PROXIMITY; PROX_06,https://example.com/proc/DDD/SSS/Z2/prox-06
-ddd023.hw023,[DDD/SSS/Z2] Proximity Sensor PROX_07 Adjust,SENSOR; PROXIMITY; PROX_07,https://example.com/proc/DDD/SSS/Z2/prox-07
-ddd024.hw024,[DDD/SSS/Z2] Proximity Sensor PROX_08 Adjust,SENSOR; PROXIMITY; PROX_08,https://example.com/proc/DDD/SSS/Z2/prox-08
-ddd025.hw025,[DDD/SSS/Z2] Encoder ENC_01 Reset,SENSOR; ENCODER; ENC_01,https://example.com/proc/DDD/SSS/Z2/enc-01
-ddd026.hw026,[DDD/SSS/Z2] Encoder ENC_02 Reset,SENSOR; ENCODER; ENC_02,https://example.com/proc/DDD/SSS/Z2/enc-02
-ddd027.hw027,[DDD/SSS/Z2] Encoder ENC_03 Reset,SENSOR; ENCODER; ENC_03,https://example.com/proc/DDD/SSS/Z2/enc-03
-ddd028.hw028,[DDD/SSS/Z2] Encoder ENC_04 Reset,SENSOR; ENCODER; ENC_04,https://example.com/proc/DDD/SSS/Z2/enc-04
-ddd029.hw029,[DDD/SSS/Z2] Temperature CHAMBER Monitor,SENSOR; TEMPERATURE; CHAMBER,https://example.com/proc/DDD/SSS/Z2/temp-chamber
-ddd030.hw030,[DDD/SSS/Z2] Temperature STAGE Monitor,SENSOR; TEMPERATURE; STAGE,https://example.com/proc/DDD/SSS/Z2/temp-stage
-ddd031.hw031,[DDD/SSS/Z2] Temperature LAMP Monitor,SENSOR; TEMPERATURE; LAMP,https://example.com/proc/DDD/SSS/Z2/temp-lamp
-ddd032.hw032,[DDD/SSS/Z2] Temperature EXHAUST Monitor— full sequence with safety interlock verification and post-run validation,SENSOR; TEMPERATURE; EXHAUST,https://example.com/proc/DDD/SSS/Z2/temp-exhaust
-ddd033.hw033,[DDD/SSS/Z2] IO Port 01 Configuration,IO; PORT_01,https://example.com/proc/DDD/SSS/Z2/io-p01
-ddd034.hw034,[DDD/SSS/Z2] IO Port 02 Configuration,IO; PORT_02,https://example.com/proc/DDD/SSS/Z2/io-p02
-ddd035.hw035,[DDD/SSS/Z2] IO Port 03 Configuration,IO; PORT_03,https://example.com/proc/DDD/SSS/Z2/io-p03
-ddd036.hw036,[DDD/SSS/Z2] IO Port 04 Configuration,IO; PORT_04,https://example.com/proc/DDD/SSS/Z2/io-p04
-ddd037.hw037,[DDD/SSS/Z2] IO Port 05 Configuration,IO; PORT_05,https://example.com/proc/DDD/SSS/Z2/io-p05
-ddd038.hw038,[DDD/SSS/Z2] IO Port 06 Configuration,IO; PORT_06,https://example.com/proc/DDD/SSS/Z2/io-p06
-ddd039.hw039,[DDD/SSS/Z2] IO Port 07 Configuration,IO; PORT_07,https://example.com/proc/DDD/SSS/Z2/io-p07
-ddd040.hw040,[DDD/SSS/Z2] IO Port 08 Configuration,IO; PORT_08,https://example.com/proc/DDD/SSS/Z2/io-p08
-ddd041.hw041,[DDD/SSS/Z2] IO Port 09 Configuration,IO; PORT_09,https://example.com/proc/DDD/SSS/Z2/io-p09
-ddd042.hw042,[DDD/SSS/Z2] IO Port 10 Configuration,IO; PORT_10,https://example.com/proc/DDD/SSS/Z2/io-p10
-ddd043.hw043,[DDD/SSS/Z2] IO Port 11 Configuration,IO; PORT_11,https://example.com/proc/DDD/SSS/Z2/io-p11
-ddd044.hw044,[DDD/SSS/Z2] IO Port 12 Configuration,IO; PORT_12,https://example.com/proc/DDD/SSS/Z2/io-p12
-ddd045.hw045,[DDD/SSS/Z2] IO Port 13 Configuration,IO; PORT_13,https://example.com/proc/DDD/SSS/Z2/io-p13
-ddd046.hw046,[DDD/SSS/Z2] IO Port 14 Configuration,IO; PORT_14,https://example.com/proc/DDD/SSS/Z2/io-p14
-ddd047.hw047,[DDD/SSS/Z2] IO Port 15 Configuration,IO; PORT_15,https://example.com/proc/DDD/SSS/Z2/io-p15
-ddd048.hw048,[DDD/SSS/Z2] IO Port 16 Configuration,IO; PORT_16,https://example.com/proc/DDD/SSS/Z2/io-p16
-ddd049.hw049,[DDD/SSS/Z2] Laser ALIGN Calibration,OPTICS; LASER; ALIGN,https://example.com/proc/DDD/SSS/Z2/laser-align
-ddd050.hw050,[DDD/SSS/Z2] Laser POWER Calibration,OPTICS; LASER; POWER,https://example.com/proc/DDD/SSS/Z2/laser-power
-ddd051.hw051,[DDD/SSS/Z2] Laser PULSE Calibration,OPTICS; LASER; PULSE,https://example.com/proc/DDD/SSS/Z2/laser-pulse
-ddd052.hw052,[DDD/SSS/Z2] Laser WAVELENGTH Calibration— full sequence with safety interlock verification and post-run validation,OPTICS; LASER; WAVELENGTH,https://example.com/proc/DDD/SSS/Z2/laser-wavelength
-ddd053.hw053,[DDD/SSS/Z2] Camera TOP Focus,OPTICS; CAMERA; TOP,https://example.com/proc/DDD/SSS/Z2/cam-top
-ddd054.hw054,[DDD/SSS/Z2] Camera SIDE Focus,OPTICS; CAMERA; SIDE,https://example.com/proc/DDD/SSS/Z2/cam-side
-ddd055.hw055,[DDD/SSS/Z2] Camera BOTTOM Focus,OPTICS; CAMERA; BOTTOM,https://example.com/proc/DDD/SSS/Z2/cam-bottom
-ddd056.hw056,[DDD/SSS/Z2] Camera MACRO Focus,OPTICS; CAMERA; MACRO,https://example.com/proc/DDD/SSS/Z2/cam-macro
-ddd057.hw057,[DDD/SSS/Z2] Vacuum Pump ROUGH Start,VACUUM; PUMP; ROUGH,https://example.com/proc/DDD/SSS/Z2/vac-rough
-ddd058.hw058,[DDD/SSS/Z2] Vacuum Pump TURBO Start,VACUUM; PUMP; TURBO,https://example.com/proc/DDD/SSS/Z2/vac-turbo
-ddd059.hw059,[DDD/SSS/Z2] Vacuum Pump BACKING Start,VACUUM; PUMP; BACKING,https://example.com/proc/DDD/SSS/Z2/vac-backing
-ddd060.hw060,[DDD/SSS/Z2] Gas Mass Flow AR Setup— full sequence with safety interlock verification and post-run validation,GAS; MASS_AR,https://example.com/proc/DDD/SSS/Z2/gas-ar
-ddd061.hw061,[DDD/SSS/Z2] Gas Mass Flow N2 Setup,GAS; MASS_N2,https://example.com/proc/DDD/SSS/Z2/gas-n2
-ddd062.hw062,[DDD/SSS/Z2] Gas Mass Flow O2 Setup,GAS; MASS_O2,https://example.com/proc/DDD/SSS/Z2/gas-o2
-ddd063.hw063,[DDD/SSS/Z2] Gas Mass Flow HE Setup,GAS; MASS_HE,https://example.com/proc/DDD/SSS/Z2/gas-he
-ddd064.hw064,[DDD/SSS/Z2] Gas Mass Flow CF4 Setup— full sequence with safety interlock verification and post-run validation,GAS; MASS_CF4,https://example.com/proc/DDD/SSS/Z2/gas-cf4
-ddd065.hw065,[DDD/SSS/Z2] Gas Mass Flow SF6 Setup,GAS; MASS_SF6,https://example.com/proc/DDD/SSS/Z2/gas-sf6
-ddd066.hw066,[DDD/SSS/Z2] Valve VLV_01 Cycle Test,VALVE; VLV_01,https://example.com/proc/DDD/SSS/Z2/vlv-01
-ddd067.hw067,[DDD/SSS/Z2] Valve VLV_02 Cycle Test,VALVE; VLV_02,https://example.com/proc/DDD/SSS/Z2/vlv-02
-ddd068.hw068,[DDD/SSS/Z2] Valve VLV_03 Cycle Test,VALVE; VLV_03,https://example.com/proc/DDD/SSS/Z2/vlv-03
-ddd069.hw069,[DDD/SSS/Z2] Valve VLV_04 Cycle Test,VALVE; VLV_04,https://example.com/proc/DDD/SSS/Z2/vlv-04
-ddd070.hw070,[DDD/SSS/Z2] Valve VLV_05 Cycle Test,VALVE; VLV_05,https://example.com/proc/DDD/SSS/Z2/vlv-05
-ddd071.hw071,[DDD/SSS/Z2] Valve VLV_06 Cycle Test,VALVE; VLV_06,https://example.com/proc/DDD/SSS/Z2/vlv-06
-ddd072.hw072,[DDD/SSS/Z2] Valve VLV_07 Cycle Test,VALVE; VLV_07,https://example.com/proc/DDD/SSS/Z2/vlv-07
-ddd073.hw073,[DDD/SSS/Z2] Valve VLV_08 Cycle Test,VALVE; VLV_08,https://example.com/proc/DDD/SSS/Z2/vlv-08
-ddd074.hw074,[DDD/SSS/Z2] Valve VLV_09 Cycle Test,VALVE; VLV_09,https://example.com/proc/DDD/SSS/Z2/vlv-09
-ddd075.hw075,[DDD/SSS/Z2] Valve VLV_10 Cycle Test,VALVE; VLV_10,https://example.com/proc/DDD/SSS/Z2/vlv-10
-ddd076.hw076,[DDD/SSS/Z2] Valve VLV_11 Cycle Test,VALVE; VLV_11,https://example.com/proc/DDD/SSS/Z2/vlv-11
-ddd077.hw077,[DDD/SSS/Z2] Valve VLV_12 Cycle Test,VALVE; VLV_12,https://example.com/proc/DDD/SSS/Z2/vlv-12
-ddd078.hw078,[DDD/SSS/Z2] Full Motor Diagnostic Sweep,MOTOR; SERVO; AXIS_X; AXIS_Y,https://example.com/proc/DDD/SSS/Z2/motor-sweep
-ddd079.hw079,[DDD/SSS/Z2] Sensor Array Health Check,SENSOR; PROXIMITY; ENCODER,https://example.com/proc/DDD/SSS/Z2/sensor-health
-ddd080.ot101,"[DDD/SSS/Z2] Calibration DAILY— extended procedure including pre-check, main operation, and recovery steps",MAINTENANCE; CALIBRATION; DAILY,https://example.com/proc/DDD/SSS/Z2/cal-daily
-ddd081.ot102,[DDD/SSS/Z2] Calibration WEEKLY— operator guide with parameter reference and troubleshooting appendix,MAINTENANCE; CALIBRATION; WEEKLY,https://example.com/proc/DDD/SSS/Z2/cal-weekly
-ddd082.ot103,[DDD/SSS/Z2] Calibration MONTHLY— detailed workflow for production environment with sign-off requirements,MAINTENANCE; CALIBRATION; MONTHLY,https://example.com/proc/DDD/SSS/Z2/cal-monthly
-ddd083.ot104,[DDD/SSS/Z2] Calibration QUARTERLY— full sequence with safety interlock verification and post-run validation,MAINTENANCE; CALIBRATION; QUARTERLY,https://example.com/proc/DDD/SSS/Z2/cal-quarterly
-ddd084.ot105,"[DDD/SSS/Z2] Calibration ANNUAL— extended procedure including pre-check, main operation, and recovery steps",MAINTENANCE; CALIBRATION; ANNUAL,https://example.com/proc/DDD/SSS/Z2/cal-annual
-ddd085.ot106,[DDD/SSS/Z2] Clean FILTER,MAINTENANCE; CLEAN; FILTER,https://example.com/proc/DDD/SSS/Z2/clean-filter
-ddd086.ot107,[DDD/SSS/Z2] Clean CHUCK,MAINTENANCE; CLEAN; CHUCK,https://example.com/proc/DDD/SSS/Z2/clean-chuck
-ddd087.ot108,[DDD/SSS/Z2] Clean WINDOW,MAINTENANCE; CLEAN; WINDOW,https://example.com/proc/DDD/SSS/Z2/clean-window
-ddd088.ot109,[DDD/SSS/Z2] Clean NOZZLE,MAINTENANCE; CLEAN; NOZZLE,https://example.com/proc/DDD/SSS/Z2/clean-nozzle
-ddd089.ot110,[DDD/SSS/Z2] Clean SHOWER,MAINTENANCE; CLEAN; SHOWER,https://example.com/proc/DDD/SSS/Z2/clean-shower
-ddd090.ot111,[DDD/SSS/Z2] Maintenance Checklist CHK_001,MAINTENANCE; CHK_001,https://example.com/proc/DDD/SSS/Z2/chk-001
-ddd091.ot112,[DDD/SSS/Z2] Maintenance Checklist CHK_002,MAINTENANCE; CHK_002,https://example.com/proc/DDD/SSS/Z2/chk-002
-ddd092.ot113,[DDD/SSS/Z2] Maintenance Checklist CHK_003,MAINTENANCE; CHK_003,https://example.com/proc/DDD/SSS/Z2/chk-003
-ddd093.ot114,[DDD/SSS/Z2] Maintenance Checklist CHK_004,MAINTENANCE; CHK_004,https://example.com/proc/DDD/SSS/Z2/chk-004
-ddd094.ot115,[DDD/SSS/Z2] Maintenance Checklist CHK_005,MAINTENANCE; CHK_005,https://example.com/proc/DDD/SSS/Z2/chk-005
-ddd095.ot116,[DDD/SSS/Z2] Maintenance Checklist CHK_006,MAINTENANCE; CHK_006,https://example.com/proc/DDD/SSS/Z2/chk-006
-ddd096.ot117,[DDD/SSS/Z2] Maintenance Checklist CHK_007,MAINTENANCE; CHK_007,https://example.com/proc/DDD/SSS/Z2/chk-007
-ddd097.ot118,[DDD/SSS/Z2] Maintenance Checklist CHK_008,MAINTENANCE; CHK_008,https://example.com/proc/DDD/SSS/Z2/chk-008
-ddd098.ot119,[DDD/SSS/Z2] Maintenance Checklist CHK_009,MAINTENANCE; CHK_009,https://example.com/proc/DDD/SSS/Z2/chk-009
-ddd099.ot120,[DDD/SSS/Z2] Maintenance Checklist CHK_010,MAINTENANCE; CHK_010,https://example.com/proc/DDD/SSS/Z2/chk-010
-ddd100.ot121,[DDD/SSS/Z2] Maintenance Checklist CHK_011,MAINTENANCE; CHK_011,https://example.com/proc/DDD/SSS/Z2/chk-011
-ddd101.ot122,[DDD/SSS/Z2] Maintenance Checklist CHK_012,MAINTENANCE; CHK_012,https://example.com/proc/DDD/SSS/Z2/chk-012
-ddd102.ot123,[DDD/SSS/Z2] Maintenance Checklist CHK_013,MAINTENANCE; CHK_013,https://example.com/proc/DDD/SSS/Z2/chk-013
-ddd103.ot124,[DDD/SSS/Z2] Maintenance Checklist CHK_014,MAINTENANCE; CHK_014,https://example.com/proc/DDD/SSS/Z2/chk-014
-ddd104.ot125,[DDD/SSS/Z2] Maintenance Checklist CHK_015,MAINTENANCE; CHK_015,https://example.com/proc/DDD/SSS/Z2/chk-015
-ddd105.ot126,[DDD/SSS/Z2] Alarm ALM_001 Acknowledge,DIAGNOSTIC; ALM_001,https://example.com/proc/DDD/SSS/Z2/alm-001
-ddd106.ot127,[DDD/SSS/Z2] Alarm ALM_002 Acknowledge,DIAGNOSTIC; ALM_002,https://example.com/proc/DDD/SSS/Z2/alm-002
-ddd107.ot128,[DDD/SSS/Z2] Alarm ALM_003 Reset and Verify— full sequence with safety interlock verification and post-run validation,DIAGNOSTIC; ALM_003,https://example.com/proc/DDD/SSS/Z2/alm-003
-ddd108.ot129,[DDD/SSS/Z2] Alarm ALM_004 Acknowledge,DIAGNOSTIC; ALM_004,https://example.com/proc/DDD/SSS/Z2/alm-004
-ddd109.ot130,[DDD/SSS/Z2] Alarm ALM_005 Acknowledge,DIAGNOSTIC; ALM_005,https://example.com/proc/DDD/SSS/Z2/alm-005
-ddd110.ot131,[DDD/SSS/Z2] Alarm ALM_006 Reset and Verify— detailed workflow for production environment with sign-off requirements,DIAGNOSTIC; ALM_006,https://example.com/proc/DDD/SSS/Z2/alm-006
-ddd111.ot132,[DDD/SSS/Z2] Alarm ALM_007 Acknowledge,DIAGNOSTIC; ALM_007,https://example.com/proc/DDD/SSS/Z2/alm-007
-ddd112.ot133,[DDD/SSS/Z2] Alarm ALM_008 Acknowledge,DIAGNOSTIC; ALM_008,https://example.com/proc/DDD/SSS/Z2/alm-008
-ddd113.ot134,[DDD/SSS/Z2] Alarm ALM_009 Reset and Verify— operator guide with parameter reference and troubleshooting appendix,DIAGNOSTIC; ALM_009,https://example.com/proc/DDD/SSS/Z2/alm-009
-ddd114.ot135,[DDD/SSS/Z2] Alarm ALM_010 Acknowledge,DIAGNOSTIC; ALM_010,https://example.com/proc/DDD/SSS/Z2/alm-010
-ddd115.ot136,[DDD/SSS/Z2] Alarm ALM_011 Acknowledge,DIAGNOSTIC; ALM_011,https://example.com/proc/DDD/SSS/Z2/alm-011
-ddd116.ot137,"[DDD/SSS/Z2] Alarm ALM_012 Reset and Verify— extended procedure including pre-check, main operation, and recovery steps",DIAGNOSTIC; ALM_012,https://example.com/proc/DDD/SSS/Z2/alm-012
-ddd117.ot138,[DDD/SSS/Z2] Alarm ALM_013 Acknowledge,DIAGNOSTIC; ALM_013,https://example.com/proc/DDD/SSS/Z2/alm-013
-ddd118.ot139,[DDD/SSS/Z2] Alarm ALM_014 Acknowledge,DIAGNOSTIC; ALM_014,https://example.com/proc/DDD/SSS/Z2/alm-014
-ddd119.ot140,[DDD/SSS/Z2] Alarm ALM_015 Reset and Verify— full sequence with safety interlock verification and post-run validation,DIAGNOSTIC; ALM_015,https://example.com/proc/DDD/SSS/Z2/alm-015
-ddd120.ot141,[DDD/SSS/Z2] Alarm ALM_016 Acknowledge,DIAGNOSTIC; ALM_016,https://example.com/proc/DDD/SSS/Z2/alm-016
-ddd121.ot142,[DDD/SSS/Z2] Alarm ALM_017 Acknowledge,DIAGNOSTIC; ALM_017,https://example.com/proc/DDD/SSS/Z2/alm-017
-ddd122.ot143,[DDD/SSS/Z2] Alarm ALM_018 Reset and Verify— detailed workflow for production environment with sign-off requirements,DIAGNOSTIC; ALM_018,https://example.com/proc/DDD/SSS/Z2/alm-018
-ddd123.ot144,[DDD/SSS/Z2] Alarm ALM_019 Acknowledge,DIAGNOSTIC; ALM_019,https://example.com/proc/DDD/SSS/Z2/alm-019
-ddd124.ot145,[DDD/SSS/Z2] Alarm ALM_020 Acknowledge,DIAGNOSTIC; ALM_020,https://example.com/proc/DDD/SSS/Z2/alm-020
-ddd125.ot146,[DDD/SSS/Z2] Alarm ALM_021 Reset and Verify— operator guide with parameter reference and troubleshooting appendix,DIAGNOSTIC; ALM_021,https://example.com/proc/DDD/SSS/Z2/alm-021
-ddd126.ot147,[DDD/SSS/Z2] Alarm ALM_022 Acknowledge,DIAGNOSTIC; ALM_022,https://example.com/proc/DDD/SSS/Z2/alm-022
-ddd127.ot148,[DDD/SSS/Z2] Alarm ALM_023 Acknowledge,DIAGNOSTIC; ALM_023,https://example.com/proc/DDD/SSS/Z2/alm-023
-ddd128.ot149,"[DDD/SSS/Z2] Alarm ALM_024 Reset and Verify— extended procedure including pre-check, main operation, and recovery steps",DIAGNOSTIC; ALM_024,https://example.com/proc/DDD/SSS/Z2/alm-024
-ddd129.ot150,[DDD/SSS/Z2] Alarm ALM_025 Acknowledge,DIAGNOSTIC; ALM_025,https://example.com/proc/DDD/SSS/Z2/alm-025
-ddd130.ot151,[DDD/SSS/Z2] Export ERROR Log— detailed workflow for production environment with sign-off requirements,DIAGNOSTIC; LOG; ERROR,https://example.com/proc/DDD/SSS/Z2/log-error
-ddd131.ot152,[DDD/SSS/Z2] Export WARNING Log— full sequence with safety interlock verification and post-run validation,DIAGNOSTIC; LOG; WARNING,https://example.com/proc/DDD/SSS/Z2/log-warning
-ddd132.ot153,"[DDD/SSS/Z2] Export INFO Log— extended procedure including pre-check, main operation, and recovery steps",DIAGNOSTIC; LOG; INFO,https://example.com/proc/DDD/SSS/Z2/log-info
-ddd133.ot154,[DDD/SSS/Z2] Export DEBUG Log— operator guide with parameter reference and troubleshooting appendix,DIAGNOSTIC; LOG; DEBUG,https://example.com/proc/DDD/SSS/Z2/log-debug
-ddd134.ot155,[DDD/SSS/Z2] Export TRACE Log— detailed workflow for production environment with sign-off requirements,DIAGNOSTIC; LOG; TRACE,https://example.com/proc/DDD/SSS/Z2/log-trace
-ddd135.ot156,[DDD/SSS/Z2] Export AUDIT Log— full sequence with safety interlock verification and post-run validation,DIAGNOSTIC; LOG; AUDIT,https://example.com/proc/DDD/SSS/Z2/log-audit
-ddd136.ot157,[DDD/SSS/Z2] Self Test QUICK,DIAGNOSTIC; SELF_TEST; QUICK,https://example.com/proc/DDD/SSS/Z2/self-quick
-ddd137.ot158,[DDD/SSS/Z2] Self Test FULL,DIAGNOSTIC; SELF_TEST; FULL,https://example.com/proc/DDD/SSS/Z2/self-full
-ddd138.ot159,[DDD/SSS/Z2] Self Test HW,DIAGNOSTIC; SELF_TEST; HW,https://example.com/proc/DDD/SSS/Z2/self-hw
-ddd139.ot160,[DDD/SSS/Z2] Self Test SW,DIAGNOSTIC; SELF_TEST; SW,https://example.com/proc/DDD/SSS/Z2/self-sw
-ddd140.ot161,[DDD/SSS/Z2] Self Test COMM,DIAGNOSTIC; SELF_TEST; COMM,https://example.com/proc/DDD/SSS/Z2/self-comm
-ddd141.ot162,[DDD/SSS/Z2] Open MANUAL Reference,DOCUMENTATION; MANUAL,https://example.com/proc/DDD/SSS/Z2/doc-manual
-ddd142.ot163,[DDD/SSS/Z2] Open SPEC Reference,DOCUMENTATION; SPEC,https://example.com/proc/DDD/SSS/Z2/doc-spec
-ddd143.ot164,[DDD/SSS/Z2] Open DRAWING Reference,DOCUMENTATION; DRAWING,https://example.com/proc/DDD/SSS/Z2/doc-drawing
-ddd144.ot165,[DDD/SSS/Z2] Open BOM Reference,DOCUMENTATION; BOM,https://example.com/proc/DDD/SSS/Z2/doc-bom
-ddd145.ot166,[DDD/SSS/Z2] Open SCHEMATIC Reference,DOCUMENTATION; SCHEMATIC,https://example.com/proc/DDD/SSS/Z2/doc-schematic
-ddd146.ot167,[DDD/SSS/Z2] General Operator Reference Guide— detailed workflow for production environment with sign-off requirements,REST,https://example.com/proc/DDD/SSS/Z2/rest-general
-ddd147.ot168,[DDD/SSS/Z2] Quick Start and Emergency Stop Overview— full sequence with safety interlock verification and post-run validation,REST,https://example.com/proc/DDD/SSS/Z2/rest-quickstart
-ddd148.ot169,[DDD/SSS/Z2] FAQ and Common Troubleshooting Index,REST,https://example.com/proc/DDD/SSS/Z2/rest-faq
-ddd149.ot170,[DDD/SSS/Z2] Contact and Escalation Matrix,REST,https://example.com/proc/DDD/SSS/Z2/rest-contact
+ddd001.hw001,[DDD/SSS/Z2] Fab bay tool module subsys check,FAB; BAY; TOOL; MODULE; SUBSYS; COMPONENT,https://example.com/proc/DDD/SSS/Z2/fab-deep
+ddd002.hw002,[DDD/SSS/Z2] Servo AXIS_X Homing,MOTOR; SERVO; AXIS_X,https://example.com/proc/DDD/SSS/Z2/homing-axis_x
+ddd003.hw003,[DDD/SSS/Z2] Servo AXIS_X Jog Mode,MOTOR; SERVO; AXIS_X,https://example.com/proc/DDD/SSS/Z2/jog-axis_x
+ddd004.hw004,[DDD/SSS/Z2] Servo AXIS_Y Homing — full sequence with safety interlock verification and post-run validation,MOTOR; SERVO; AXIS_Y,https://example.com/proc/DDD/SSS/Z2/homing-axis_y
+ddd005.hw005,[DDD/SSS/Z2] Servo AXIS_Y Jog Mode,MOTOR; SERVO; AXIS_Y,https://example.com/proc/DDD/SSS/Z2/jog-axis_y
+ddd006.hw006,[DDD/SSS/Z2] Servo AXIS_Z Homing,MOTOR; SERVO; AXIS_Z,https://example.com/proc/DDD/SSS/Z2/homing-axis_z
+ddd007.hw007,[DDD/SSS/Z2] Servo AXIS_Z Jog Mode,MOTOR; SERVO; AXIS_Z,https://example.com/proc/DDD/SSS/Z2/jog-axis_z
+ddd008.hw008,[DDD/SSS/Z2] Servo AXIS_R Homing — full sequence with safety interlock verification and post-run validation,MOTOR; SERVO; AXIS_R,https://example.com/proc/DDD/SSS/Z2/homing-axis_r
+ddd009.hw009,[DDD/SSS/Z2] Servo AXIS_R Jog Mode,MOTOR; SERVO; AXIS_R,https://example.com/proc/DDD/SSS/Z2/jog-axis_r
+ddd010.hw010,[DDD/SSS/Z2] Servo AXIS_T Homing,MOTOR; SERVO; AXIS_T,https://example.com/proc/DDD/SSS/Z2/homing-axis_t
+ddd011.hw011,[DDD/SSS/Z2] Servo AXIS_T Jog Mode,MOTOR; SERVO; AXIS_T,https://example.com/proc/DDD/SSS/Z2/jog-axis_t
+ddd012.hw012,[DDD/SSS/Z2] Stepper FEED_A Setup,MOTOR; STEPPER; FEED_A,https://example.com/proc/DDD/SSS/Z2/stepper-feed_a
+ddd013.hw013,[DDD/SSS/Z2] Stepper FEED_B Setup,MOTOR; STEPPER; FEED_B,https://example.com/proc/DDD/SSS/Z2/stepper-feed_b
+ddd014.hw014,[DDD/SSS/Z2] Stepper FEED_C Setup,MOTOR; STEPPER; FEED_C,https://example.com/proc/DDD/SSS/Z2/stepper-feed_c
+ddd015.hw015,[DDD/SSS/Z2] Spindle SP_01 Speed Tune,MOTOR; SPINDLE; SP_01,https://example.com/proc/DDD/SSS/Z2/spindle-sp_01
+ddd016.hw016,[DDD/SSS/Z2] Spindle SP_02 Speed Tune — full sequence with safety interlock verification and post-run validation,MOTOR; SPINDLE; SP_02,https://example.com/proc/DDD/SSS/Z2/spindle-sp_02
+ddd017.hw017,[DDD/SSS/Z2] Spindle SP_03 Speed Tune,MOTOR; SPINDLE; SP_03,https://example.com/proc/DDD/SSS/Z2/spindle-sp_03
+ddd018.hw018,[DDD/SSS/Z2] Proximity Sensor PROX_01 Adjust,SENSOR; PROXIMITY; PROX_01,https://example.com/proc/DDD/SSS/Z2/prox-01
+ddd019.hw019,[DDD/SSS/Z2] Proximity Sensor PROX_02 Adjust,SENSOR; PROXIMITY; PROX_02,https://example.com/proc/DDD/SSS/Z2/prox-02
+ddd020.hw020,[DDD/SSS/Z2] Proximity Sensor PROX_03 Adjust,SENSOR; PROXIMITY; PROX_03,https://example.com/proc/DDD/SSS/Z2/prox-03
+ddd021.hw021,[DDD/SSS/Z2] Proximity Sensor PROX_04 Adjust,SENSOR; PROXIMITY; PROX_04,https://example.com/proc/DDD/SSS/Z2/prox-04
+ddd022.hw022,[DDD/SSS/Z2] Proximity Sensor PROX_05 Adjust,SENSOR; PROXIMITY; PROX_05,https://example.com/proc/DDD/SSS/Z2/prox-05
+ddd023.hw023,[DDD/SSS/Z2] Proximity Sensor PROX_06 Adjust,SENSOR; PROXIMITY; PROX_06,https://example.com/proc/DDD/SSS/Z2/prox-06
+ddd024.hw024,[DDD/SSS/Z2] Proximity Sensor PROX_07 Adjust,SENSOR; PROXIMITY; PROX_07,https://example.com/proc/DDD/SSS/Z2/prox-07
+ddd025.hw025,[DDD/SSS/Z2] Proximity Sensor PROX_08 Adjust,SENSOR; PROXIMITY; PROX_08,https://example.com/proc/DDD/SSS/Z2/prox-08
+ddd026.hw026,[DDD/SSS/Z2] Encoder ENC_01 Reset,SENSOR; ENCODER; ENC_01,https://example.com/proc/DDD/SSS/Z2/enc-01
+ddd027.hw027,[DDD/SSS/Z2] Encoder ENC_02 Reset,SENSOR; ENCODER; ENC_02,https://example.com/proc/DDD/SSS/Z2/enc-02
+ddd028.hw028,[DDD/SSS/Z2] Encoder ENC_03 Reset,SENSOR; ENCODER; ENC_03,https://example.com/proc/DDD/SSS/Z2/enc-03
+ddd029.hw029,[DDD/SSS/Z2] Encoder ENC_04 Reset,SENSOR; ENCODER; ENC_04,https://example.com/proc/DDD/SSS/Z2/enc-04
+ddd030.hw030,[DDD/SSS/Z2] Temperature CHAMBER Monitor,SENSOR; TEMPERATURE; CHAMBER,https://example.com/proc/DDD/SSS/Z2/temp-chamber
+ddd031.hw031,[DDD/SSS/Z2] Temperature STAGE Monitor,SENSOR; TEMPERATURE; STAGE,https://example.com/proc/DDD/SSS/Z2/temp-stage
+ddd032.hw032,[DDD/SSS/Z2] Temperature LAMP Monitor — full sequence with safety interlock verification and post-run validation,SENSOR; TEMPERATURE; LAMP,https://example.com/proc/DDD/SSS/Z2/temp-lamp
+ddd033.hw033,[DDD/SSS/Z2] Temperature EXHAUST Monitor,SENSOR; TEMPERATURE; EXHAUST,https://example.com/proc/DDD/SSS/Z2/temp-exhaust
+ddd034.hw034,[DDD/SSS/Z2] IO Port 01 Configuration,IO; PORT_01,https://example.com/proc/DDD/SSS/Z2/io-p01
+ddd035.hw035,[DDD/SSS/Z2] IO Port 02 Configuration,IO; PORT_02,https://example.com/proc/DDD/SSS/Z2/io-p02
+ddd036.hw036,[DDD/SSS/Z2] IO Port 03 Configuration,IO; PORT_03,https://example.com/proc/DDD/SSS/Z2/io-p03
+ddd037.hw037,[DDD/SSS/Z2] IO Port 04 Configuration,IO; PORT_04,https://example.com/proc/DDD/SSS/Z2/io-p04
+ddd038.hw038,[DDD/SSS/Z2] IO Port 05 Configuration,IO; PORT_05,https://example.com/proc/DDD/SSS/Z2/io-p05
+ddd039.hw039,[DDD/SSS/Z2] IO Port 06 Configuration,IO; PORT_06,https://example.com/proc/DDD/SSS/Z2/io-p06
+ddd040.hw040,[DDD/SSS/Z2] IO Port 07 Configuration,IO; PORT_07,https://example.com/proc/DDD/SSS/Z2/io-p07
+ddd041.hw041,[DDD/SSS/Z2] IO Port 08 Configuration,IO; PORT_08,https://example.com/proc/DDD/SSS/Z2/io-p08
+ddd042.hw042,[DDD/SSS/Z2] IO Port 09 Configuration,IO; PORT_09,https://example.com/proc/DDD/SSS/Z2/io-p09
+ddd043.hw043,[DDD/SSS/Z2] IO Port 10 Configuration,IO; PORT_10,https://example.com/proc/DDD/SSS/Z2/io-p10
+ddd044.hw044,[DDD/SSS/Z2] IO Port 11 Configuration,IO; PORT_11,https://example.com/proc/DDD/SSS/Z2/io-p11
+ddd045.hw045,[DDD/SSS/Z2] IO Port 12 Configuration,IO; PORT_12,https://example.com/proc/DDD/SSS/Z2/io-p12
+ddd046.hw046,[DDD/SSS/Z2] IO Port 13 Configuration,IO; PORT_13,https://example.com/proc/DDD/SSS/Z2/io-p13
+ddd047.hw047,[DDD/SSS/Z2] IO Port 14 Configuration,IO; PORT_14,https://example.com/proc/DDD/SSS/Z2/io-p14
+ddd048.hw048,[DDD/SSS/Z2] IO Port 15 Configuration,IO; PORT_15,https://example.com/proc/DDD/SSS/Z2/io-p15
+ddd049.hw049,[DDD/SSS/Z2] IO Port 16 Configuration,IO; PORT_16,https://example.com/proc/DDD/SSS/Z2/io-p16
+ddd050.hw050,[DDD/SSS/Z2] Laser ALIGN Calibration,OPTICS; LASER; ALIGN,https://example.com/proc/DDD/SSS/Z2/laser-align
+ddd051.hw051,[DDD/SSS/Z2] Laser POWER Calibration,OPTICS; LASER; POWER,https://example.com/proc/DDD/SSS/Z2/laser-power
+ddd052.hw052,[DDD/SSS/Z2] Laser PULSE Calibration — full sequence with safety interlock verification and post-run validation,OPTICS; LASER; PULSE,https://example.com/proc/DDD/SSS/Z2/laser-pulse
+ddd053.hw053,[DDD/SSS/Z2] Laser WAVELENGTH Calibration,OPTICS; LASER; WAVELENGTH,https://example.com/proc/DDD/SSS/Z2/laser-wavelength
+ddd054.hw054,[DDD/SSS/Z2] Camera TOP Focus,OPTICS; CAMERA; TOP,https://example.com/proc/DDD/SSS/Z2/cam-top
+ddd055.hw055,[DDD/SSS/Z2] Camera SIDE Focus,OPTICS; CAMERA; SIDE,https://example.com/proc/DDD/SSS/Z2/cam-side
+ddd056.hw056,[DDD/SSS/Z2] Camera BOTTOM Focus,OPTICS; CAMERA; BOTTOM,https://example.com/proc/DDD/SSS/Z2/cam-bottom
+ddd057.hw057,[DDD/SSS/Z2] Camera MACRO Focus,OPTICS; CAMERA; MACRO,https://example.com/proc/DDD/SSS/Z2/cam-macro
+ddd058.hw058,[DDD/SSS/Z2] Vacuum Pump ROUGH Start,VACUUM; PUMP; ROUGH,https://example.com/proc/DDD/SSS/Z2/vac-rough
+ddd059.hw059,[DDD/SSS/Z2] Vacuum Pump TURBO Start,VACUUM; PUMP; TURBO,https://example.com/proc/DDD/SSS/Z2/vac-turbo
+ddd060.hw060,[DDD/SSS/Z2] Vacuum Pump BACKING Start,VACUUM; PUMP; BACKING,https://example.com/proc/DDD/SSS/Z2/vac-backing
+ddd061.hw061,[DDD/SSS/Z2] Gas Mass Flow AR Setup,GAS; MASS_AR,https://example.com/proc/DDD/SSS/Z2/gas-ar
+ddd062.hw062,[DDD/SSS/Z2] Gas Mass Flow N2 Setup,GAS; MASS_N2,https://example.com/proc/DDD/SSS/Z2/gas-n2
+ddd063.hw063,[DDD/SSS/Z2] Gas Mass Flow O2 Setup,GAS; MASS_O2,https://example.com/proc/DDD/SSS/Z2/gas-o2
+ddd064.hw064,[DDD/SSS/Z2] Gas Mass Flow HE Setup — full sequence with safety interlock verification and post-run validation,GAS; MASS_HE,https://example.com/proc/DDD/SSS/Z2/gas-he
+ddd065.hw065,[DDD/SSS/Z2] Gas Mass Flow CF4 Setup,GAS; MASS_CF4,https://example.com/proc/DDD/SSS/Z2/gas-cf4
+ddd066.hw066,[DDD/SSS/Z2] Gas Mass Flow SF6 Setup,GAS; MASS_SF6,https://example.com/proc/DDD/SSS/Z2/gas-sf6
+ddd067.hw067,[DDD/SSS/Z2] Valve VLV_01 Cycle Test,VALVE; VLV_01,https://example.com/proc/DDD/SSS/Z2/vlv-01
+ddd068.hw068,[DDD/SSS/Z2] Valve VLV_02 Cycle Test,VALVE; VLV_02,https://example.com/proc/DDD/SSS/Z2/vlv-02
+ddd069.hw069,[DDD/SSS/Z2] Valve VLV_03 Cycle Test,VALVE; VLV_03,https://example.com/proc/DDD/SSS/Z2/vlv-03
+ddd070.hw070,[DDD/SSS/Z2] Valve VLV_04 Cycle Test,VALVE; VLV_04,https://example.com/proc/DDD/SSS/Z2/vlv-04
+ddd071.hw071,[DDD/SSS/Z2] Valve VLV_05 Cycle Test,VALVE; VLV_05,https://example.com/proc/DDD/SSS/Z2/vlv-05
+ddd072.hw072,[DDD/SSS/Z2] Valve VLV_06 Cycle Test,VALVE; VLV_06,https://example.com/proc/DDD/SSS/Z2/vlv-06
+ddd073.hw073,[DDD/SSS/Z2] Valve VLV_07 Cycle Test,VALVE; VLV_07,https://example.com/proc/DDD/SSS/Z2/vlv-07
+ddd074.hw074,[DDD/SSS/Z2] Valve VLV_08 Cycle Test,VALVE; VLV_08,https://example.com/proc/DDD/SSS/Z2/vlv-08
+ddd075.hw075,[DDD/SSS/Z2] Valve VLV_09 Cycle Test,VALVE; VLV_09,https://example.com/proc/DDD/SSS/Z2/vlv-09
+ddd076.hw076,[DDD/SSS/Z2] Valve VLV_10 Cycle Test,VALVE; VLV_10,https://example.com/proc/DDD/SSS/Z2/vlv-10
+ddd077.hw077,[DDD/SSS/Z2] Valve VLV_11 Cycle Test,VALVE; VLV_11,https://example.com/proc/DDD/SSS/Z2/vlv-11
+ddd078.hw078,[DDD/SSS/Z2] Valve VLV_12 Cycle Test,VALVE; VLV_12,https://example.com/proc/DDD/SSS/Z2/vlv-12
+ddd079.hw079,[DDD/SSS/Z2] Full Motor Diagnostic Sweep,MOTOR; SERVO; AXIS_X; AXIS_Y; AXIS_Z,https://example.com/proc/DDD/SSS/Z2/motor-sweep
+ddd080.hw080,[DDD/SSS/Z2] Sensor Array Health Check — full sequence with safety interlock verification and post-run validation,SENSOR; PROXIMITY; PROX_01; PROX_02; ENCODER,https://example.com/proc/DDD/SSS/Z2/sensor-health
+ddd081.hw081,[DDD/SSS/Z2] Triple-axis alignment pass,MOTOR; SERVO; AXIS_X; AXIS_Y; AXIS_T,https://example.com/proc/DDD/SSS/Z2/triple-align
+ddd082.ot101,"[DDD/SSS/Z2] 일일 점검 체크리스트 (Daily calibration) — extended procedure including pre-check, main operation, and recovery steps",MAINTENANCE; CALIBRATION; DAILY,https://example.com/proc/DDD/SSS/Z2/cal-daily
+ddd083.ot102,[DDD/SSS/Z2] Calibration WEEKLY — operator guide with parameter reference and troubleshooting appendix,MAINTENANCE; CALIBRATION; WEEKLY,https://example.com/proc/DDD/SSS/Z2/cal-weekly
+ddd084.ot103,[DDD/SSS/Z2] Calibration MONTHLY — detailed workflow for production environment with sign-off requirements,MAINTENANCE; CALIBRATION; MONTHLY,https://example.com/proc/DDD/SSS/Z2/cal-monthly
+ddd085.ot104,[DDD/SSS/Z2] Calibration QUARTERLY — full sequence with safety interlock verification and post-run validation,MAINTENANCE; CALIBRATION; QUARTERLY,https://example.com/proc/DDD/SSS/Z2/cal-quarterly
+ddd086.ot105,"[DDD/SSS/Z2] Calibration ANNUAL — extended procedure including pre-check, main operation, and recovery steps",MAINTENANCE; CALIBRATION; ANNUAL,https://example.com/proc/DDD/SSS/Z2/cal-annual
+ddd087.ot106,[DDD/SSS/Z2] Clean FILTER,MAINTENANCE; CLEAN; FILTER,https://example.com/proc/DDD/SSS/Z2/clean-filter
+ddd088.ot107,[DDD/SSS/Z2] Clean CHUCK,MAINTENANCE; CLEAN; CHUCK,https://example.com/proc/DDD/SSS/Z2/clean-chuck
+ddd089.ot108,[DDD/SSS/Z2] Clean WINDOW,MAINTENANCE; CLEAN; WINDOW,https://example.com/proc/DDD/SSS/Z2/clean-window
+ddd090.ot109,[DDD/SSS/Z2] Clean NOZZLE,MAINTENANCE; CLEAN; NOZZLE,https://example.com/proc/DDD/SSS/Z2/clean-nozzle
+ddd091.ot110,[DDD/SSS/Z2] Clean SHOWER,MAINTENANCE; CLEAN; SHOWER,https://example.com/proc/DDD/SSS/Z2/clean-shower
+ddd092.ot111,[DDD/SSS/Z2] Maintenance Checklist CHK_001,MAINTENANCE; CHK_001,https://example.com/proc/DDD/SSS/Z2/chk-001
+ddd093.ot112,[DDD/SSS/Z2] Maintenance Checklist CHK_002,MAINTENANCE; CHK_002,https://example.com/proc/DDD/SSS/Z2/chk-002
+ddd094.ot113,[DDD/SSS/Z2] Maintenance Checklist CHK_003,MAINTENANCE; CHK_003,https://example.com/proc/DDD/SSS/Z2/chk-003
+ddd095.ot114,[DDD/SSS/Z2] Maintenance Checklist CHK_004,MAINTENANCE; CHK_004,https://example.com/proc/DDD/SSS/Z2/chk-004
+ddd096.ot115,[DDD/SSS/Z2] Maintenance Checklist CHK_005,MAINTENANCE; CHK_005,https://example.com/proc/DDD/SSS/Z2/chk-005
+ddd097.ot116,[DDD/SSS/Z2] Maintenance Checklist CHK_006,MAINTENANCE; CHK_006,https://example.com/proc/DDD/SSS/Z2/chk-006
+ddd098.ot117,[DDD/SSS/Z2] Maintenance Checklist CHK_007,MAINTENANCE; CHK_007,https://example.com/proc/DDD/SSS/Z2/chk-007
+ddd099.ot118,[DDD/SSS/Z2] Maintenance Checklist CHK_008,MAINTENANCE; CHK_008,https://example.com/proc/DDD/SSS/Z2/chk-008
+ddd100.ot119,[DDD/SSS/Z2] Maintenance Checklist CHK_009,MAINTENANCE; CHK_009,https://example.com/proc/DDD/SSS/Z2/chk-009
+ddd101.ot120,[DDD/SSS/Z2] Maintenance Checklist CHK_010,MAINTENANCE; CHK_010,https://example.com/proc/DDD/SSS/Z2/chk-010
+ddd102.ot121,[DDD/SSS/Z2] Maintenance Checklist CHK_011,MAINTENANCE; CHK_011,https://example.com/proc/DDD/SSS/Z2/chk-011
+ddd103.ot122,[DDD/SSS/Z2] Maintenance Checklist CHK_012,MAINTENANCE; CHK_012,https://example.com/proc/DDD/SSS/Z2/chk-012
+ddd104.ot123,[DDD/SSS/Z2] Maintenance Checklist CHK_013,MAINTENANCE; CHK_013,https://example.com/proc/DDD/SSS/Z2/chk-013
+ddd105.ot124,[DDD/SSS/Z2] Maintenance Checklist CHK_014,MAINTENANCE; CHK_014,https://example.com/proc/DDD/SSS/Z2/chk-014
+ddd106.ot125,[DDD/SSS/Z2] Maintenance Checklist CHK_015,MAINTENANCE; CHK_015,https://example.com/proc/DDD/SSS/Z2/chk-015
+ddd107.ot126,[DDD/SSS/Z2] 알람 리셋 및 확인 (ALM_001),DIAGNOSTIC; ALM_001,https://example.com/proc/DDD/SSS/Z2/alm-001
+ddd108.ot127,[DDD/SSS/Z2] Alarm ALM_002 Acknowledge,DIAGNOSTIC; ALM_002,https://example.com/proc/DDD/SSS/Z2/alm-002
+ddd109.ot128,[DDD/SSS/Z2] Alarm ALM_003 Acknowledge — full sequence with safety interlock verification and post-run validation,DIAGNOSTIC; ALM_003,https://example.com/proc/DDD/SSS/Z2/alm-003
+ddd110.ot129,[DDD/SSS/Z2] Alarm ALM_004 Acknowledge,DIAGNOSTIC; ALM_004,https://example.com/proc/DDD/SSS/Z2/alm-004
+ddd111.ot130,[DDD/SSS/Z2] Alarm ALM_005 Acknowledge,DIAGNOSTIC; ALM_005,https://example.com/proc/DDD/SSS/Z2/alm-005
+ddd112.ot131,[DDD/SSS/Z2] Alarm ALM_006 Acknowledge — detailed workflow for production environment with sign-off requirements,DIAGNOSTIC; ALM_006,https://example.com/proc/DDD/SSS/Z2/alm-006
+ddd113.ot132,[DDD/SSS/Z2] Alarm ALM_007 Acknowledge,DIAGNOSTIC; ALM_007,https://example.com/proc/DDD/SSS/Z2/alm-007
+ddd114.ot133,[DDD/SSS/Z2] Alarm ALM_008 Acknowledge,DIAGNOSTIC; ALM_008,https://example.com/proc/DDD/SSS/Z2/alm-008
+ddd115.ot134,[DDD/SSS/Z2] Alarm ALM_009 Acknowledge — operator guide with parameter reference and troubleshooting appendix,DIAGNOSTIC; ALM_009,https://example.com/proc/DDD/SSS/Z2/alm-009
+ddd116.ot135,[DDD/SSS/Z2] Alarm ALM_010 Acknowledge,DIAGNOSTIC; ALM_010,https://example.com/proc/DDD/SSS/Z2/alm-010
+ddd117.ot136,[DDD/SSS/Z2] Alarm ALM_011 Acknowledge,DIAGNOSTIC; ALM_011,https://example.com/proc/DDD/SSS/Z2/alm-011
+ddd118.ot137,"[DDD/SSS/Z2] Alarm ALM_012 Acknowledge — extended procedure including pre-check, main operation, and recovery steps",DIAGNOSTIC; ALM_012,https://example.com/proc/DDD/SSS/Z2/alm-012
+ddd119.ot138,[DDD/SSS/Z2] Alarm ALM_013 Acknowledge,DIAGNOSTIC; ALM_013,https://example.com/proc/DDD/SSS/Z2/alm-013
+ddd120.ot139,[DDD/SSS/Z2] Alarm ALM_014 Acknowledge,DIAGNOSTIC; ALM_014,https://example.com/proc/DDD/SSS/Z2/alm-014
+ddd121.ot140,[DDD/SSS/Z2] Alarm ALM_015 Acknowledge — full sequence with safety interlock verification and post-run validation,DIAGNOSTIC; ALM_015,https://example.com/proc/DDD/SSS/Z2/alm-015
+ddd122.ot141,[DDD/SSS/Z2] Alarm ALM_016 Acknowledge,DIAGNOSTIC; ALM_016,https://example.com/proc/DDD/SSS/Z2/alm-016
+ddd123.ot142,[DDD/SSS/Z2] Alarm ALM_017 Acknowledge,DIAGNOSTIC; ALM_017,https://example.com/proc/DDD/SSS/Z2/alm-017
+ddd124.ot143,[DDD/SSS/Z2] Alarm ALM_018 Acknowledge — detailed workflow for production environment with sign-off requirements,DIAGNOSTIC; ALM_018,https://example.com/proc/DDD/SSS/Z2/alm-018
+ddd125.ot144,[DDD/SSS/Z2] Alarm ALM_019 Acknowledge,DIAGNOSTIC; ALM_019,https://example.com/proc/DDD/SSS/Z2/alm-019
+ddd126.ot145,[DDD/SSS/Z2] Alarm ALM_020 Acknowledge,DIAGNOSTIC; ALM_020,https://example.com/proc/DDD/SSS/Z2/alm-020
+ddd127.ot146,[DDD/SSS/Z2] Alarm ALM_021 Acknowledge — operator guide with parameter reference and troubleshooting appendix,DIAGNOSTIC; ALM_021,https://example.com/proc/DDD/SSS/Z2/alm-021
+ddd128.ot147,[DDD/SSS/Z2] Alarm ALM_022 Acknowledge,DIAGNOSTIC; ALM_022,https://example.com/proc/DDD/SSS/Z2/alm-022
+ddd129.ot148,[DDD/SSS/Z2] Alarm ALM_023 Acknowledge,DIAGNOSTIC; ALM_023,https://example.com/proc/DDD/SSS/Z2/alm-023
+ddd130.ot149,"[DDD/SSS/Z2] Alarm ALM_024 Acknowledge — extended procedure including pre-check, main operation, and recovery steps",DIAGNOSTIC; ALM_024,https://example.com/proc/DDD/SSS/Z2/alm-024
+ddd131.ot150,[DDD/SSS/Z2] Alarm ALM_025 Acknowledge,DIAGNOSTIC; ALM_025,https://example.com/proc/DDD/SSS/Z2/alm-025
+ddd132.ot151,[DDD/SSS/Z2] Export ERROR Log — detailed workflow for production environment with sign-off requirements,DIAGNOSTIC; LOG; ERROR,https://example.com/proc/DDD/SSS/Z2/log-error
+ddd133.ot152,[DDD/SSS/Z2] Export WARNING Log — full sequence with safety interlock verification and post-run validation,DIAGNOSTIC; LOG; WARNING,https://example.com/proc/DDD/SSS/Z2/log-warning
+ddd134.ot153,"[DDD/SSS/Z2] Export INFO Log — extended procedure including pre-check, main operation, and recovery steps",DIAGNOSTIC; LOG; INFO,https://example.com/proc/DDD/SSS/Z2/log-info
+ddd135.ot154,[DDD/SSS/Z2] Export DEBUG Log — operator guide with parameter reference and troubleshooting appendix,DIAGNOSTIC; LOG; DEBUG,https://example.com/proc/DDD/SSS/Z2/log-debug
+ddd136.ot155,[DDD/SSS/Z2] Export TRACE Log — detailed workflow for production environment with sign-off requirements,DIAGNOSTIC; LOG; TRACE,https://example.com/proc/DDD/SSS/Z2/log-trace
+ddd137.ot156,[DDD/SSS/Z2] Export AUDIT Log — full sequence with safety interlock verification and post-run validation,DIAGNOSTIC; LOG; AUDIT,https://example.com/proc/DDD/SSS/Z2/log-audit
+ddd138.ot157,[DDD/SSS/Z2] Self Test QUICK,DIAGNOSTIC; SELF_TEST; QUICK,https://example.com/proc/DDD/SSS/Z2/self-quick
+ddd139.ot158,[DDD/SSS/Z2] Self Test FULL,DIAGNOSTIC; SELF_TEST; FULL,https://example.com/proc/DDD/SSS/Z2/self-full
+ddd140.ot159,[DDD/SSS/Z2] Self Test HW,DIAGNOSTIC; SELF_TEST; HW,https://example.com/proc/DDD/SSS/Z2/self-hw
+ddd141.ot160,[DDD/SSS/Z2] Self Test SW,DIAGNOSTIC; SELF_TEST; SW,https://example.com/proc/DDD/SSS/Z2/self-sw
+ddd142.ot161,[DDD/SSS/Z2] Self Test COMM,DIAGNOSTIC; SELF_TEST; COMM,https://example.com/proc/DDD/SSS/Z2/self-comm
+ddd143.ot162,[DDD/SSS/Z2] Training ONBOARD module,TRAINING; ONBOARD,https://example.com/proc/DDD/SSS/Z2/train-onboard
+ddd144.ot163,[DDD/SSS/Z2] Training REFRESHER module,TRAINING; REFRESHER,https://example.com/proc/DDD/SSS/Z2/train-refresher
+ddd145.ot164,[DDD/SSS/Z2] Training CERT module,TRAINING; CERT,https://example.com/proc/DDD/SSS/Z2/train-cert
+ddd146.ot165,[DDD/SSS/Z2] Training VIDEO module,TRAINING; VIDEO,https://example.com/proc/DDD/SSS/Z2/train-video
+ddd147.ot166,[DDD/SSS/Z2] Open MANUAL Reference,DOCUMENTATION; MANUAL,https://example.com/proc/DDD/SSS/Z2/doc-manual
+ddd148.ot167,[DDD/SSS/Z2] Open SPEC Reference,DOCUMENTATION; SPEC,https://example.com/proc/DDD/SSS/Z2/doc-spec
+ddd149.ot168,[DDD/SSS/Z2] Open DRAWING Reference,DOCUMENTATION; DRAWING,https://example.com/proc/DDD/SSS/Z2/doc-drawing
+ddd150.ot169,[DDD/SSS/Z2] Open BOM Reference,DOCUMENTATION; BOM,https://example.com/proc/DDD/SSS/Z2/doc-bom
+ddd151.ot170,[DDD/SSS/Z2] Open SCHEMATIC Reference,DOCUMENTATION; SCHEMATIC,https://example.com/proc/DDD/SSS/Z2/doc-schematic
+ddd152.ot171,[DDD/SSS/Z2] General Operator Reference Guide — detailed workflow for production environment with sign-off requirements,REST,https://example.com/proc/DDD/SSS/Z2/rest-general
+ddd153.ot172,[DDD/SSS/Z2] Quick Start and Emergency Stop Overview — full sequence with safety interlock verification and post-run validation,REST,https://example.com/proc/DDD/SSS/Z2/rest-quickstart
+ddd154.ot173,[DDD/SSS/Z2] FAQ and Common Troubleshooting Index,REST,https://example.com/proc/DDD/SSS/Z2/rest-faq
+ddd155.ot174,[DDD/SSS/Z2] Contact and Escalation Matrix,REST,https://example.com/proc/DDD/SSS/Z2/rest-contact
+ddd.shared.homing_all,[DDD/SSS/Z2] Shared all-axis homing,MOTOR; SERVO; AXIS_X; AXIS_Y; AXIS_Z,https://example.com/proc/DDD/SSS/Z2/shared-homing
+ddd.shared.emergency_recovery,[DDD/SSS/Z2] 비상 정지 복구 가이드,REST,https://example.com/proc/DDD/SSS/Z2/shared-estop
+ddd.shared.daily_check,[DDD/SSS/Z2] Shared daily operator check,MAINTENANCE; CALIBRATION; DAILY,https://example.com/proc/DDD/SSS/Z2/shared-daily

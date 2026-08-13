@@ -1,6 +1,13 @@
+import { useEffect, useMemo, useState } from "react";
 import type { Procedure } from "../types";
 import type { FavoriteEntry, FavoriteFolder } from "../utils/favorites";
-import { configLabel, displayTitle } from "../utils/favorites";
+import {
+  canExpandProcedureToAllConfigs,
+  configLabel,
+  displayTitle,
+  missingVariantsInFolder,
+} from "../utils/favorites";
+import { fetchProcedureVariants } from "../api";
 import { procedureId } from "../utils/cartUtils";
 import { getPathLabel } from "../utils/mapUtils";
 
@@ -14,6 +21,8 @@ interface Props {
   onRemove: (entryId: string) => void;
   onRename: () => void;
   onShowOnMap?: (p: Procedure) => void;
+  onExpandToAllConfigs?: (proc: Procedure) => void;
+  onExpandAllVisible?: (procedures: Procedure[]) => void;
 }
 
 function keywordLabel(entry: FavoriteEntry): string {
@@ -27,6 +36,12 @@ function keywordLabel(entry: FavoriteEntry): string {
   return "—";
 }
 
+function expandDisabledTitle(canExpand: boolean, variantCount: number): string {
+  if (variantCount <= 1) return "No other machine configs for this procedure name";
+  if (!canExpand) return "Already added for all available configs";
+  return "Add missing configs to this folder";
+}
+
 export function FavoritesPanel({
   folder,
   module,
@@ -37,6 +52,8 @@ export function FavoritesPanel({
   onRemove,
   onRename,
   onShowOnMap,
+  onExpandToAllConfigs,
+  onExpandAllVisible,
 }: Props) {
   const rows = folder.items.filter(
     (item) =>
@@ -44,6 +61,62 @@ export function FavoritesPanel({
       item.procedure.part === part &&
       item.procedure.machine_type === machine
   );
+
+  const [variantsByName, setVariantsByName] = useState<Map<string, Procedure[]>>(new Map());
+
+  const variantNamesKey = useMemo(
+    () =>
+      [...new Set(rows.map((r) => r.procedure.name))]
+        .sort()
+        .join("\0"),
+    [rows]
+  );
+
+  useEffect(() => {
+    let cancelled = false;
+    const names = variantNamesKey ? variantNamesKey.split("\0") : [];
+    const filtered = folder.items.filter(
+      (item) =>
+        item.procedure.module === module &&
+        item.procedure.part === part &&
+        item.procedure.machine_type === machine
+    );
+
+    (async () => {
+      const next = new Map<string, Procedure[]>();
+      for (const name of names) {
+        const sample = filtered.find((r) => r.procedure.name === name)?.procedure;
+        if (!sample || sample.source === "module_all" || sample.machine_type === "ALL") continue;
+        try {
+          const variants = await fetchProcedureVariants(name, sample.module, sample.part);
+          if (!cancelled) next.set(name, variants);
+        } catch {
+          if (!cancelled) next.set(name, []);
+        }
+      }
+      if (!cancelled) setVariantsByName(next);
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [folder.id, folder.items, module, part, machine, variantNamesKey]);
+
+  const expandAllProcedures = useMemo(() => {
+    const seen = new Set<string>();
+    const list: Procedure[] = [];
+    for (const row of rows) {
+      const name = row.procedure.name;
+      if (seen.has(name)) continue;
+      const variants = variantsByName.get(name) ?? [];
+      if (!canExpandProcedureToAllConfigs(folder, variants)) continue;
+      seen.add(name);
+      list.push(row.procedure);
+    }
+    return list;
+  }, [rows, variantsByName, folder]);
+
+  const canExpandAll = expandAllProcedures.length > 0;
 
   return (
     <div className="favorites-panel">
@@ -64,6 +137,21 @@ export function FavoritesPanel({
             {module} · {part} · {machine} — {rows.length} item{rows.length !== 1 ? "s" : ""}
           </p>
         </div>
+        {onExpandAllVisible && rows.length > 0 && (
+          <button
+            type="button"
+            className="fav-expand-all-btn"
+            disabled={!canExpandAll}
+            title={
+              canExpandAll
+                ? `Add missing configs for ${expandAllProcedures.length} procedure name(s)`
+                : "All visible items are already expanded or have no other configs"
+            }
+            onClick={() => onExpandAllVisible(expandAllProcedures)}
+          >
+            Add all to configs
+          </button>
+        )}
       </header>
 
       {rows.length === 0 ? (
@@ -92,6 +180,9 @@ export function FavoritesPanel({
                   p.source !== "module_all" &&
                   p.machine_type !== "ALL" &&
                   Boolean(entry.keywordPath || p.tags.length > 0);
+                const variants = variantsByName.get(p.name) ?? [];
+                const canExpand = canExpandProcedureToAllConfigs(folder, variants);
+                const missingCount = missingVariantsInFolder(folder, variants).length;
                 return (
                   <tr key={entry.id}>
                     <td className="fav-col-keyword">
@@ -111,6 +202,17 @@ export function FavoritesPanel({
                     </td>
                     <td className="fav-col-actions">
                       <div className="favorites-row-actions">
+                        {onExpandToAllConfigs && (
+                          <button
+                            type="button"
+                            className="fav-expand-configs-btn"
+                            disabled={!canExpand}
+                            title={expandDisabledTitle(canExpand, variants.length)}
+                            onClick={() => onExpandToAllConfigs(p)}
+                          >
+                            {canExpand ? `+${missingCount} configs` : "All configs"}
+                          </button>
+                        )}
                         {onShowOnMap && canMap && (
                           <button
                             type="button"

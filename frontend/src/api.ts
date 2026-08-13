@@ -1,4 +1,4 @@
-import type { AppConfig, NameMachineIndex, SearchResult, ViewData } from "./types";
+import type { AppConfig, NameMachineIndex, Procedure, SearchResult, ViewData } from "./types";
 
 const API = "/api";
 
@@ -52,5 +52,16 @@ export async function fetchNameMachines(
   const params = new URLSearchParams({ module, part });
   const res = await fetch(`${API}/name-machines?${params}`);
   if (!res.ok) throw new Error("Failed to load name index");
+  return res.json();
+}
+
+export async function fetchProcedureVariants(
+  name: string,
+  module: string,
+  part: string
+): Promise<Procedure[]> {
+  const params = new URLSearchParams({ name, module, part });
+  const res = await fetch(`${API}/procedure-variants?${params}`);
+  if (!res.ok) throw new Error("Failed to load procedure variants");
   return res.json();
 }

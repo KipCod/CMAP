@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, type Ref } from "react";
 import type { TreeNode } from "../types";
-import { pathMatchesMapFilter } from "../utils/mapNavigation";
+import { isMapJumpPulsePath, pathMatchesMapFilter, primaryMapJumpScrollPath } from "../utils/mapNavigation";
 import { isOnSelectedPath } from "../utils/mapUtils";
 import {
   buildGraphLayout,
@@ -19,7 +19,7 @@ interface Props {
   svgClassName?: string;
   svgRef?: Ref<SVGSVGElement>;
   mapFilter?: string;
-  mapJumpPulsePath?: string | null;
+  mapJumpPulsePaths?: string[];
 }
 
 export function HwGraphCanvas({
@@ -31,7 +31,7 @@ export function HwGraphCanvas({
   svgClassName = "hw-graph-svg",
   svgRef,
   mapFilter = "",
-  mapJumpPulsePath = null,
+  mapJumpPulsePaths = [],
 }: Props) {
   const layout = useMemo(
     () => layoutProp ?? buildGraphLayout(nodes),
@@ -48,7 +48,7 @@ export function HwGraphCanvas({
   const ref = svgRef ?? localRef;
 
   useEffect(() => {
-    const scrollTarget = selectedKeyword ?? mapJumpPulsePath;
+    const scrollTarget = primaryMapJumpScrollPath(selectedKeyword, mapJumpPulsePaths);
     if (!scrollTarget) return;
     const node = layout.nodes.find((n) => n.id === scrollTarget);
     if (!node) return;
@@ -60,7 +60,7 @@ export function HwGraphCanvas({
       top: Math.max(0, node.y - scrollEl.clientHeight / 2),
       behavior: "smooth",
     });
-  }, [selectedKeyword, mapJumpPulsePath, layout.nodes, ref]);
+  }, [selectedKeyword, mapJumpPulsePaths, layout.nodes, ref]);
 
   return (
     <svg
@@ -97,8 +97,8 @@ export function HwGraphCanvas({
         {layout.nodes.map((n) => {
           const isSelected = selectedKeyword === n.id;
           const onPath = isOnSelectedPath(n.id, selectedKeyword);
-          const jumpPulse = mapJumpPulsePath === n.id;
-          const empty = n.total === 0;
+          const jumpPulse = isMapJumpPulsePath(mapJumpPulsePaths, n.id);
+          const empty = n.count === 0;
           const x = n.x - NODE_W / 2;
           const y = n.y - NODE_H / 2;
           const label =
@@ -145,7 +145,7 @@ export function HwGraphCanvas({
               >
                 {label}
               </text>
-              {n.total > 0 && (
+              {n.count > 0 && (
                 <text
                   className="graph-node-count"
                   x={NODE_W / 2}
@@ -153,7 +153,7 @@ export function HwGraphCanvas({
                   textAnchor="middle"
                   dominantBaseline="middle"
                 >
-                  {n.total}
+                  {n.count}
                 </text>
               )}
               {isSelected && (

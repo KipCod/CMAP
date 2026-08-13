@@ -11,7 +11,7 @@ interface Props {
   onSelect: (keyword: string, procedures: TreeNode["procedures"]) => void;
   onOpenFullView: () => void;
   mapFilter?: string;
-  mapJumpPulsePath?: string | null;
+  mapJumpPulsePaths?: string[];
   mapContextKey: string;
 }
 
@@ -21,7 +21,7 @@ export function HwMapPanel({
   onSelect,
   onOpenFullView,
   mapFilter = "",
-  mapJumpPulsePath = null,
+  mapJumpPulsePaths = [],
   mapContextKey,
 }: Props) {
   const [viewMode, setViewMode] = useState<HwViewMode>("graph");
@@ -32,6 +32,12 @@ export function HwMapPanel({
       treeExpanded.expandToPath(selectedKeyword);
     }
   }, [selectedKeyword, treeExpanded.expandToPath]);
+
+  useEffect(() => {
+    for (const path of mapJumpPulsePaths) {
+      treeExpanded.expandToPath(path);
+    }
+  }, [mapJumpPulsePaths, treeExpanded.expandToPath]);
 
   const handleSelect = useCallback(
     (keyword: string, procedures: TreeNode["procedures"]) => {
@@ -78,7 +84,7 @@ export function HwMapPanel({
           selectedKeyword={selectedKeyword}
           onSelect={handleSelect}
           mapFilter={mapFilter}
-          mapJumpPulsePath={mapJumpPulsePath}
+          mapJumpPulsePaths={mapJumpPulsePaths}
         />
       ) : (
         <HwTreeMap
@@ -90,7 +96,7 @@ export function HwMapPanel({
           onExpandAllTop={treeExpanded.expandAllTop}
           onCollapseAllTop={treeExpanded.collapseAllTop}
           mapFilter={mapFilter}
-          mapJumpPulsePath={mapJumpPulsePath}
+          mapJumpPulsePaths={mapJumpPulsePaths}
         />
       )}
     </div>

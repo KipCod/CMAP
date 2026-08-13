@@ -346,6 +346,7 @@ export function SearchBar({
       if (wrapRef.current?.contains(target)) return;
       const portal = document.getElementById("search-topbar-portal");
       if (portal?.contains(target)) return;
+      if ((target as Element).closest?.(".favorite-picker-portal")) return;
       setDropdownOpen(false);
     };
     document.addEventListener("mousedown", onDoc);

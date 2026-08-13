@@ -1,151 +1,162 @@
 name,title,tag,link
-aaa001.hw001,[AAA/TTT/Q2] Servo AXIS_X Homing,MOTOR; SERVO; AXIS_X,https://example.com/proc/AAA/TTT/Q2/homing-axis_x
-aaa002.hw002,[AAA/TTT/Q2] Servo AXIS_X Jog Mode,MOTOR; SERVO; AXIS_X,https://example.com/proc/AAA/TTT/Q2/jog-axis_x
-aaa003.hw003,[AAA/TTT/Q2] Servo AXIS_Y Homing,MOTOR; SERVO; AXIS_Y,https://example.com/proc/AAA/TTT/Q2/homing-axis_y
-aaa004.hw004,[AAA/TTT/Q2] Servo AXIS_Y Jog Mode,MOTOR; SERVO; AXIS_Y,https://example.com/proc/AAA/TTT/Q2/jog-axis_y
-aaa005.hw005,[AAA/TTT/Q2] Servo AXIS_Z Homing,MOTOR; SERVO; AXIS_Z,https://example.com/proc/AAA/TTT/Q2/homing-axis_z
-aaa006.hw006,[AAA/TTT/Q2] Servo AXIS_Z Jog Mode,MOTOR; SERVO; AXIS_Z,https://example.com/proc/AAA/TTT/Q2/jog-axis_z
-aaa007.hw007,[AAA/TTT/Q2] Servo AXIS_R Homing,MOTOR; SERVO; AXIS_R,https://example.com/proc/AAA/TTT/Q2/homing-axis_r
-aaa008.hw008,[AAA/TTT/Q2] Servo AXIS_R Jog Mode,MOTOR; SERVO; AXIS_R,https://example.com/proc/AAA/TTT/Q2/jog-axis_r
-aaa009.hw009,[AAA/TTT/Q2] Servo AXIS_T Homing,MOTOR; SERVO; AXIS_T,https://example.com/proc/AAA/TTT/Q2/homing-axis_t
-aaa010.hw010,[AAA/TTT/Q2] Servo AXIS_T Jog Mode,MOTOR; SERVO; AXIS_T,https://example.com/proc/AAA/TTT/Q2/jog-axis_t
-aaa011.hw011,[AAA/TTT/Q2] Stepper FEED_A Setup,MOTOR; STEPPER; FEED_A,https://example.com/proc/AAA/TTT/Q2/stepper-feed_a
-aaa012.hw012,[AAA/TTT/Q2] Stepper FEED_B Setup,MOTOR; STEPPER; FEED_B,https://example.com/proc/AAA/TTT/Q2/stepper-feed_b
-aaa013.hw013,[AAA/TTT/Q2] Stepper FEED_C Setup,MOTOR; STEPPER; FEED_C,https://example.com/proc/AAA/TTT/Q2/stepper-feed_c
-aaa014.hw014,[AAA/TTT/Q2] Spindle SP_01 Speed Tune,MOTOR; SPINDLE; SP_01,https://example.com/proc/AAA/TTT/Q2/spindle-sp_01
-aaa015.hw015,[AAA/TTT/Q2] Spindle SP_02 Speed Tune,MOTOR; SPINDLE; SP_02,https://example.com/proc/AAA/TTT/Q2/spindle-sp_02
-aaa016.hw016,[AAA/TTT/Q2] Spindle SP_03 Speed Tune— full sequence with safety interlock verification and post-run validation,MOTOR; SPINDLE; SP_03,https://example.com/proc/AAA/TTT/Q2/spindle-sp_03
-aaa017.hw017,[AAA/TTT/Q2] Proximity Sensor PROX_01 Adjust,SENSOR; PROXIMITY; PROX_01,https://example.com/proc/AAA/TTT/Q2/prox-01
-aaa018.hw018,[AAA/TTT/Q2] Proximity Sensor PROX_02 Adjust,SENSOR; PROXIMITY; PROX_02,https://example.com/proc/AAA/TTT/Q2/prox-02
-aaa019.hw019,[AAA/TTT/Q2] Proximity Sensor PROX_03 Adjust,SENSOR; PROXIMITY; PROX_03,https://example.com/proc/AAA/TTT/Q2/prox-03
-aaa020.hw020,[AAA/TTT/Q2] Proximity Sensor PROX_04 Adjust,SENSOR; PROXIMITY; PROX_04,https://example.com/proc/AAA/TTT/Q2/prox-04
-aaa021.hw021,[AAA/TTT/Q2] Proximity Sensor PROX_05 Adjust,SENSOR; PROXIMITY; PROX_05,https://example.com/proc/AAA/TTT/Q2/prox-05
-aaa022.hw022,[AAA/TTT/Q2] Proximity Sensor PROX_06 Adjust,SENSOR; PROXIMITY; PROX_06,https://example.com/proc/AAA/TTT/Q2/prox-06
-aaa023.hw023,[AAA/TTT/Q2] Proximity Sensor PROX_07 Adjust,SENSOR; PROXIMITY; PROX_07,https://example.com/proc/AAA/TTT/Q2/prox-07
-aaa024.hw024,[AAA/TTT/Q2] Proximity Sensor PROX_08 Adjust,SENSOR; PROXIMITY; PROX_08,https://example.com/proc/AAA/TTT/Q2/prox-08
-aaa025.hw025,[AAA/TTT/Q2] Encoder ENC_01 Reset,SENSOR; ENCODER; ENC_01,https://example.com/proc/AAA/TTT/Q2/enc-01
-aaa026.hw026,[AAA/TTT/Q2] Encoder ENC_02 Reset,SENSOR; ENCODER; ENC_02,https://example.com/proc/AAA/TTT/Q2/enc-02
-aaa027.hw027,[AAA/TTT/Q2] Encoder ENC_03 Reset,SENSOR; ENCODER; ENC_03,https://example.com/proc/AAA/TTT/Q2/enc-03
-aaa028.hw028,[AAA/TTT/Q2] Encoder ENC_04 Reset,SENSOR; ENCODER; ENC_04,https://example.com/proc/AAA/TTT/Q2/enc-04
-aaa029.hw029,[AAA/TTT/Q2] Temperature CHAMBER Monitor,SENSOR; TEMPERATURE; CHAMBER,https://example.com/proc/AAA/TTT/Q2/temp-chamber
-aaa030.hw030,[AAA/TTT/Q2] Temperature STAGE Monitor,SENSOR; TEMPERATURE; STAGE,https://example.com/proc/AAA/TTT/Q2/temp-stage
-aaa031.hw031,[AAA/TTT/Q2] Temperature LAMP Monitor,SENSOR; TEMPERATURE; LAMP,https://example.com/proc/AAA/TTT/Q2/temp-lamp
-aaa032.hw032,[AAA/TTT/Q2] Temperature EXHAUST Monitor— full sequence with safety interlock verification and post-run validation,SENSOR; TEMPERATURE; EXHAUST,https://example.com/proc/AAA/TTT/Q2/temp-exhaust
-aaa033.hw033,[AAA/TTT/Q2] IO Port 01 Configuration,IO; PORT_01,https://example.com/proc/AAA/TTT/Q2/io-p01
-aaa034.hw034,[AAA/TTT/Q2] IO Port 02 Configuration,IO; PORT_02,https://example.com/proc/AAA/TTT/Q2/io-p02
-aaa035.hw035,[AAA/TTT/Q2] IO Port 03 Configuration,IO; PORT_03,https://example.com/proc/AAA/TTT/Q2/io-p03
-aaa036.hw036,[AAA/TTT/Q2] IO Port 04 Configuration,IO; PORT_04,https://example.com/proc/AAA/TTT/Q2/io-p04
-aaa037.hw037,[AAA/TTT/Q2] IO Port 05 Configuration,IO; PORT_05,https://example.com/proc/AAA/TTT/Q2/io-p05
-aaa038.hw038,[AAA/TTT/Q2] IO Port 06 Configuration,IO; PORT_06,https://example.com/proc/AAA/TTT/Q2/io-p06
-aaa039.hw039,[AAA/TTT/Q2] IO Port 07 Configuration,IO; PORT_07,https://example.com/proc/AAA/TTT/Q2/io-p07
-aaa040.hw040,[AAA/TTT/Q2] IO Port 08 Configuration,IO; PORT_08,https://example.com/proc/AAA/TTT/Q2/io-p08
-aaa041.hw041,[AAA/TTT/Q2] IO Port 09 Configuration,IO; PORT_09,https://example.com/proc/AAA/TTT/Q2/io-p09
-aaa042.hw042,[AAA/TTT/Q2] IO Port 10 Configuration,IO; PORT_10,https://example.com/proc/AAA/TTT/Q2/io-p10
-aaa043.hw043,[AAA/TTT/Q2] IO Port 11 Configuration,IO; PORT_11,https://example.com/proc/AAA/TTT/Q2/io-p11
-aaa044.hw044,[AAA/TTT/Q2] IO Port 12 Configuration,IO; PORT_12,https://example.com/proc/AAA/TTT/Q2/io-p12
-aaa045.hw045,[AAA/TTT/Q2] IO Port 13 Configuration,IO; PORT_13,https://example.com/proc/AAA/TTT/Q2/io-p13
-aaa046.hw046,[AAA/TTT/Q2] IO Port 14 Configuration,IO; PORT_14,https://example.com/proc/AAA/TTT/Q2/io-p14
-aaa047.hw047,[AAA/TTT/Q2] IO Port 15 Configuration,IO; PORT_15,https://example.com/proc/AAA/TTT/Q2/io-p15
-aaa048.hw048,[AAA/TTT/Q2] IO Port 16 Configuration,IO; PORT_16,https://example.com/proc/AAA/TTT/Q2/io-p16
-aaa049.hw049,[AAA/TTT/Q2] Laser ALIGN Calibration,OPTICS; LASER; ALIGN,https://example.com/proc/AAA/TTT/Q2/laser-align
-aaa050.hw050,[AAA/TTT/Q2] Laser POWER Calibration,OPTICS; LASER; POWER,https://example.com/proc/AAA/TTT/Q2/laser-power
-aaa051.hw051,[AAA/TTT/Q2] Laser PULSE Calibration,OPTICS; LASER; PULSE,https://example.com/proc/AAA/TTT/Q2/laser-pulse
-aaa052.hw052,[AAA/TTT/Q2] Laser WAVELENGTH Calibration— full sequence with safety interlock verification and post-run validation,OPTICS; LASER; WAVELENGTH,https://example.com/proc/AAA/TTT/Q2/laser-wavelength
-aaa053.hw053,[AAA/TTT/Q2] Camera TOP Focus,OPTICS; CAMERA; TOP,https://example.com/proc/AAA/TTT/Q2/cam-top
-aaa054.hw054,[AAA/TTT/Q2] Camera SIDE Focus,OPTICS; CAMERA; SIDE,https://example.com/proc/AAA/TTT/Q2/cam-side
-aaa055.hw055,[AAA/TTT/Q2] Camera BOTTOM Focus,OPTICS; CAMERA; BOTTOM,https://example.com/proc/AAA/TTT/Q2/cam-bottom
-aaa056.hw056,[AAA/TTT/Q2] Camera MACRO Focus,OPTICS; CAMERA; MACRO,https://example.com/proc/AAA/TTT/Q2/cam-macro
-aaa057.hw057,[AAA/TTT/Q2] Conveyor Belt IN Sync,CONVEYOR; BELT_IN,https://example.com/proc/AAA/TTT/Q2/belt-in
-aaa058.hw058,[AAA/TTT/Q2] Conveyor Belt OUT Sync,CONVEYOR; BELT_OUT,https://example.com/proc/AAA/TTT/Q2/belt-out
-aaa059.hw059,[AAA/TTT/Q2] Conveyor Belt BUFFER Sync,CONVEYOR; BELT_BUFFER,https://example.com/proc/AAA/TTT/Q2/belt-buffer
-aaa060.hw060,[AAA/TTT/Q2] Conveyor Belt REJECT Sync,CONVEYOR; BELT_REJECT,https://example.com/proc/AAA/TTT/Q2/belt-reject
-aaa061.hw061,[AAA/TTT/Q2] Robot Joint J1 Teach,ROBOT; J1,https://example.com/proc/AAA/TTT/Q2/robot-j1
-aaa062.hw062,[AAA/TTT/Q2] Robot Joint J2 Teach,ROBOT; J2,https://example.com/proc/AAA/TTT/Q2/robot-j2
-aaa063.hw063,[AAA/TTT/Q2] Robot Joint J3 Teach,ROBOT; J3,https://example.com/proc/AAA/TTT/Q2/robot-j3
-aaa064.hw064,[AAA/TTT/Q2] Robot Joint J4 Teach— full sequence with safety interlock verification and post-run validation,ROBOT; J4,https://example.com/proc/AAA/TTT/Q2/robot-j4
-aaa065.hw065,[AAA/TTT/Q2] Robot Joint J5 Teach,ROBOT; J5,https://example.com/proc/AAA/TTT/Q2/robot-j5
-aaa066.hw066,[AAA/TTT/Q2] Robot Joint J6 Teach,ROBOT; J6,https://example.com/proc/AAA/TTT/Q2/robot-j6
-aaa067.hw067,[AAA/TTT/Q2] Valve VLV_01 Cycle Test,VALVE; VLV_01,https://example.com/proc/AAA/TTT/Q2/vlv-01
-aaa068.hw068,[AAA/TTT/Q2] Valve VLV_02 Cycle Test,VALVE; VLV_02,https://example.com/proc/AAA/TTT/Q2/vlv-02
-aaa069.hw069,[AAA/TTT/Q2] Valve VLV_03 Cycle Test,VALVE; VLV_03,https://example.com/proc/AAA/TTT/Q2/vlv-03
-aaa070.hw070,[AAA/TTT/Q2] Valve VLV_04 Cycle Test,VALVE; VLV_04,https://example.com/proc/AAA/TTT/Q2/vlv-04
-aaa071.hw071,[AAA/TTT/Q2] Valve VLV_05 Cycle Test,VALVE; VLV_05,https://example.com/proc/AAA/TTT/Q2/vlv-05
-aaa072.hw072,[AAA/TTT/Q2] Valve VLV_06 Cycle Test,VALVE; VLV_06,https://example.com/proc/AAA/TTT/Q2/vlv-06
-aaa073.hw073,[AAA/TTT/Q2] Valve VLV_07 Cycle Test,VALVE; VLV_07,https://example.com/proc/AAA/TTT/Q2/vlv-07
-aaa074.hw074,[AAA/TTT/Q2] Valve VLV_08 Cycle Test,VALVE; VLV_08,https://example.com/proc/AAA/TTT/Q2/vlv-08
-aaa075.hw075,[AAA/TTT/Q2] Valve VLV_09 Cycle Test,VALVE; VLV_09,https://example.com/proc/AAA/TTT/Q2/vlv-09
-aaa076.hw076,[AAA/TTT/Q2] Valve VLV_10 Cycle Test,VALVE; VLV_10,https://example.com/proc/AAA/TTT/Q2/vlv-10
-aaa077.hw077,[AAA/TTT/Q2] Valve VLV_11 Cycle Test,VALVE; VLV_11,https://example.com/proc/AAA/TTT/Q2/vlv-11
-aaa078.hw078,[AAA/TTT/Q2] Valve VLV_12 Cycle Test,VALVE; VLV_12,https://example.com/proc/AAA/TTT/Q2/vlv-12
-aaa079.hw079,[AAA/TTT/Q2] Full Motor Diagnostic Sweep,MOTOR; SERVO; AXIS_X; AXIS_Y,https://example.com/proc/AAA/TTT/Q2/motor-sweep
-aaa080.hw080,[AAA/TTT/Q2] Sensor Array Health Check— full sequence with safety interlock verification and post-run validation,SENSOR; PROXIMITY; ENCODER,https://example.com/proc/AAA/TTT/Q2/sensor-health
-aaa081.ot101,"[AAA/TTT/Q2] Calibration DAILY— extended procedure including pre-check, main operation, and recovery steps",MAINTENANCE; CALIBRATION; DAILY,https://example.com/proc/AAA/TTT/Q2/cal-daily
-aaa082.ot102,[AAA/TTT/Q2] Calibration WEEKLY— operator guide with parameter reference and troubleshooting appendix,MAINTENANCE; CALIBRATION; WEEKLY,https://example.com/proc/AAA/TTT/Q2/cal-weekly
-aaa083.ot103,[AAA/TTT/Q2] Calibration MONTHLY— detailed workflow for production environment with sign-off requirements,MAINTENANCE; CALIBRATION; MONTHLY,https://example.com/proc/AAA/TTT/Q2/cal-monthly
-aaa084.ot104,[AAA/TTT/Q2] Calibration QUARTERLY— full sequence with safety interlock verification and post-run validation,MAINTENANCE; CALIBRATION; QUARTERLY,https://example.com/proc/AAA/TTT/Q2/cal-quarterly
-aaa085.ot105,"[AAA/TTT/Q2] Calibration ANNUAL— extended procedure including pre-check, main operation, and recovery steps",MAINTENANCE; CALIBRATION; ANNUAL,https://example.com/proc/AAA/TTT/Q2/cal-annual
-aaa086.ot106,[AAA/TTT/Q2] Clean FILTER,MAINTENANCE; CLEAN; FILTER,https://example.com/proc/AAA/TTT/Q2/clean-filter
-aaa087.ot107,[AAA/TTT/Q2] Clean CHUCK,MAINTENANCE; CLEAN; CHUCK,https://example.com/proc/AAA/TTT/Q2/clean-chuck
-aaa088.ot108,[AAA/TTT/Q2] Clean WINDOW,MAINTENANCE; CLEAN; WINDOW,https://example.com/proc/AAA/TTT/Q2/clean-window
-aaa089.ot109,[AAA/TTT/Q2] Clean NOZZLE,MAINTENANCE; CLEAN; NOZZLE,https://example.com/proc/AAA/TTT/Q2/clean-nozzle
-aaa090.ot110,[AAA/TTT/Q2] Clean SHOWER,MAINTENANCE; CLEAN; SHOWER,https://example.com/proc/AAA/TTT/Q2/clean-shower
-aaa091.ot111,[AAA/TTT/Q2] Maintenance Checklist CHK_001,MAINTENANCE; CHK_001,https://example.com/proc/AAA/TTT/Q2/chk-001
-aaa092.ot112,[AAA/TTT/Q2] Maintenance Checklist CHK_002,MAINTENANCE; CHK_002,https://example.com/proc/AAA/TTT/Q2/chk-002
-aaa093.ot113,[AAA/TTT/Q2] Maintenance Checklist CHK_003,MAINTENANCE; CHK_003,https://example.com/proc/AAA/TTT/Q2/chk-003
-aaa094.ot114,[AAA/TTT/Q2] Maintenance Checklist CHK_004,MAINTENANCE; CHK_004,https://example.com/proc/AAA/TTT/Q2/chk-004
-aaa095.ot115,[AAA/TTT/Q2] Maintenance Checklist CHK_005,MAINTENANCE; CHK_005,https://example.com/proc/AAA/TTT/Q2/chk-005
-aaa096.ot116,[AAA/TTT/Q2] Maintenance Checklist CHK_006,MAINTENANCE; CHK_006,https://example.com/proc/AAA/TTT/Q2/chk-006
-aaa097.ot117,[AAA/TTT/Q2] Maintenance Checklist CHK_007,MAINTENANCE; CHK_007,https://example.com/proc/AAA/TTT/Q2/chk-007
-aaa098.ot118,[AAA/TTT/Q2] Maintenance Checklist CHK_008,MAINTENANCE; CHK_008,https://example.com/proc/AAA/TTT/Q2/chk-008
-aaa099.ot119,[AAA/TTT/Q2] Maintenance Checklist CHK_009,MAINTENANCE; CHK_009,https://example.com/proc/AAA/TTT/Q2/chk-009
-aaa100.ot120,[AAA/TTT/Q2] Maintenance Checklist CHK_010,MAINTENANCE; CHK_010,https://example.com/proc/AAA/TTT/Q2/chk-010
-aaa101.ot121,[AAA/TTT/Q2] Maintenance Checklist CHK_011,MAINTENANCE; CHK_011,https://example.com/proc/AAA/TTT/Q2/chk-011
-aaa102.ot122,[AAA/TTT/Q2] Maintenance Checklist CHK_012,MAINTENANCE; CHK_012,https://example.com/proc/AAA/TTT/Q2/chk-012
-aaa103.ot123,[AAA/TTT/Q2] Maintenance Checklist CHK_013,MAINTENANCE; CHK_013,https://example.com/proc/AAA/TTT/Q2/chk-013
-aaa104.ot124,[AAA/TTT/Q2] Maintenance Checklist CHK_014,MAINTENANCE; CHK_014,https://example.com/proc/AAA/TTT/Q2/chk-014
-aaa105.ot125,[AAA/TTT/Q2] Maintenance Checklist CHK_015,MAINTENANCE; CHK_015,https://example.com/proc/AAA/TTT/Q2/chk-015
-aaa106.ot126,[AAA/TTT/Q2] Alarm ALM_001 Acknowledge,DIAGNOSTIC; ALM_001,https://example.com/proc/AAA/TTT/Q2/alm-001
-aaa107.ot127,[AAA/TTT/Q2] Alarm ALM_002 Acknowledge,DIAGNOSTIC; ALM_002,https://example.com/proc/AAA/TTT/Q2/alm-002
-aaa108.ot128,[AAA/TTT/Q2] Alarm ALM_003 Reset and Verify— full sequence with safety interlock verification and post-run validation,DIAGNOSTIC; ALM_003,https://example.com/proc/AAA/TTT/Q2/alm-003
-aaa109.ot129,[AAA/TTT/Q2] Alarm ALM_004 Acknowledge,DIAGNOSTIC; ALM_004,https://example.com/proc/AAA/TTT/Q2/alm-004
-aaa110.ot130,[AAA/TTT/Q2] Alarm ALM_005 Acknowledge,DIAGNOSTIC; ALM_005,https://example.com/proc/AAA/TTT/Q2/alm-005
-aaa111.ot131,[AAA/TTT/Q2] Alarm ALM_006 Reset and Verify— detailed workflow for production environment with sign-off requirements,DIAGNOSTIC; ALM_006,https://example.com/proc/AAA/TTT/Q2/alm-006
-aaa112.ot132,[AAA/TTT/Q2] Alarm ALM_007 Acknowledge,DIAGNOSTIC; ALM_007,https://example.com/proc/AAA/TTT/Q2/alm-007
-aaa113.ot133,[AAA/TTT/Q2] Alarm ALM_008 Acknowledge,DIAGNOSTIC; ALM_008,https://example.com/proc/AAA/TTT/Q2/alm-008
-aaa114.ot134,[AAA/TTT/Q2] Alarm ALM_009 Reset and Verify— operator guide with parameter reference and troubleshooting appendix,DIAGNOSTIC; ALM_009,https://example.com/proc/AAA/TTT/Q2/alm-009
-aaa115.ot135,[AAA/TTT/Q2] Alarm ALM_010 Acknowledge,DIAGNOSTIC; ALM_010,https://example.com/proc/AAA/TTT/Q2/alm-010
-aaa116.ot136,[AAA/TTT/Q2] Alarm ALM_011 Acknowledge,DIAGNOSTIC; ALM_011,https://example.com/proc/AAA/TTT/Q2/alm-011
-aaa117.ot137,"[AAA/TTT/Q2] Alarm ALM_012 Reset and Verify— extended procedure including pre-check, main operation, and recovery steps",DIAGNOSTIC; ALM_012,https://example.com/proc/AAA/TTT/Q2/alm-012
-aaa118.ot138,[AAA/TTT/Q2] Alarm ALM_013 Acknowledge,DIAGNOSTIC; ALM_013,https://example.com/proc/AAA/TTT/Q2/alm-013
-aaa119.ot139,[AAA/TTT/Q2] Alarm ALM_014 Acknowledge,DIAGNOSTIC; ALM_014,https://example.com/proc/AAA/TTT/Q2/alm-014
-aaa120.ot140,[AAA/TTT/Q2] Alarm ALM_015 Reset and Verify— full sequence with safety interlock verification and post-run validation,DIAGNOSTIC; ALM_015,https://example.com/proc/AAA/TTT/Q2/alm-015
-aaa121.ot141,[AAA/TTT/Q2] Alarm ALM_016 Acknowledge,DIAGNOSTIC; ALM_016,https://example.com/proc/AAA/TTT/Q2/alm-016
-aaa122.ot142,[AAA/TTT/Q2] Alarm ALM_017 Acknowledge,DIAGNOSTIC; ALM_017,https://example.com/proc/AAA/TTT/Q2/alm-017
-aaa123.ot143,[AAA/TTT/Q2] Alarm ALM_018 Reset and Verify— detailed workflow for production environment with sign-off requirements,DIAGNOSTIC; ALM_018,https://example.com/proc/AAA/TTT/Q2/alm-018
-aaa124.ot144,[AAA/TTT/Q2] Alarm ALM_019 Acknowledge,DIAGNOSTIC; ALM_019,https://example.com/proc/AAA/TTT/Q2/alm-019
-aaa125.ot145,[AAA/TTT/Q2] Alarm ALM_020 Acknowledge,DIAGNOSTIC; ALM_020,https://example.com/proc/AAA/TTT/Q2/alm-020
-aaa126.ot146,[AAA/TTT/Q2] Alarm ALM_021 Reset and Verify— operator guide with parameter reference and troubleshooting appendix,DIAGNOSTIC; ALM_021,https://example.com/proc/AAA/TTT/Q2/alm-021
-aaa127.ot147,[AAA/TTT/Q2] Alarm ALM_022 Acknowledge,DIAGNOSTIC; ALM_022,https://example.com/proc/AAA/TTT/Q2/alm-022
-aaa128.ot148,[AAA/TTT/Q2] Alarm ALM_023 Acknowledge,DIAGNOSTIC; ALM_023,https://example.com/proc/AAA/TTT/Q2/alm-023
-aaa129.ot149,"[AAA/TTT/Q2] Alarm ALM_024 Reset and Verify— extended procedure including pre-check, main operation, and recovery steps",DIAGNOSTIC; ALM_024,https://example.com/proc/AAA/TTT/Q2/alm-024
-aaa130.ot150,[AAA/TTT/Q2] Alarm ALM_025 Acknowledge,DIAGNOSTIC; ALM_025,https://example.com/proc/AAA/TTT/Q2/alm-025
-aaa131.ot151,[AAA/TTT/Q2] Export ERROR Log— detailed workflow for production environment with sign-off requirements,DIAGNOSTIC; LOG; ERROR,https://example.com/proc/AAA/TTT/Q2/log-error
-aaa132.ot152,[AAA/TTT/Q2] Export WARNING Log— full sequence with safety interlock verification and post-run validation,DIAGNOSTIC; LOG; WARNING,https://example.com/proc/AAA/TTT/Q2/log-warning
-aaa133.ot153,"[AAA/TTT/Q2] Export INFO Log— extended procedure including pre-check, main operation, and recovery steps",DIAGNOSTIC; LOG; INFO,https://example.com/proc/AAA/TTT/Q2/log-info
-aaa134.ot154,[AAA/TTT/Q2] Export DEBUG Log— operator guide with parameter reference and troubleshooting appendix,DIAGNOSTIC; LOG; DEBUG,https://example.com/proc/AAA/TTT/Q2/log-debug
-aaa135.ot155,[AAA/TTT/Q2] Export TRACE Log— detailed workflow for production environment with sign-off requirements,DIAGNOSTIC; LOG; TRACE,https://example.com/proc/AAA/TTT/Q2/log-trace
-aaa136.ot156,[AAA/TTT/Q2] Export AUDIT Log— full sequence with safety interlock verification and post-run validation,DIAGNOSTIC; LOG; AUDIT,https://example.com/proc/AAA/TTT/Q2/log-audit
-aaa137.ot157,[AAA/TTT/Q2] Self Test QUICK,DIAGNOSTIC; SELF_TEST; QUICK,https://example.com/proc/AAA/TTT/Q2/self-quick
-aaa138.ot158,[AAA/TTT/Q2] Self Test FULL,DIAGNOSTIC; SELF_TEST; FULL,https://example.com/proc/AAA/TTT/Q2/self-full
-aaa139.ot159,[AAA/TTT/Q2] Self Test HW,DIAGNOSTIC; SELF_TEST; HW,https://example.com/proc/AAA/TTT/Q2/self-hw
-aaa140.ot160,[AAA/TTT/Q2] Self Test SW,DIAGNOSTIC; SELF_TEST; SW,https://example.com/proc/AAA/TTT/Q2/self-sw
-aaa141.ot161,[AAA/TTT/Q2] Self Test COMM,DIAGNOSTIC; SELF_TEST; COMM,https://example.com/proc/AAA/TTT/Q2/self-comm
-aaa142.ot162,[AAA/TTT/Q2] Open MANUAL Reference,DOCUMENTATION; MANUAL,https://example.com/proc/AAA/TTT/Q2/doc-manual
-aaa143.ot163,[AAA/TTT/Q2] Open SPEC Reference,DOCUMENTATION; SPEC,https://example.com/proc/AAA/TTT/Q2/doc-spec
-aaa144.ot164,[AAA/TTT/Q2] Open DRAWING Reference,DOCUMENTATION; DRAWING,https://example.com/proc/AAA/TTT/Q2/doc-drawing
-aaa145.ot165,[AAA/TTT/Q2] Open BOM Reference,DOCUMENTATION; BOM,https://example.com/proc/AAA/TTT/Q2/doc-bom
-aaa146.ot166,[AAA/TTT/Q2] Open SCHEMATIC Reference,DOCUMENTATION; SCHEMATIC,https://example.com/proc/AAA/TTT/Q2/doc-schematic
-aaa147.ot167,[AAA/TTT/Q2] General Operator Reference Guide— detailed workflow for production environment with sign-off requirements,REST,https://example.com/proc/AAA/TTT/Q2/rest-general
-aaa148.ot168,[AAA/TTT/Q2] Quick Start and Emergency Stop Overview— full sequence with safety interlock verification and post-run validation,REST,https://example.com/proc/AAA/TTT/Q2/rest-quickstart
-aaa149.ot169,[AAA/TTT/Q2] FAQ and Common Troubleshooting Index,REST,https://example.com/proc/AAA/TTT/Q2/rest-faq
-aaa150.ot170,[AAA/TTT/Q2] Contact and Escalation Matrix,REST,https://example.com/proc/AAA/TTT/Q2/rest-contact
+aaa001.hw001,[AAA/TTT/Q2] Fab bay tool module subsys check,FAB; BAY; TOOL; MODULE; SUBSYS; COMPONENT,https://example.com/proc/AAA/TTT/Q2/fab-deep
+aaa002.hw002,[AAA/TTT/Q2] 축 원점복귀 절차 (AXIS_X Homing),MOTOR; SERVO; AXIS_X,https://example.com/proc/AAA/TTT/Q2/homing-axis_x
+aaa003.hw003,[AAA/TTT/Q2] Servo AXIS_X Jog Mode,MOTOR; SERVO; AXIS_X,https://example.com/proc/AAA/TTT/Q2/jog-axis_x
+aaa004.hw004,[AAA/TTT/Q2] Servo AXIS_Y Homing — full sequence with safety interlock verification and post-run validation,MOTOR; SERVO; AXIS_Y,https://example.com/proc/AAA/TTT/Q2/homing-axis_y
+aaa005.hw005,[AAA/TTT/Q2] Servo AXIS_Y Jog Mode,MOTOR; SERVO; AXIS_Y,https://example.com/proc/AAA/TTT/Q2/jog-axis_y
+aaa006.hw006,[AAA/TTT/Q2] Servo AXIS_Z Homing,MOTOR; SERVO; AXIS_Z,https://example.com/proc/AAA/TTT/Q2/homing-axis_z
+aaa007.hw007,[AAA/TTT/Q2] Servo AXIS_Z Jog Mode,MOTOR; SERVO; AXIS_Z,https://example.com/proc/AAA/TTT/Q2/jog-axis_z
+aaa008.hw008,[AAA/TTT/Q2] Servo AXIS_R Homing — full sequence with safety interlock verification and post-run validation,MOTOR; SERVO; AXIS_R,https://example.com/proc/AAA/TTT/Q2/homing-axis_r
+aaa009.hw009,[AAA/TTT/Q2] Servo AXIS_R Jog Mode,MOTOR; SERVO; AXIS_R,https://example.com/proc/AAA/TTT/Q2/jog-axis_r
+aaa010.hw010,[AAA/TTT/Q2] Servo AXIS_T Homing,MOTOR; SERVO; AXIS_T,https://example.com/proc/AAA/TTT/Q2/homing-axis_t
+aaa011.hw011,[AAA/TTT/Q2] Servo AXIS_T Jog Mode,MOTOR; SERVO; AXIS_T,https://example.com/proc/AAA/TTT/Q2/jog-axis_t
+aaa012.hw012,[AAA/TTT/Q2] Stepper FEED_A Setup,MOTOR; STEPPER; FEED_A,https://example.com/proc/AAA/TTT/Q2/stepper-feed_a
+aaa013.hw013,[AAA/TTT/Q2] Stepper FEED_B Setup,MOTOR; STEPPER; FEED_B,https://example.com/proc/AAA/TTT/Q2/stepper-feed_b
+aaa014.hw014,[AAA/TTT/Q2] Stepper FEED_C Setup,MOTOR; STEPPER; FEED_C,https://example.com/proc/AAA/TTT/Q2/stepper-feed_c
+aaa015.hw015,[AAA/TTT/Q2] Spindle SP_01 Speed Tune,MOTOR; SPINDLE; SP_01,https://example.com/proc/AAA/TTT/Q2/spindle-sp_01
+aaa016.hw016,[AAA/TTT/Q2] Spindle SP_02 Speed Tune — full sequence with safety interlock verification and post-run validation,MOTOR; SPINDLE; SP_02,https://example.com/proc/AAA/TTT/Q2/spindle-sp_02
+aaa017.hw017,[AAA/TTT/Q2] Spindle SP_03 Speed Tune,MOTOR; SPINDLE; SP_03,https://example.com/proc/AAA/TTT/Q2/spindle-sp_03
+aaa018.hw018,[AAA/TTT/Q2] Proximity Sensor PROX_01 Adjust,SENSOR; PROXIMITY; PROX_01,https://example.com/proc/AAA/TTT/Q2/prox-01
+aaa019.hw019,[AAA/TTT/Q2] Proximity Sensor PROX_02 Adjust,SENSOR; PROXIMITY; PROX_02,https://example.com/proc/AAA/TTT/Q2/prox-02
+aaa020.hw020,[AAA/TTT/Q2] Proximity Sensor PROX_03 Adjust,SENSOR; PROXIMITY; PROX_03,https://example.com/proc/AAA/TTT/Q2/prox-03
+aaa021.hw021,[AAA/TTT/Q2] Proximity Sensor PROX_04 Adjust,SENSOR; PROXIMITY; PROX_04,https://example.com/proc/AAA/TTT/Q2/prox-04
+aaa022.hw022,[AAA/TTT/Q2] Proximity Sensor PROX_05 Adjust,SENSOR; PROXIMITY; PROX_05,https://example.com/proc/AAA/TTT/Q2/prox-05
+aaa023.hw023,[AAA/TTT/Q2] Proximity Sensor PROX_06 Adjust,SENSOR; PROXIMITY; PROX_06,https://example.com/proc/AAA/TTT/Q2/prox-06
+aaa024.hw024,[AAA/TTT/Q2] Proximity Sensor PROX_07 Adjust,SENSOR; PROXIMITY; PROX_07,https://example.com/proc/AAA/TTT/Q2/prox-07
+aaa025.hw025,[AAA/TTT/Q2] Proximity Sensor PROX_08 Adjust,SENSOR; PROXIMITY; PROX_08,https://example.com/proc/AAA/TTT/Q2/prox-08
+aaa026.hw026,[AAA/TTT/Q2] Encoder ENC_01 Reset,SENSOR; ENCODER; ENC_01,https://example.com/proc/AAA/TTT/Q2/enc-01
+aaa027.hw027,[AAA/TTT/Q2] Encoder ENC_02 Reset,SENSOR; ENCODER; ENC_02,https://example.com/proc/AAA/TTT/Q2/enc-02
+aaa028.hw028,[AAA/TTT/Q2] Encoder ENC_03 Reset,SENSOR; ENCODER; ENC_03,https://example.com/proc/AAA/TTT/Q2/enc-03
+aaa029.hw029,[AAA/TTT/Q2] Encoder ENC_04 Reset,SENSOR; ENCODER; ENC_04,https://example.com/proc/AAA/TTT/Q2/enc-04
+aaa030.hw030,[AAA/TTT/Q2] Temperature CHAMBER Monitor,SENSOR; TEMPERATURE; CHAMBER,https://example.com/proc/AAA/TTT/Q2/temp-chamber
+aaa031.hw031,[AAA/TTT/Q2] Temperature STAGE Monitor,SENSOR; TEMPERATURE; STAGE,https://example.com/proc/AAA/TTT/Q2/temp-stage
+aaa032.hw032,[AAA/TTT/Q2] Temperature LAMP Monitor — full sequence with safety interlock verification and post-run validation,SENSOR; TEMPERATURE; LAMP,https://example.com/proc/AAA/TTT/Q2/temp-lamp
+aaa033.hw033,[AAA/TTT/Q2] Temperature EXHAUST Monitor,SENSOR; TEMPERATURE; EXHAUST,https://example.com/proc/AAA/TTT/Q2/temp-exhaust
+aaa034.hw034,[AAA/TTT/Q2] IO Port 01 Configuration,IO; PORT_01,https://example.com/proc/AAA/TTT/Q2/io-p01
+aaa035.hw035,[AAA/TTT/Q2] IO Port 02 Configuration,IO; PORT_02,https://example.com/proc/AAA/TTT/Q2/io-p02
+aaa036.hw036,[AAA/TTT/Q2] IO Port 03 Configuration,IO; PORT_03,https://example.com/proc/AAA/TTT/Q2/io-p03
+aaa037.hw037,[AAA/TTT/Q2] IO Port 04 Configuration,IO; PORT_04,https://example.com/proc/AAA/TTT/Q2/io-p04
+aaa038.hw038,[AAA/TTT/Q2] IO Port 05 Configuration,IO; PORT_05,https://example.com/proc/AAA/TTT/Q2/io-p05
+aaa039.hw039,[AAA/TTT/Q2] IO Port 06 Configuration,IO; PORT_06,https://example.com/proc/AAA/TTT/Q2/io-p06
+aaa040.hw040,[AAA/TTT/Q2] IO Port 07 Configuration,IO; PORT_07,https://example.com/proc/AAA/TTT/Q2/io-p07
+aaa041.hw041,[AAA/TTT/Q2] IO Port 08 Configuration,IO; PORT_08,https://example.com/proc/AAA/TTT/Q2/io-p08
+aaa042.hw042,[AAA/TTT/Q2] IO Port 09 Configuration,IO; PORT_09,https://example.com/proc/AAA/TTT/Q2/io-p09
+aaa043.hw043,[AAA/TTT/Q2] IO Port 10 Configuration,IO; PORT_10,https://example.com/proc/AAA/TTT/Q2/io-p10
+aaa044.hw044,[AAA/TTT/Q2] IO Port 11 Configuration,IO; PORT_11,https://example.com/proc/AAA/TTT/Q2/io-p11
+aaa045.hw045,[AAA/TTT/Q2] IO Port 12 Configuration,IO; PORT_12,https://example.com/proc/AAA/TTT/Q2/io-p12
+aaa046.hw046,[AAA/TTT/Q2] IO Port 13 Configuration,IO; PORT_13,https://example.com/proc/AAA/TTT/Q2/io-p13
+aaa047.hw047,[AAA/TTT/Q2] IO Port 14 Configuration,IO; PORT_14,https://example.com/proc/AAA/TTT/Q2/io-p14
+aaa048.hw048,[AAA/TTT/Q2] IO Port 15 Configuration,IO; PORT_15,https://example.com/proc/AAA/TTT/Q2/io-p15
+aaa049.hw049,[AAA/TTT/Q2] IO Port 16 Configuration,IO; PORT_16,https://example.com/proc/AAA/TTT/Q2/io-p16
+aaa050.hw050,[AAA/TTT/Q2] Laser ALIGN Calibration,OPTICS; LASER; ALIGN,https://example.com/proc/AAA/TTT/Q2/laser-align
+aaa051.hw051,[AAA/TTT/Q2] Laser POWER Calibration,OPTICS; LASER; POWER,https://example.com/proc/AAA/TTT/Q2/laser-power
+aaa052.hw052,[AAA/TTT/Q2] Laser PULSE Calibration — full sequence with safety interlock verification and post-run validation,OPTICS; LASER; PULSE,https://example.com/proc/AAA/TTT/Q2/laser-pulse
+aaa053.hw053,[AAA/TTT/Q2] Laser WAVELENGTH Calibration,OPTICS; LASER; WAVELENGTH,https://example.com/proc/AAA/TTT/Q2/laser-wavelength
+aaa054.hw054,[AAA/TTT/Q2] Camera TOP Focus,OPTICS; CAMERA; TOP,https://example.com/proc/AAA/TTT/Q2/cam-top
+aaa055.hw055,[AAA/TTT/Q2] Camera SIDE Focus,OPTICS; CAMERA; SIDE,https://example.com/proc/AAA/TTT/Q2/cam-side
+aaa056.hw056,[AAA/TTT/Q2] Camera BOTTOM Focus,OPTICS; CAMERA; BOTTOM,https://example.com/proc/AAA/TTT/Q2/cam-bottom
+aaa057.hw057,[AAA/TTT/Q2] Camera MACRO Focus,OPTICS; CAMERA; MACRO,https://example.com/proc/AAA/TTT/Q2/cam-macro
+aaa058.hw058,[AAA/TTT/Q2] Conveyor Belt IN Sync,CONVEYOR; BELT_IN,https://example.com/proc/AAA/TTT/Q2/belt-in
+aaa059.hw059,[AAA/TTT/Q2] Conveyor Belt OUT Sync,CONVEYOR; BELT_OUT,https://example.com/proc/AAA/TTT/Q2/belt-out
+aaa060.hw060,[AAA/TTT/Q2] Conveyor Belt BUFFER Sync,CONVEYOR; BELT_BUFFER,https://example.com/proc/AAA/TTT/Q2/belt-buffer
+aaa061.hw061,[AAA/TTT/Q2] Conveyor Belt REJECT Sync,CONVEYOR; BELT_REJECT,https://example.com/proc/AAA/TTT/Q2/belt-reject
+aaa062.hw062,[AAA/TTT/Q2] Robot Joint J1 Teach,ROBOT; J1,https://example.com/proc/AAA/TTT/Q2/robot-j1
+aaa063.hw063,[AAA/TTT/Q2] Robot Joint J2 Teach,ROBOT; J2,https://example.com/proc/AAA/TTT/Q2/robot-j2
+aaa064.hw064,[AAA/TTT/Q2] Robot Joint J3 Teach — full sequence with safety interlock verification and post-run validation,ROBOT; J3,https://example.com/proc/AAA/TTT/Q2/robot-j3
+aaa065.hw065,[AAA/TTT/Q2] Robot Joint J4 Teach,ROBOT; J4,https://example.com/proc/AAA/TTT/Q2/robot-j4
+aaa066.hw066,[AAA/TTT/Q2] Robot Joint J5 Teach,ROBOT; J5,https://example.com/proc/AAA/TTT/Q2/robot-j5
+aaa067.hw067,[AAA/TTT/Q2] Robot Joint J6 Teach,ROBOT; J6,https://example.com/proc/AAA/TTT/Q2/robot-j6
+aaa068.hw068,[AAA/TTT/Q2] Valve VLV_01 Cycle Test,VALVE; VLV_01,https://example.com/proc/AAA/TTT/Q2/vlv-01
+aaa069.hw069,[AAA/TTT/Q2] Valve VLV_02 Cycle Test,VALVE; VLV_02,https://example.com/proc/AAA/TTT/Q2/vlv-02
+aaa070.hw070,[AAA/TTT/Q2] Valve VLV_03 Cycle Test,VALVE; VLV_03,https://example.com/proc/AAA/TTT/Q2/vlv-03
+aaa071.hw071,[AAA/TTT/Q2] Valve VLV_04 Cycle Test,VALVE; VLV_04,https://example.com/proc/AAA/TTT/Q2/vlv-04
+aaa072.hw072,[AAA/TTT/Q2] Valve VLV_05 Cycle Test,VALVE; VLV_05,https://example.com/proc/AAA/TTT/Q2/vlv-05
+aaa073.hw073,[AAA/TTT/Q2] Valve VLV_06 Cycle Test,VALVE; VLV_06,https://example.com/proc/AAA/TTT/Q2/vlv-06
+aaa074.hw074,[AAA/TTT/Q2] Valve VLV_07 Cycle Test,VALVE; VLV_07,https://example.com/proc/AAA/TTT/Q2/vlv-07
+aaa075.hw075,[AAA/TTT/Q2] Valve VLV_08 Cycle Test,VALVE; VLV_08,https://example.com/proc/AAA/TTT/Q2/vlv-08
+aaa076.hw076,[AAA/TTT/Q2] Valve VLV_09 Cycle Test,VALVE; VLV_09,https://example.com/proc/AAA/TTT/Q2/vlv-09
+aaa077.hw077,[AAA/TTT/Q2] Valve VLV_10 Cycle Test,VALVE; VLV_10,https://example.com/proc/AAA/TTT/Q2/vlv-10
+aaa078.hw078,[AAA/TTT/Q2] Valve VLV_11 Cycle Test,VALVE; VLV_11,https://example.com/proc/AAA/TTT/Q2/vlv-11
+aaa079.hw079,[AAA/TTT/Q2] Valve VLV_12 Cycle Test,VALVE; VLV_12,https://example.com/proc/AAA/TTT/Q2/vlv-12
+aaa080.hw080,[AAA/TTT/Q2] Full Motor Diagnostic Sweep — full sequence with safety interlock verification and post-run validation,MOTOR; SERVO; AXIS_X; AXIS_Y; AXIS_Z,https://example.com/proc/AAA/TTT/Q2/motor-sweep
+aaa081.hw081,[AAA/TTT/Q2] Sensor Array Health Check,SENSOR; PROXIMITY; PROX_01; PROX_02; ENCODER,https://example.com/proc/AAA/TTT/Q2/sensor-health
+aaa082.hw082,[AAA/TTT/Q2] Triple-axis alignment pass,MOTOR; SERVO; AXIS_X; AXIS_Y; AXIS_T,https://example.com/proc/AAA/TTT/Q2/triple-align
+aaa083.ot101,"[AAA/TTT/Q2] 일일 점검 체크리스트 (Daily calibration) — extended procedure including pre-check, main operation, and recovery steps",MAINTENANCE; CALIBRATION; DAILY,https://example.com/proc/AAA/TTT/Q2/cal-daily
+aaa084.ot102,[AAA/TTT/Q2] Calibration WEEKLY — operator guide with parameter reference and troubleshooting appendix,MAINTENANCE; CALIBRATION; WEEKLY,https://example.com/proc/AAA/TTT/Q2/cal-weekly
+aaa085.ot103,[AAA/TTT/Q2] Calibration MONTHLY — detailed workflow for production environment with sign-off requirements,MAINTENANCE; CALIBRATION; MONTHLY,https://example.com/proc/AAA/TTT/Q2/cal-monthly
+aaa086.ot104,[AAA/TTT/Q2] Calibration QUARTERLY — full sequence with safety interlock verification and post-run validation,MAINTENANCE; CALIBRATION; QUARTERLY,https://example.com/proc/AAA/TTT/Q2/cal-quarterly
+aaa087.ot105,"[AAA/TTT/Q2] Calibration ANNUAL — extended procedure including pre-check, main operation, and recovery steps",MAINTENANCE; CALIBRATION; ANNUAL,https://example.com/proc/AAA/TTT/Q2/cal-annual
+aaa088.ot106,[AAA/TTT/Q2] Clean FILTER,MAINTENANCE; CLEAN; FILTER,https://example.com/proc/AAA/TTT/Q2/clean-filter
+aaa089.ot107,[AAA/TTT/Q2] Clean CHUCK,MAINTENANCE; CLEAN; CHUCK,https://example.com/proc/AAA/TTT/Q2/clean-chuck
+aaa090.ot108,[AAA/TTT/Q2] Clean WINDOW,MAINTENANCE; CLEAN; WINDOW,https://example.com/proc/AAA/TTT/Q2/clean-window
+aaa091.ot109,[AAA/TTT/Q2] Clean NOZZLE,MAINTENANCE; CLEAN; NOZZLE,https://example.com/proc/AAA/TTT/Q2/clean-nozzle
+aaa092.ot110,[AAA/TTT/Q2] Clean SHOWER,MAINTENANCE; CLEAN; SHOWER,https://example.com/proc/AAA/TTT/Q2/clean-shower
+aaa093.ot111,[AAA/TTT/Q2] Maintenance Checklist CHK_001,MAINTENANCE; CHK_001,https://example.com/proc/AAA/TTT/Q2/chk-001
+aaa094.ot112,[AAA/TTT/Q2] Maintenance Checklist CHK_002,MAINTENANCE; CHK_002,https://example.com/proc/AAA/TTT/Q2/chk-002
+aaa095.ot113,[AAA/TTT/Q2] Maintenance Checklist CHK_003,MAINTENANCE; CHK_003,https://example.com/proc/AAA/TTT/Q2/chk-003
+aaa096.ot114,[AAA/TTT/Q2] Maintenance Checklist CHK_004,MAINTENANCE; CHK_004,https://example.com/proc/AAA/TTT/Q2/chk-004
+aaa097.ot115,[AAA/TTT/Q2] Maintenance Checklist CHK_005,MAINTENANCE; CHK_005,https://example.com/proc/AAA/TTT/Q2/chk-005
+aaa098.ot116,[AAA/TTT/Q2] Maintenance Checklist CHK_006,MAINTENANCE; CHK_006,https://example.com/proc/AAA/TTT/Q2/chk-006
+aaa099.ot117,[AAA/TTT/Q2] Maintenance Checklist CHK_007,MAINTENANCE; CHK_007,https://example.com/proc/AAA/TTT/Q2/chk-007
+aaa100.ot118,[AAA/TTT/Q2] Maintenance Checklist CHK_008,MAINTENANCE; CHK_008,https://example.com/proc/AAA/TTT/Q2/chk-008
+aaa101.ot119,[AAA/TTT/Q2] Maintenance Checklist CHK_009,MAINTENANCE; CHK_009,https://example.com/proc/AAA/TTT/Q2/chk-009
+aaa102.ot120,[AAA/TTT/Q2] Maintenance Checklist CHK_010,MAINTENANCE; CHK_010,https://example.com/proc/AAA/TTT/Q2/chk-010
+aaa103.ot121,[AAA/TTT/Q2] Maintenance Checklist CHK_011,MAINTENANCE; CHK_011,https://example.com/proc/AAA/TTT/Q2/chk-011
+aaa104.ot122,[AAA/TTT/Q2] Maintenance Checklist CHK_012,MAINTENANCE; CHK_012,https://example.com/proc/AAA/TTT/Q2/chk-012
+aaa105.ot123,[AAA/TTT/Q2] Maintenance Checklist CHK_013,MAINTENANCE; CHK_013,https://example.com/proc/AAA/TTT/Q2/chk-013
+aaa106.ot124,[AAA/TTT/Q2] Maintenance Checklist CHK_014,MAINTENANCE; CHK_014,https://example.com/proc/AAA/TTT/Q2/chk-014
+aaa107.ot125,[AAA/TTT/Q2] Maintenance Checklist CHK_015,MAINTENANCE; CHK_015,https://example.com/proc/AAA/TTT/Q2/chk-015
+aaa108.ot126,[AAA/TTT/Q2] 알람 리셋 및 확인 (ALM_001),DIAGNOSTIC; ALM_001,https://example.com/proc/AAA/TTT/Q2/alm-001
+aaa109.ot127,[AAA/TTT/Q2] Alarm ALM_002 Acknowledge,DIAGNOSTIC; ALM_002,https://example.com/proc/AAA/TTT/Q2/alm-002
+aaa110.ot128,[AAA/TTT/Q2] Alarm ALM_003 Acknowledge — full sequence with safety interlock verification and post-run validation,DIAGNOSTIC; ALM_003,https://example.com/proc/AAA/TTT/Q2/alm-003
+aaa111.ot129,[AAA/TTT/Q2] Alarm ALM_004 Acknowledge,DIAGNOSTIC; ALM_004,https://example.com/proc/AAA/TTT/Q2/alm-004
+aaa112.ot130,[AAA/TTT/Q2] Alarm ALM_005 Acknowledge,DIAGNOSTIC; ALM_005,https://example.com/proc/AAA/TTT/Q2/alm-005
+aaa113.ot131,[AAA/TTT/Q2] Alarm ALM_006 Acknowledge — detailed workflow for production environment with sign-off requirements,DIAGNOSTIC; ALM_006,https://example.com/proc/AAA/TTT/Q2/alm-006
+aaa114.ot132,[AAA/TTT/Q2] Alarm ALM_007 Acknowledge,DIAGNOSTIC; ALM_007,https://example.com/proc/AAA/TTT/Q2/alm-007
+aaa115.ot133,[AAA/TTT/Q2] Alarm ALM_008 Acknowledge,DIAGNOSTIC; ALM_008,https://example.com/proc/AAA/TTT/Q2/alm-008
+aaa116.ot134,[AAA/TTT/Q2] Alarm ALM_009 Acknowledge — operator guide with parameter reference and troubleshooting appendix,DIAGNOSTIC; ALM_009,https://example.com/proc/AAA/TTT/Q2/alm-009
+aaa117.ot135,[AAA/TTT/Q2] Alarm ALM_010 Acknowledge,DIAGNOSTIC; ALM_010,https://example.com/proc/AAA/TTT/Q2/alm-010
+aaa118.ot136,[AAA/TTT/Q2] Alarm ALM_011 Acknowledge,DIAGNOSTIC; ALM_011,https://example.com/proc/AAA/TTT/Q2/alm-011
+aaa119.ot137,"[AAA/TTT/Q2] Alarm ALM_012 Acknowledge — extended procedure including pre-check, main operation, and recovery steps",DIAGNOSTIC; ALM_012,https://example.com/proc/AAA/TTT/Q2/alm-012
+aaa120.ot138,[AAA/TTT/Q2] Alarm ALM_013 Acknowledge,DIAGNOSTIC; ALM_013,https://example.com/proc/AAA/TTT/Q2/alm-013
+aaa121.ot139,[AAA/TTT/Q2] Alarm ALM_014 Acknowledge,DIAGNOSTIC; ALM_014,https://example.com/proc/AAA/TTT/Q2/alm-014
+aaa122.ot140,[AAA/TTT/Q2] Alarm ALM_015 Acknowledge — full sequence with safety interlock verification and post-run validation,DIAGNOSTIC; ALM_015,https://example.com/proc/AAA/TTT/Q2/alm-015
+aaa123.ot141,[AAA/TTT/Q2] Alarm ALM_016 Acknowledge,DIAGNOSTIC; ALM_016,https://example.com/proc/AAA/TTT/Q2/alm-016
+aaa124.ot142,[AAA/TTT/Q2] Alarm ALM_017 Acknowledge,DIAGNOSTIC; ALM_017,https://example.com/proc/AAA/TTT/Q2/alm-017
+aaa125.ot143,[AAA/TTT/Q2] Alarm ALM_018 Acknowledge — detailed workflow for production environment with sign-off requirements,DIAGNOSTIC; ALM_018,https://example.com/proc/AAA/TTT/Q2/alm-018
+aaa126.ot144,[AAA/TTT/Q2] Alarm ALM_019 Acknowledge,DIAGNOSTIC; ALM_019,https://example.com/proc/AAA/TTT/Q2/alm-019
+aaa127.ot145,[AAA/TTT/Q2] Alarm ALM_020 Acknowledge,DIAGNOSTIC; ALM_020,https://example.com/proc/AAA/TTT/Q2/alm-020
+aaa128.ot146,[AAA/TTT/Q2] Alarm ALM_021 Acknowledge — operator guide with parameter reference and troubleshooting appendix,DIAGNOSTIC; ALM_021,https://example.com/proc/AAA/TTT/Q2/alm-021
+aaa129.ot147,[AAA/TTT/Q2] Alarm ALM_022 Acknowledge,DIAGNOSTIC; ALM_022,https://example.com/proc/AAA/TTT/Q2/alm-022
+aaa130.ot148,[AAA/TTT/Q2] Alarm ALM_023 Acknowledge,DIAGNOSTIC; ALM_023,https://example.com/proc/AAA/TTT/Q2/alm-023
+aaa131.ot149,"[AAA/TTT/Q2] Alarm ALM_024 Acknowledge — extended procedure including pre-check, main operation, and recovery steps",DIAGNOSTIC; ALM_024,https://example.com/proc/AAA/TTT/Q2/alm-024
+aaa132.ot150,[AAA/TTT/Q2] Alarm ALM_025 Acknowledge,DIAGNOSTIC; ALM_025,https://example.com/proc/AAA/TTT/Q2/alm-025
+aaa133.ot151,[AAA/TTT/Q2] Export ERROR Log — detailed workflow for production environment with sign-off requirements,DIAGNOSTIC; LOG; ERROR,https://example.com/proc/AAA/TTT/Q2/log-error
+aaa134.ot152,[AAA/TTT/Q2] Export WARNING Log — full sequence with safety interlock verification and post-run validation,DIAGNOSTIC; LOG; WARNING,https://example.com/proc/AAA/TTT/Q2/log-warning
+aaa135.ot153,"[AAA/TTT/Q2] Export INFO Log — extended procedure including pre-check, main operation, and recovery steps",DIAGNOSTIC; LOG; INFO,https://example.com/proc/AAA/TTT/Q2/log-info
+aaa136.ot154,[AAA/TTT/Q2] Export DEBUG Log — operator guide with parameter reference and troubleshooting appendix,DIAGNOSTIC; LOG; DEBUG,https://example.com/proc/AAA/TTT/Q2/log-debug
+aaa137.ot155,[AAA/TTT/Q2] Export TRACE Log — detailed workflow for production environment with sign-off requirements,DIAGNOSTIC; LOG; TRACE,https://example.com/proc/AAA/TTT/Q2/log-trace
+aaa138.ot156,[AAA/TTT/Q2] Export AUDIT Log — full sequence with safety interlock verification and post-run validation,DIAGNOSTIC; LOG; AUDIT,https://example.com/proc/AAA/TTT/Q2/log-audit
+aaa139.ot157,[AAA/TTT/Q2] Self Test QUICK,DIAGNOSTIC; SELF_TEST; QUICK,https://example.com/proc/AAA/TTT/Q2/self-quick
+aaa140.ot158,[AAA/TTT/Q2] Self Test FULL,DIAGNOSTIC; SELF_TEST; FULL,https://example.com/proc/AAA/TTT/Q2/self-full
+aaa141.ot159,[AAA/TTT/Q2] Self Test HW,DIAGNOSTIC; SELF_TEST; HW,https://example.com/proc/AAA/TTT/Q2/self-hw
+aaa142.ot160,[AAA/TTT/Q2] Self Test SW,DIAGNOSTIC; SELF_TEST; SW,https://example.com/proc/AAA/TTT/Q2/self-sw
+aaa143.ot161,[AAA/TTT/Q2] Self Test COMM,DIAGNOSTIC; SELF_TEST; COMM,https://example.com/proc/AAA/TTT/Q2/self-comm
+aaa144.ot162,[AAA/TTT/Q2] Training ONBOARD module,TRAINING; ONBOARD,https://example.com/proc/AAA/TTT/Q2/train-onboard
+aaa145.ot163,[AAA/TTT/Q2] Training REFRESHER module,TRAINING; REFRESHER,https://example.com/proc/AAA/TTT/Q2/train-refresher
+aaa146.ot164,[AAA/TTT/Q2] Training CERT module,TRAINING; CERT,https://example.com/proc/AAA/TTT/Q2/train-cert
+aaa147.ot165,[AAA/TTT/Q2] Training VIDEO module,TRAINING; VIDEO,https://example.com/proc/AAA/TTT/Q2/train-video
+aaa148.ot166,[AAA/TTT/Q2] Open MANUAL Reference,DOCUMENTATION; MANUAL,https://example.com/proc/AAA/TTT/Q2/doc-manual
+aaa149.ot167,[AAA/TTT/Q2] Open SPEC Reference,DOCUMENTATION; SPEC,https://example.com/proc/AAA/TTT/Q2/doc-spec
+aaa150.ot168,[AAA/TTT/Q2] Open DRAWING Reference,DOCUMENTATION; DRAWING,https://example.com/proc/AAA/TTT/Q2/doc-drawing
+aaa151.ot169,[AAA/TTT/Q2] Open BOM Reference,DOCUMENTATION; BOM,https://example.com/proc/AAA/TTT/Q2/doc-bom
+aaa152.ot170,[AAA/TTT/Q2] Open SCHEMATIC Reference,DOCUMENTATION; SCHEMATIC,https://example.com/proc/AAA/TTT/Q2/doc-schematic
+aaa153.ot171,[AAA/TTT/Q2] General Operator Reference Guide — detailed workflow for production environment with sign-off requirements,REST,https://example.com/proc/AAA/TTT/Q2/rest-general
+aaa154.ot172,[AAA/TTT/Q2] Quick Start and Emergency Stop Overview — full sequence with safety interlock verification and post-run validation,REST,https://example.com/proc/AAA/TTT/Q2/rest-quickstart
+aaa155.ot173,[AAA/TTT/Q2] FAQ and Common Troubleshooting Index,REST,https://example.com/proc/AAA/TTT/Q2/rest-faq
+aaa156.ot174,[AAA/TTT/Q2] Contact and Escalation Matrix,REST,https://example.com/proc/AAA/TTT/Q2/rest-contact
+aaa.shared.homing_all,[AAA/TTT/Q2] Shared all-axis homing,MOTOR; SERVO; AXIS_X; AXIS_Y; AXIS_Z,https://example.com/proc/AAA/TTT/Q2/shared-homing
+aaa.shared.emergency_recovery,[AAA/TTT/Q2] 비상 정지 복구 가이드,REST,https://example.com/proc/AAA/TTT/Q2/shared-estop
+aaa.shared.daily_check,[AAA/TTT/Q2] Shared daily operator check,MAINTENANCE; CALIBRATION; DAILY,https://example.com/proc/AAA/TTT/Q2/shared-daily
+aaa.map.pin_vo_pper,[AAA/TTT/Q2] VO + PPER MAP pin demo,VO; PPER,https://example.com/proc/AAA/TTT/Q2/map-pin-vo-pper
+aaa.map.pin_hw_conveyor_robot,[AAA/TTT/Q2] MAP pin test — HW conveyor + robot + motor,MOTOR; SERVO; AXIS_X; CONVEYOR; BELT_IN; ROBOT; J1; J2,https://example.com/proc/AAA/TTT/Q2/map-pin-ttt

@@ -128,6 +128,37 @@ export function addToFolder(
   return next;
 }
 
+export function addManyToFolder(
+  folders: FavoriteFolder[],
+  folderId: string,
+  procedures: Procedure[],
+  metaFor?: (proc: Procedure) => { mapKind?: MapKind; keywordPath?: string } | undefined
+): FavoriteFolder[] {
+  let next = folders;
+  for (const proc of procedures) {
+    next = addToFolder(next, folderId, proc, metaFor?.(proc));
+  }
+  return next;
+}
+
+/** Variants in folder scope that are not yet saved in the folder. */
+export function missingVariantsInFolder(
+  folder: FavoriteFolder,
+  variants: Procedure[]
+): Procedure[] {
+  const inFolder = new Set(folder.items.map((item) => procedureId(item.procedure)));
+  return variants.filter((v) => !inFolder.has(procedureId(v)));
+}
+
+/** True when other configs exist and at least one variant is not in the folder yet. */
+export function canExpandProcedureToAllConfigs(
+  folder: FavoriteFolder,
+  variants: Procedure[]
+): boolean {
+  if (variants.length <= 1) return false;
+  return missingVariantsInFolder(folder, variants).length > 0;
+}
+
 export function removeFromFavorites(
   folders: FavoriteFolder[],
   proc: Procedure

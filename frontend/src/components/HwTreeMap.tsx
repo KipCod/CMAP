@@ -2,12 +2,16 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import type { TreeNode } from "../types";
 import {
   collectExpandablePaths,
-  countTotal,
   flattenVisibleTree,
   getPathLabel,
   isOnSelectedPath,
 } from "../utils/mapUtils";
-import { nodeMatchesMapFilter, nodeDirectMatchesMapFilter } from "../utils/mapNavigation";
+import {
+  isMapJumpPulsePath,
+  nodeDirectMatchesMapFilter,
+  nodeMatchesMapFilter,
+  primaryMapJumpScrollPath,
+} from "../utils/mapNavigation";
 
 interface Props {
   nodes: TreeNode[];
@@ -18,7 +22,7 @@ interface Props {
   onExpandAllTop: () => void;
   onCollapseAllTop: () => void;
   mapFilter?: string;
-  mapJumpPulsePath?: string | null;
+  mapJumpPulsePaths?: string[];
 }
 
 export function HwTreeMap({
@@ -30,7 +34,7 @@ export function HwTreeMap({
   onExpandAllTop,
   onCollapseAllTop,
   mapFilter = "",
-  mapJumpPulsePath = null,
+  mapJumpPulsePaths = [],
 }: Props) {
   const flat = useMemo(
     () => flattenVisibleTree(nodes, expanded),
@@ -38,13 +42,13 @@ export function HwTreeMap({
   );
 
   useEffect(() => {
-    const scrollTarget = selectedKeyword ?? mapJumpPulsePath;
+    const scrollTarget = primaryMapJumpScrollPath(selectedKeyword, mapJumpPulsePaths);
     if (!scrollTarget) return;
     const el = document.querySelector(
       `[data-tree-path="${CSS.escape(scrollTarget)}"]`
     ) as HTMLElement | null;
     el?.scrollIntoView({ block: "nearest", behavior: "smooth" });
-  }, [selectedKeyword, mapJumpPulsePath]);
+  }, [selectedKeyword, mapJumpPulsePaths]);
 
   return (
     <div className="hw-tree-map">
@@ -65,7 +69,7 @@ export function HwTreeMap({
           const depth = node.depth;
           const hasChildren = node.children.length > 0;
           const isOpen = expanded.has(path);
-          const total = countTotal(node);
+          const directCount = node.count;
           const isSelected = selectedKeyword === path;
           const onPath = isOnSelectedPath(path, selectedKeyword);
           const isRoot = depth === 0;
@@ -73,7 +77,7 @@ export function HwTreeMap({
           const filterMatch = filterActive && nodeMatchesMapFilter(node, path, mapFilter);
           const filterStrong = filterActive && nodeDirectMatchesMapFilter(node, path, mapFilter);
           const filterDim = filterActive && !filterMatch;
-          const jumpPulse = mapJumpPulsePath === path;
+          const jumpPulse = isMapJumpPulsePath(mapJumpPulsePaths, path);
 
           return (
             <div
@@ -84,7 +88,7 @@ export function HwTreeMap({
               aria-expanded={hasChildren ? isOpen : undefined}
               style={{ ["--depth" as string]: String(depth) }}
             >
-              <div className={`hw-tree-row ${isSelected ? "selected" : ""} ${total === 0 ? "empty" : ""}`}>
+              <div className={`hw-tree-row ${isSelected ? "selected" : ""} ${directCount === 0 ? "empty" : ""}`}>
                 {depth > 1 &&
                   ancestorContinues.slice(0, depth - 1).map((continues, i) => (
                     <span
@@ -119,7 +123,7 @@ export function HwTreeMap({
                   title={path}
                 >
                   <span className="hw-tree-name">{node.display}</span>
-                  {total > 0 && <span className="hw-tree-count">{total}</span>}
+                  {directCount > 0 && <span className="hw-tree-count">{directCount}</span>}
                 </button>
               </div>
             </div>

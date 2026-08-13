@@ -1,4 +1,4 @@
-"""Generate voluminous sample tree and CSV data for CoachMAP."""
+"""Generate diverse sample tree and CSV data for CoachMAP."""
 
 import csv
 import json
@@ -15,15 +15,38 @@ MODULES = module_names(normalize_modules(CONFIG.get("modules")))
 # Tree builders (tab-indented)
 # ---------------------------------------------------------------------------
 
+
 def _indent(depth: int) -> str:
     return "\t" * depth
 
 
-def build_hw_tree(part: str, machine: str) -> str:
-    """Build a rich HW keyword tree per part/machine combo."""
+def build_hw_tree(module: str, part: str, machine: str) -> str:
+    """Module/part-specific HW keyword trees."""
+    if module == "BBB":
+        return _build_hw_tree_bbb(part, machine)
+    if module == "CCC":
+        return _build_hw_tree_ccc(part, machine)
+    if module == "DDD":
+        return _build_hw_tree_ddd(part, machine)
+    return _build_hw_tree_standard(module, part, machine)
+
+
+def _build_hw_tree_standard(module: str, part: str, machine: str) -> str:
     lines: list[str] = []
 
-    # MOTOR subsystem — deep hierarchy
+    # Top-level demo keywords (AAA) — easy to spot on HW MAP
+    if module == "AAA":
+        lines.append("VO")
+        lines.append("PPER")
+
+    # Deep 5-level branch (layout / navigation stress)
+    lines.append("FAB")
+    lines.append(f"{_indent(1)}BAY")
+    lines.append(f"{_indent(2)}TOOL")
+    lines.append(f"{_indent(3)}MODULE")
+    lines.append(f"{_indent(4)}SUBSYS")
+    lines.append(f"{_indent(5)}COMPONENT")
+
     lines.append("MOTOR")
     lines.append(f"{_indent(1)}SERVO")
     for axis in ("AXIS_X", "AXIS_Y", "AXIS_Z", "AXIS_R", "AXIS_T"):
@@ -35,7 +58,6 @@ def build_hw_tree(part: str, machine: str) -> str:
     for sp in ("SP_01", "SP_02", "SP_03"):
         lines.append(f"{_indent(2)}{sp}")
 
-    # SENSOR subsystem
     lines.append("SENSOR")
     lines.append(f"{_indent(1)}PROXIMITY")
     for i in range(1, 9):
@@ -47,13 +69,11 @@ def build_hw_tree(part: str, machine: str) -> str:
     for zone in ("CHAMBER", "STAGE", "LAMP", "EXHAUST"):
         lines.append(f"{_indent(2)}{zone}")
 
-    # IO — many children (graph stress test)
     lines.append("IO")
-    port_count = 16 if machine in ("Z1", "Z2", "Q1", "Q2") else 12
+    port_count = 16 if machine in ("Z1", "Z2", "Q1", "Q2", "M1") else 12
     for i in range(1, port_count + 1):
         lines.append(f"{_indent(1)}PORT_{i:02d}")
 
-    # OPTICS
     lines.append("OPTICS")
     lines.append(f"{_indent(1)}LASER")
     for lk in ("ALIGN", "POWER", "PULSE", "WAVELENGTH"):
@@ -62,7 +82,6 @@ def build_hw_tree(part: str, machine: str) -> str:
     for cam in ("TOP", "SIDE", "BOTTOM", "MACRO"):
         lines.append(f"{_indent(2)}{cam}")
 
-    # VACUUM / FLUID (part-specific flavour)
     if part == "SSS":
         lines.append("VACUUM")
         lines.append(f"{_indent(1)}PUMP")
@@ -71,15 +90,22 @@ def build_hw_tree(part: str, machine: str) -> str:
         lines.append("GAS")
         for gas in ("AR", "N2", "O2", "HE", "CF4", "SF6"):
             lines.append(f"{_indent(1)}MASS_{gas}")
-    else:
+    elif part == "TTT":
         lines.append("CONVEYOR")
         for belt in ("IN", "OUT", "BUFFER", "REJECT"):
             lines.append(f"{_indent(1)}BELT_{belt}")
         lines.append("ROBOT")
         for j in range(1, 7):
             lines.append(f"{_indent(1)}J{j}")
+    else:  # UUU — mixed compact
+        lines.append("PNEUMATIC")
+        for pn in ("SUPPLY", "EXHAUST", "ISO"):
+            lines.append(f"{_indent(1)}{pn}")
+        lines.append("CHILLER")
+        lines.append(f"{_indent(1)}LOOP")
+        lines.append(f"{_indent(2)}INLET")
+        lines.append(f"{_indent(2)}OUTLET")
 
-    # VALVE manifold — flat many children under one parent
     lines.append("VALVE")
     for v in range(1, 13):
         lines.append(f"{_indent(1)}VLV_{v:02d}")
@@ -87,11 +113,70 @@ def build_hw_tree(part: str, machine: str) -> str:
     return "\n".join(lines) + "\n"
 
 
-def build_other_tree(part: str, machine: str) -> str:
-    """Build a rich Support keyword tree."""
+def _build_hw_tree_bbb(part: str, machine: str) -> str:
+    """Wafer / process focused topology (distinct from AAA)."""
+    lines = [
+        "WAFER",
+        f"{_indent(1)}HANDLER",
+        f"{_indent(2)}LOAD",
+        f"{_indent(2)}UNLOAD",
+        f"{_indent(2)}ALIGN",
+        f"{_indent(1)}STAGE",
+        f"{_indent(2)}HEAT",
+        f"{_indent(2)}COOL",
+        f"{_indent(2)}CHUCK",
+        "PROCESS",
+        f"{_indent(1)}ETCH",
+        f"{_indent(2)}CHAMBER_A",
+        f"{_indent(2)}CHAMBER_B",
+        f"{_indent(1)}DEP",
+        f"{_indent(2)}LAYER_1",
+        f"{_indent(2)}LAYER_2",
+        f"{_indent(1)}CLEAN",
+        f"{_indent(2)}WET",
+        f"{_indent(2)}DRY",
+        "METROLOGY",
+        f"{_indent(1)}CD",
+        f"{_indent(1)}OVERLAY",
+        f"{_indent(1)}DEFECT",
+    ]
+    if part == "TTT":
+        lines.extend(["TRANSFER", f"{_indent(1)}ARM", f"{_indent(2)}PICK", f"{_indent(2)}PLACE"])
+    elif part == "UUU":
+        lines.extend(["MINI", f"{_indent(1)}SLOT", f"{_indent(2)}A", f"{_indent(2)}B"])
+    return "\n".join(lines) + "\n"
+
+
+def _build_hw_tree_ccc(part: str, machine: str) -> str:
+    """Sparse / flat tree for contrast."""
+    lines = ["POWER", "SAFETY", "COMM", "REST_HW"]
+    for i in range(1, 7):
+        lines.append(f"{_indent(1)}NODE_{i:02d}")
+    if part != "UUU":
+        lines.extend(["LEGACY", f"{_indent(1)}OLD_IO", f"{_indent(1)}OLD_MOTOR"])
+    return "\n".join(lines) + "\n"
+
+
+def _build_hw_tree_ddd(part: str, machine: str) -> str:
+    """Hybrid tree; some configs intentionally omit files (see write_trees)."""
+    lines = _build_hw_tree_standard("AAA", part, machine).splitlines()
+    lines.insert(0, "DIAG")
+    lines.insert(1, f"{_indent(1)}BIST")
+    lines.insert(2, f"{_indent(1)}LOOPBACK")
+    return "\n".join(lines) + "\n"
+
+
+def build_other_tree(module: str, part: str, machine: str) -> str:
+    if module == "BBB":
+        return _build_other_tree_bbb(part, machine)
+    if module == "CCC":
+        return _build_other_tree_ccc(part, machine)
+    return _build_other_tree_standard(part, machine)
+
+
+def _build_other_tree_standard(part: str, machine: str) -> str:
     lines: list[str] = []
 
-    # MAINTENANCE — mix of branches and flat chips
     lines.append("MAINTENANCE")
     lines.append(f"{_indent(1)}CALIBRATION")
     for cal in ("DAILY", "WEEKLY", "MONTHLY", "QUARTERLY", "ANNUAL"):
@@ -99,13 +184,11 @@ def build_other_tree(part: str, machine: str) -> str:
     lines.append(f"{_indent(1)}CLEAN")
     for cl in ("FILTER", "CHUCK", "WINDOW", "NOZZLE", "SHOWER"):
         lines.append(f"{_indent(2)}{cl}")
-    # Flat checklist items under MAINTENANCE (chip grid test)
     for i in range(1, 16):
         lines.append(f"{_indent(1)}CHK_{i:03d}")
 
-    # DIAGNOSTIC — large alarm set
     lines.append("DIAGNOSTIC")
-    alarm_count = 40 if machine in ("Z1", "Q1") else 25
+    alarm_count = 40 if machine in ("Z1", "Q1", "M1") else 25
     for i in range(1, alarm_count + 1):
         lines.append(f"{_indent(1)}ALM_{i:03d}")
     lines.append(f"{_indent(1)}LOG")
@@ -115,14 +198,39 @@ def build_other_tree(part: str, machine: str) -> str:
     for st in ("QUICK", "FULL", "HW", "SW", "COMM"):
         lines.append(f"{_indent(2)}{st}")
 
-    # DOCUMENTATION / REST area
+    lines.append("TRAINING")
+    for t in ("ONBOARD", "REFRESHER", "CERT", "VIDEO"):
+        lines.append(f"{_indent(1)}{t}")
+
     lines.append("DOCUMENTATION")
     for doc in ("MANUAL", "SPEC", "DRAWING", "BOM", "SCHEMATIC"):
         lines.append(f"{_indent(1)}{doc}")
 
     lines.append("REST")
-
     return "\n".join(lines) + "\n"
+
+
+def _build_other_tree_bbb(part: str, machine: str) -> str:
+    lines = [
+        "YIELD",
+        f"{_indent(1)}SPC",
+        f"{_indent(1)}OOC",
+        f"{_indent(1)}REWORK",
+        "FACILITY",
+        f"{_indent(1)}FAC_GAS",
+        f"{_indent(1)}FAC_POWER",
+        f"{_indent(1)}FAC_EXHAUST",
+        "ESCALATION",
+        f"{_indent(1)}L1",
+        f"{_indent(1)}L2",
+        f"{_indent(1)}L3",
+        "REST",
+    ]
+    return "\n".join(lines) + "\n"
+
+
+def _build_other_tree_ccc(part: str, machine: str) -> str:
+    return "SUPPORT\n\tHELP\n\tFAQ\nREST\n"
 
 
 def all_tree_keys() -> list[tuple[str, str]]:
@@ -138,15 +246,30 @@ def all_tree_keys() -> list[tuple[str, str]]:
 # ---------------------------------------------------------------------------
 
 LONG_TITLE_SUFFIXES = [
-    "— full sequence with safety interlock verification and post-run validation",
-    "— extended procedure including pre-check, main operation, and recovery steps",
-    "— operator guide with parameter reference and troubleshooting appendix",
-    "— detailed workflow for production environment with sign-off requirements",
+    " — full sequence with safety interlock verification and post-run validation",
+    " — extended procedure including pre-check, main operation, and recovery steps",
+    " — operator guide with parameter reference and troubleshooting appendix",
+    " — detailed workflow for production environment with sign-off requirements",
+]
+
+KOREAN_TITLES = [
+    "축 원점복귀 절차",
+    "센서 보정 및 검증",
+    "비상 정지 복구 가이드",
+    "일일 점검 체크리스트",
+    "알람 리셋 및 확인",
 ]
 
 
-def gen_hw_procedures(part: str, machine: str) -> list[tuple[str, str, str, str]]:
-    """Return list of (suffix, title, tags, link_suffix)."""
+def gen_hw_procedures(module: str, part: str, machine: str) -> list[tuple[str, str, str, str]]:
+    if module == "BBB":
+        return _gen_hw_procedures_bbb(part, machine)
+    if module == "CCC":
+        return _gen_hw_procedures_ccc(part, machine)
+    return _gen_hw_procedures_standard(module, part, machine)
+
+
+def _gen_hw_procedures_standard(module: str, part: str, machine: str) -> list[tuple[str, str, str, str]]:
     procs: list[tuple[str, str, str, str]] = []
     n = 0
 
@@ -157,16 +280,19 @@ def gen_hw_procedures(part: str, machine: str) -> list[tuple[str, str, str, str]
             title += LONG_TITLE_SUFFIXES[n % len(LONG_TITLE_SUFFIXES)]
         procs.append((f"{n:03d}", title, tags, link))
 
-    # MOTOR / SERVO / axes
+    add("Fab bay tool module subsys check", "FAB; BAY; TOOL; MODULE; SUBSYS; COMPONENT", "fab-deep", long=True)
+
     for axis in ("AXIS_X", "AXIS_Y", "AXIS_Z", "AXIS_R", "AXIS_T"):
-        add(f"Servo {axis} Homing", f"MOTOR; SERVO; {axis}", f"homing-{axis.lower()}", long=True)
+        title = f"Servo {axis} Homing"
+        if axis == "AXIS_X" and module == "AAA":
+            title = f"{KOREAN_TITLES[0]} ({axis} Homing)"
+        add(title, f"MOTOR; SERVO; {axis}", f"homing-{axis.lower()}", long=True)
         add(f"Servo {axis} Jog Mode", f"MOTOR; SERVO; {axis}", f"jog-{axis.lower()}")
     for feed in ("FEED_A", "FEED_B", "FEED_C"):
         add(f"Stepper {feed} Setup", f"MOTOR; STEPPER; {feed}", f"stepper-{feed.lower()}")
     for sp in ("SP_01", "SP_02", "SP_03"):
         add(f"Spindle {sp} Speed Tune", f"MOTOR; SPINDLE; {sp}", f"spindle-{sp.lower()}", long=True)
 
-    # SENSOR
     for i in range(1, 9):
         add(f"Proximity Sensor PROX_{i:02d} Adjust", f"SENSOR; PROXIMITY; PROX_{i:02d}", f"prox-{i:02d}")
     for i in range(1, 5):
@@ -174,41 +300,89 @@ def gen_hw_procedures(part: str, machine: str) -> list[tuple[str, str, str, str]
     for zone in ("CHAMBER", "STAGE", "LAMP", "EXHAUST"):
         add(f"Temperature {zone} Monitor", f"SENSOR; TEMPERATURE; {zone}", f"temp-{zone.lower()}", long=True)
 
-    # IO ports
-    port_count = 16 if machine in ("Z1", "Z2", "Q1", "Q2") else 12
+    port_count = 16 if machine in ("Z1", "Z2", "Q1", "Q2", "M1") else 12
     for i in range(1, port_count + 1):
         add(f"IO Port {i:02d} Configuration", f"IO; PORT_{i:02d}", f"io-p{i:02d}")
 
-    # OPTICS
     for lk in ("ALIGN", "POWER", "PULSE", "WAVELENGTH"):
         add(f"Laser {lk} Calibration", f"OPTICS; LASER; {lk}", f"laser-{lk.lower()}", long=True)
     for cam in ("TOP", "SIDE", "BOTTOM", "MACRO"):
         add(f"Camera {cam} Focus", f"OPTICS; CAMERA; {cam}", f"cam-{cam.lower()}")
 
-    # Part-specific
     if part == "SSS":
         for p in ("ROUGH", "TURBO", "BACKING"):
             add(f"Vacuum Pump {p} Start", f"VACUUM; PUMP; {p}", f"vac-{p.lower()}")
         for gas in ("AR", "N2", "O2", "HE", "CF4", "SF6"):
             add(f"Gas Mass Flow {gas} Setup", f"GAS; MASS_{gas}", f"gas-{gas.lower()}", long=True)
-    else:
+    elif part == "TTT":
         for belt in ("IN", "OUT", "BUFFER", "REJECT"):
             add(f"Conveyor Belt {belt} Sync", f"CONVEYOR; BELT_{belt}", f"belt-{belt.lower()}")
         for j in range(1, 7):
             add(f"Robot Joint J{j} Teach", f"ROBOT; J{j}", f"robot-j{j}", long=True)
+    else:
+        for pn in ("SUPPLY", "EXHAUST", "ISO"):
+            add(f"Pneumatic {pn} Line Check", f"PNEUMATIC; {pn}", f"pneu-{pn.lower()}")
+        add("Chiller loop flush", "CHILLER; LOOP; INLET; OUTLET", "chiller-flush", long=True)
 
-    # VALVE
     for v in range(1, 13):
         add(f"Valve VLV_{v:02d} Cycle Test", f"VALVE; VLV_{v:02d}", f"vlv-{v:02d}")
 
-    # Multi-tag procedures (stress mapping)
-    add("Full Motor Diagnostic Sweep", "MOTOR; SERVO; AXIS_X; AXIS_Y", "motor-sweep", long=True)
-    add("Sensor Array Health Check", "SENSOR; PROXIMITY; ENCODER", "sensor-health", long=True)
+    add("Full Motor Diagnostic Sweep", "MOTOR; SERVO; AXIS_X; AXIS_Y; AXIS_Z", "motor-sweep", long=True)
+    add("Sensor Array Health Check", "SENSOR; PROXIMITY; PROX_01; PROX_02; ENCODER", "sensor-health", long=True)
+    add("Triple-axis alignment pass", "MOTOR; SERVO; AXIS_X; AXIS_Y; AXIS_T", "triple-align")
 
     return procs
 
 
-def gen_other_procedures(part: str, machine: str) -> list[tuple[str, str, str, str]]:
+def _gen_hw_procedures_bbb(part: str, machine: str) -> list[tuple[str, str, str, str]]:
+    procs: list[tuple[str, str, str, str]] = []
+    n = 0
+
+    def add(title: str, tags: str, link: str, long: bool = False):
+        nonlocal n
+        n += 1
+        if long:
+            title += LONG_TITLE_SUFFIXES[n % len(LONG_TITLE_SUFFIXES)]
+        procs.append((f"{n:03d}", title, tags, link))
+
+    add("Wafer load sequence", "WAFER; HANDLER; LOAD", "wafer-load", long=True)
+    add("Wafer unload sequence", "WAFER; HANDLER; UNLOAD", "wafer-unload")
+    add("Wafer align on chuck", "WAFER; HANDLER; ALIGN; STAGE; CHUCK", "wafer-align", long=True)
+    add("Stage heat soak", "WAFER; STAGE; HEAT", "stage-heat")
+    add("Stage cool down", "WAFER; STAGE; COOL", "stage-cool")
+    add("Etch chamber A recipe", "PROCESS; ETCH; CHAMBER_A", "etch-a", long=True)
+    add("Etch chamber B recipe", "PROCESS; ETCH; CHAMBER_B", "etch-b")
+    add("Deposition layer 1", "PROCESS; DEP; LAYER_1", "dep-l1")
+    add("Deposition layer 2", "PROCESS; DEP; LAYER_2", "dep-l2")
+    add("Wet clean cycle", "PROCESS; CLEAN; WET", "clean-wet")
+    add("CD measurement routine", "METROLOGY; CD", "metro-cd", long=True)
+    add("Overlay check", "METROLOGY; OVERLAY", "metro-ol")
+    add("Defect review scan", "METROLOGY; DEFECT", "metro-def")
+    if part == "TTT":
+        add("Transfer arm pick", "TRANSFER; ARM; PICK", "xfer-pick")
+        add("Transfer arm place", "TRANSFER; ARM; PLACE", "xfer-place")
+    return procs
+
+
+def _gen_hw_procedures_ccc(part: str, machine: str) -> list[tuple[str, str, str, str]]:
+    procs = []
+    for i in range(1, 7):
+        procs.append((f"{i:03d}", f"Power node {i:02d} check", f"POWER; NODE_{i:02d}", f"pwr-{i:02d}"))
+    procs.append(("007", "Safety interlock test", "SAFETY; NODE_01", "safe-01"))
+    procs.append(("008", "Comm loopback", "COMM; NODE_02", "comm-lb"))
+    procs.append(("009", "Legacy IO migration", "LEGACY; OLD_IO", "leg-io"))
+    return procs
+
+
+def gen_other_procedures(module: str, part: str, machine: str) -> list[tuple[str, str, str, str]]:
+    if module == "BBB":
+        return _gen_other_procedures_bbb(part, machine)
+    if module == "CCC":
+        return _gen_other_procedures_ccc(part, machine)
+    return _gen_other_procedures_standard(part, machine)
+
+
+def _gen_other_procedures_standard(part: str, machine: str) -> list[tuple[str, str, str, str]]:
     procs: list[tuple[str, str, str, str]] = []
     n = 100
 
@@ -220,33 +394,33 @@ def gen_other_procedures(part: str, machine: str) -> list[tuple[str, str, str, s
         procs.append((f"{n:03d}", title, tags, link))
 
     for cal in ("DAILY", "WEEKLY", "MONTHLY", "QUARTERLY", "ANNUAL"):
-        add(f"Calibration {cal}", f"MAINTENANCE; CALIBRATION; {cal}", f"cal-{cal.lower()}", long=True)
+        t = f"Calibration {cal}"
+        if cal == "DAILY":
+            t = f"{KOREAN_TITLES[3]} (Daily calibration)"
+        add(t, f"MAINTENANCE; CALIBRATION; {cal}", f"cal-{cal.lower()}", long=True)
     for cl in ("FILTER", "CHUCK", "WINDOW", "NOZZLE", "SHOWER"):
         add(f"Clean {cl}", f"MAINTENANCE; CLEAN; {cl}", f"clean-{cl.lower()}")
     for i in range(1, 16):
         add(f"Maintenance Checklist CHK_{i:03d}", f"MAINTENANCE; CHK_{i:03d}", f"chk-{i:03d}")
 
-    alarm_count = 40 if machine in ("Z1", "Q1") else 25
+    alarm_count = 40 if machine in ("Z1", "Q1", "M1") else 25
     for i in range(1, alarm_count + 1):
-        if i % 3 == 0:
-            add(
-                f"Alarm ALM_{i:03d} Reset and Verify",
-                f"DIAGNOSTIC; ALM_{i:03d}",
-                f"alm-{i:03d}",
-                long=True,
-            )
-        else:
-            add(f"Alarm ALM_{i:03d} Acknowledge", f"DIAGNOSTIC; ALM_{i:03d}", f"alm-{i:03d}")
+        title = f"Alarm ALM_{i:03d} Acknowledge"
+        if i == 1:
+            title = f"{KOREAN_TITLES[4]} (ALM_001)"
+        add(title, f"DIAGNOSTIC; ALM_{i:03d}", f"alm-{i:03d}", long=(i % 3 == 0))
 
     for log in ("ERROR", "WARNING", "INFO", "DEBUG", "TRACE", "AUDIT"):
         add(f"Export {log} Log", f"DIAGNOSTIC; LOG; {log}", f"log-{log.lower()}", long=True)
     for st in ("QUICK", "FULL", "HW", "SW", "COMM"):
         add(f"Self Test {st}", f"DIAGNOSTIC; SELF_TEST; {st}", f"self-{st.lower()}")
 
+    for t in ("ONBOARD", "REFRESHER", "CERT", "VIDEO"):
+        add(f"Training {t} module", f"TRAINING; {t}", f"train-{t.lower()}")
+
     for doc in ("MANUAL", "SPEC", "DRAWING", "BOM", "SCHEMATIC"):
         add(f"Open {doc} Reference", f"DOCUMENTATION; {doc}", f"doc-{doc.lower()}")
 
-    # REST (no HW match)
     add("General Operator Reference Guide", "", "rest-general", long=True)
     add("Quick Start and Emergency Stop Overview", "", "rest-quickstart", long=True)
     add("FAQ and Common Troubleshooting Index", "", "rest-faq")
@@ -255,24 +429,301 @@ def gen_other_procedures(part: str, machine: str) -> list[tuple[str, str, str, s
     return procs
 
 
+def _gen_other_procedures_bbb(part: str, machine: str) -> list[tuple[str, str, str, str]]:
+    procs = []
+    n = 100
+
+    def add(title, tags, link, long=False):
+        nonlocal n
+        n += 1
+        procs.append((f"{n:03d}", title, tags, link))
+
+    add("SPC chart review", "YIELD; SPC", "yield-spc", long=True)
+    add("OOC investigation", "YIELD; OOC", "yield-ooc")
+    add("Rework disposition", "YIELD; REWORK", "yield-rw")
+    add("Facility gas alarm", "FACILITY; FAC_GAS", "fac-gas")
+    add("Escalation L2 handoff", "ESCALATION; L2", "esc-l2")
+    add("Operator quick reference", "", "rest-bbb")
+    return procs
+
+
+def _gen_other_procedures_ccc(part: str, machine: str) -> list[tuple[str, str, str, str]]:
+    return [
+        ("101", "Open help portal", "SUPPORT; HELP", "help"),
+        ("102", "FAQ index", "SUPPORT; FAQ", "faq"),
+        ("103", "Unmapped general guide", "", "rest-ccc"),
+    ]
+
+
+def shared_cross_config_rows(module: str, part: str, machine: str) -> list[dict]:
+    """Same procedure name on every machine in a part — favorites / Also-on testing."""
+    prefix = module.lower()
+    rows = [
+        {
+            "name": f"{prefix}.shared.homing_all",
+            "title": f"[{module}/{part}/{machine}] Shared all-axis homing",
+            "tag": "MOTOR; SERVO; AXIS_X; AXIS_Y; AXIS_Z",
+            "link": f"https://example.com/proc/{module}/{part}/{machine}/shared-homing",
+        },
+        {
+            "name": f"{prefix}.shared.emergency_recovery",
+            "title": f"[{module}/{part}/{machine}] {KOREAN_TITLES[2]}",
+            "tag": "REST",
+            "link": f"https://example.com/proc/{module}/{part}/{machine}/shared-estop",
+        },
+        {
+            "name": f"{prefix}.shared.daily_check",
+            "title": f"[{module}/{part}/{machine}] Shared daily operator check",
+            "tag": "MAINTENANCE; CALIBRATION; DAILY",
+            "link": f"https://example.com/proc/{module}/{part}/{machine}/shared-daily",
+        },
+    ]
+    if module == "AAA" and part == "SSS":
+        rows.append({
+            "name": f"{prefix}.shared.multi_keyword_demo",
+            "title": f"[{module}/{part}/{machine}] Multi-keyword MAP jump demo (legacy alias)",
+            "tag": "MOTOR; SERVO; AXIS_X; AXIS_Y; AXIS_Z; SENSOR; PROXIMITY; PROX_01",
+            "link": f"https://example.com/proc/{module}/{part}/{machine}/multi-kw",
+        })
+    return rows
+
+
+def map_multi_keyword_test_rows(module: str, part: str, machine: str) -> list[dict]:
+    """Dedicated MAP multi-keyword pin / jump test procedures (AAA demo configs)."""
+    if module != "AAA":
+        return []
+    prefix = module.lower()
+    rows: list[dict] = [
+        {
+            "name": f"{prefix}.map.pin_vo_pper",
+            "title": f"[{module}/{part}/{machine}] VO + PPER MAP pin demo",
+            "tag": "VO; PPER",
+            "link": f"https://example.com/proc/{module}/{part}/{machine}/map-pin-vo-pper",
+        }
+    ]
+
+    if part == "SSS":
+        rows.append(
+            {
+                "name": f"{prefix}.map.pin_hw_motor_sensor",
+                "title": f"[{module}/{part}/{machine}] MAP pin test — HW motor + sensor branches",
+                "tag": "MOTOR; SERVO; AXIS_X; AXIS_Y; SENSOR; PROXIMITY; PROX_01",
+                "link": f"https://example.com/proc/{module}/{part}/{machine}/map-pin-hw-ms",
+            }
+        )
+        rows.append(
+            {
+                "name": f"{prefix}.map.pin_support_maint",
+                "title": f"[{module}/{part}/{machine}] MAP pin test — Support maintenance + diagnostic",
+                "tag": "MAINTENANCE; CALIBRATION; DAILY; DIAGNOSTIC; LOG; ERROR",
+                "link": f"https://example.com/proc/{module}/{part}/{machine}/map-pin-support",
+            }
+        )
+        if machine in ("Z1", "Z2"):
+            rows.append(
+                {
+                    "name": f"{prefix}.map.pin_hw_optics",
+                    "title": f"[{module}/{part}/{machine}] MAP pin test — HW optics branch",
+                    "tag": "OPTICS; LASER; ALIGN; CAMERA",
+                    "link": f"https://example.com/proc/{module}/{part}/{machine}/map-pin-optics",
+                }
+            )
+
+    if part == "TTT":
+        rows.append(
+            {
+                "name": f"{prefix}.map.pin_hw_conveyor_robot",
+                "title": f"[{module}/{part}/{machine}] MAP pin test — HW conveyor + robot + motor",
+                "tag": "MOTOR; SERVO; AXIS_X; CONVEYOR; BELT_IN; ROBOT; J1; J2",
+                "link": f"https://example.com/proc/{module}/{part}/{machine}/map-pin-ttt",
+            }
+        )
+
+    return rows
+
+
+def print_multi_keyword_test_guide() -> None:
+    """Print where to find multi-keyword MAP pin test procedures."""
+    print()
+    print("=== MAP multi-keyword pin test guide ===")
+    print("Config: Module AAA. Search by procedure name (e.g. map.pin_hw_motor_sensor) or title 'MAP pin test'.")
+    print()
+    cases = [
+        (
+            "aaa.map.pin_vo_pper",
+            "AAA / all parts / all machines",
+            "HW MAP (top of tree)",
+            ["VO", "PPER"],
+        ),
+        (
+            "aaa.map.pin_hw_motor_sensor",
+            "AAA / SSS / Z1-Z5",
+            "HW MAP",
+            [
+                "MOTOR",
+                "MOTOR/SERVO",
+                "MOTOR/SERVO/AXIS_X",
+                "MOTOR/SERVO/AXIS_Y",
+                "SENSOR",
+                "SENSOR/PROXIMITY",
+                "SENSOR/PROXIMITY/PROX_01",
+            ],
+        ),
+        (
+            "aaa.map.pin_support_maint",
+            "AAA / SSS / Z1-Z5",
+            "Support MAP",
+            [
+                "MAINTENANCE",
+                "MAINTENANCE/CALIBRATION",
+                "MAINTENANCE/CALIBRATION/DAILY",
+                "DIAGNOSTIC",
+                "DIAGNOSTIC/LOG",
+                "DIAGNOSTIC/LOG/ERROR",
+            ],
+        ),
+        (
+            "aaa.map.pin_hw_optics",
+            "AAA / SSS / Z1, Z2",
+            "HW MAP",
+            ["OPTICS", "OPTICS/LASER", "OPTICS/LASER/ALIGN", "OPTICS/CAMERA"],
+        ),
+        (
+            "aaa.map.pin_hw_conveyor_robot",
+            "AAA / TTT / Q1-Q5",
+            "HW MAP",
+            [
+                "MOTOR",
+                "MOTOR/SERVO",
+                "MOTOR/SERVO/AXIS_X",
+                "CONVEYOR",
+                "CONVEYOR/BELT_IN",
+                "ROBOT",
+                "ROBOT/J1",
+                "ROBOT/J2",
+            ],
+        ),
+        (
+            "aaa.shared.homing_all",
+            "AAA / any part / any machine",
+            "HW MAP",
+            [
+                "MOTOR",
+                "MOTOR/SERVO",
+                "MOTOR/SERVO/AXIS_X",
+                "MOTOR/SERVO/AXIS_Y",
+                "MOTOR/SERVO/AXIS_Z",
+            ],
+        ),
+        (
+            "aaa.shared.daily_check",
+            "AAA / any part / any machine",
+            "Support MAP",
+            ["MAINTENANCE", "MAINTENANCE/CALIBRATION", "MAINTENANCE/CALIBRATION/DAILY"],
+        ),
+        (
+            "aaa.edge.search_alpha",
+            "AAA / SSS / Z1, Z2",
+            "HW MAP",
+            ["SENSOR", "SENSOR/PROXIMITY", "SENSOR/PROXIMITY/PROX_01"],
+        ),
+    ]
+    for name, config, map_kind, keywords in cases:
+        print(f"  {name}")
+        print(f"    Config: {config}  |  Map: {map_kind}")
+        print(f"    Keywords (click node or MAP jump - all should highlight):")
+        for kw in keywords:
+            print(f"      · {kw}")
+        print()
+    print("Tip: Favorites MAP button or search MAP jump should pulse ALL matching keyword paths on the same map.")
+
+
+def edge_case_rows(module: str, part: str, machine: str) -> list[dict]:
+    """Orphan tags, empty tags, search edge cases — AAA demo configs only."""
+    if module != "AAA" or part != "SSS" or machine not in ("Z1", "Z2"):
+        return []
+    prefix = module.lower()
+    return [
+        {
+            "name": f"{prefix}.edge.orphan_tag",
+            "title": f"[{module}/{part}/{machine}] Orphan tag (not on MAP tree)",
+            "tag": "ORPHAN_NOT_IN_TREE",
+            "link": f"https://example.com/proc/{module}/{part}/{machine}/orphan",
+        },
+        {
+            "name": f"{prefix}.edge.rest_only",
+            "title": f"[{module}/{part}/{machine}] REST-only procedure (empty tag)",
+            "tag": "",
+            "link": f"https://example.com/proc/{module}/{part}/{machine}/rest-only",
+        },
+        {
+            "name": f"{prefix}.edge.search_alpha",
+            "title": f"[{module}/{part}/{machine}] Alpha search keyword procedure",
+            "tag": "SENSOR; PROXIMITY; PROX_01",
+            "link": f"https://example.com/proc/{module}/{part}/{machine}/search-alpha",
+        },
+        {
+            "name": f"{prefix}.edge.search_beta",
+            "title": f"[{module}/{part}/{machine}] Beta calibration extended title for search preview testing",
+            "tag": "OPTICS; LASER; ALIGN",
+            "link": f"https://example.com/proc/{module}/{part}/{machine}/search-beta",
+        },
+    ]
+
+
 def module_prefix(module: str) -> str:
     return module.lower()
+
+
+# Intentionally missing trees (warnings banner demo)
+SKIP_TREE_FILES: set[tuple[str, str, str, str]] = {
+    ("DDD", "SSS", "Z4", "hw"),
+    ("DDD", "TTT", "Q3", "other"),
+}
+
+
+def cleanup_legacy_files():
+    """Remove legacy flat tree/CSV names so canonical paths and missing-file demos work."""
+    tree_dir = ROOT / CONFIG["data_paths"]["tree_dir"]
+    csv_dir = ROOT / CONFIG["data_paths"]["csv_dir"]
+    removed = 0
+    for kind in ("hw", "other"):
+        for part, machine in all_tree_keys():
+            leg = tree_dir / f"tree_{kind}_{part}_{machine}.txt"
+            if leg.exists():
+                leg.unlink()
+                removed += 1
+    for path in csv_dir.glob("*_*_*.csv"):
+        if path.name.count("_") >= 2 and "-" not in path.stem:
+            path.unlink()
+            removed += 1
+    for path in csv_dir.glob("procedures-*"):
+        if path.is_file():
+            path.unlink()
+            removed += 1
+    print(f"Removed {removed} legacy data files")
 
 
 def write_trees():
     tree_dir = ROOT / CONFIG["data_paths"]["tree_dir"]
     tree_dir.mkdir(parents=True, exist_ok=True)
     count = 0
+    skipped = 0
     for module in MODULES:
         mod_dir = tree_dir / module
         mod_dir.mkdir(parents=True, exist_ok=True)
         for part, machine in all_tree_keys():
-            hw_path = mod_dir / f"hw-{part}-{machine}.txt"
-            hw_path.write_text(build_hw_tree(part, machine), encoding="utf-8")
-            other_path = mod_dir / f"other-{part}-{machine}.txt"
-            other_path.write_text(build_other_tree(part, machine), encoding="utf-8")
-            count += 2
-    print(f"Wrote {count} tree files (per-module folders)")
+            for kind, builder in (("hw", build_hw_tree), ("other", build_other_tree)):
+                if (module, part, machine, kind) in SKIP_TREE_FILES:
+                    path = mod_dir / f"{kind}-{part}-{machine}.txt"
+                    if path.exists():
+                        path.unlink()
+                    skipped += 1
+                    continue
+                path = mod_dir / f"{kind}-{part}-{machine}.txt"
+                path.write_text(builder(module, part, machine), encoding="utf-8")
+                count += 1
+    print(f"Wrote {count} tree files, skipped {skipped} (missing-file demo)")
 
 
 def write_csvs():
@@ -287,8 +738,8 @@ def write_csvs():
             for machine in part_cfg["machine_types"]:
                 rows = []
                 idx = 0
-                hw_procs = gen_hw_procedures(part, machine)
-                other_procs = gen_other_procedures(part, machine)
+                hw_procs = gen_hw_procedures(module, part, machine)
+                other_procs = gen_other_procedures(module, part, machine)
 
                 for suffix, title, tags, link_sfx in hw_procs:
                     idx += 1
@@ -310,6 +761,10 @@ def write_csvs():
                         "tag": tag_val,
                         "link": f"https://example.com/proc/{module}/{part}/{machine}/{link_sfx}",
                     })
+
+                rows.extend(shared_cross_config_rows(module, part, machine))
+                rows.extend(map_multi_keyword_test_rows(module, part, machine))
+                rows.extend(edge_case_rows(module, part, machine))
 
                 path = csv_dir / f"{module}-{part}-{machine}.csv"
                 with path.open("w", newline="", encoding="utf-8") as f:
@@ -338,9 +793,14 @@ def write_part_all_csvs():
         "Part Release Notes and Change Log Index",
         "Fleet-wide Configuration Backup Procedure",
         "All-machine Diagnostic Data Collection Runbook",
+        "한글 공통 절차 — 전 config 적용 가이드",
+        "Training bundle — no MAP mapping (part-all only)",
+        "Legacy migration checklist (deprecated paths)",
+        "Quarterly audit template for all machines",
+        "Shared spare-parts and consumables index",
     ]
 
-    part_suffix = {"SSS": "sa", "TTT": "ta"}
+    part_suffix = {"SSS": "sa", "TTT": "ta", "UUU": "ua"}
 
     for module in MODULES:
         prefix = module_prefix(module)
@@ -353,6 +813,13 @@ def write_part_all_csvs():
                     "title": f"[{module}/{part}/all] {title}",
                     "link": f"https://example.com/proc/{module}/{part}/all/{i:02d}",
                 })
+            # Name collision demo: same name as a config procedure title stem (excluded from module_all search)
+            if module == "AAA" and part == "SSS":
+                rows.append({
+                    "name": "aaa001.hw001",
+                    "title": "[AAA/SSS/all] Duplicate name shadow (config wins in search)",
+                    "link": "https://example.com/proc/AAA/SSS/all/shadow",
+                })
 
             path = csv_dir / f"{module}-{part}-all.csv"
             with path.open("w", newline="", encoding="utf-8") as f:
@@ -361,25 +828,29 @@ def write_part_all_csvs():
                 writer.writerows(rows)
             count += 1
 
-    print(f"Wrote {count} part-all CSV files ({module}-{part}-all.csv)")
+    print(f"Wrote {count} part-all CSV files")
 
 
 def print_stats():
-    part, machine = "SSS", "Z1"
-    hw = build_hw_tree(part, machine)
-    other = build_other_tree(part, machine)
-    hw_lines = [ln for ln in hw.splitlines() if ln.strip()]
-    other_lines = [ln for ln in other.splitlines() if ln.strip()]
-    hw_procs = gen_hw_procedures(part, machine)
-    other_procs = gen_other_procedures(part, machine)
-    print(f"Sample stats ({part}/{machine}):")
-    print(f"  HW keywords: {len(hw_lines)}, Other keywords: {len(other_lines)}")
-    print(f"  HW procedures: {len(hw_procs)}, Other procedures: {len(other_procs)}")
-    print(f"  Per CSV: ~{len(hw_procs) + len(other_procs)} rows × {len(CONFIG['modules'])} modules × 10 configs")
+    print("Modules:", ", ".join(MODULES))
+    print("Parts:", ", ".join(CONFIG["parts"].keys()))
+    for module in ("AAA", "BBB", "CCC"):
+        part, machine = "SSS", "Z1"
+        hw = build_hw_tree(module, part, machine)
+        other = build_other_tree(module, part, machine)
+        hw_lines = [ln for ln in hw.splitlines() if ln.strip()]
+        other_lines = [ln for ln in other.splitlines() if ln.strip()]
+        hw_procs = gen_hw_procedures(module, part, machine)
+        other_procs = gen_other_procedures(module, part, machine)
+        print(f"  {module} {part}/{machine}: HW kw={len(hw_lines)}, Other kw={len(other_lines)}, "
+              f"procs~{len(hw_procs) + len(other_procs) + 3}")
 
 
 if __name__ == "__main__":
     print_stats()
+    cleanup_legacy_files()
     write_trees()
     write_csvs()
     write_part_all_csvs()
+    print_multi_keyword_test_guide()
+    print("Done. Restart the server to load new data.")

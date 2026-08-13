@@ -315,6 +315,26 @@ class DataStore:
                 result[name] = sorted(machines)
         return result
 
+    def get_procedure_variants(self, name: str, module: str, part: str) -> list[dict]:
+        target = name.strip().lower()
+        if not target:
+            return []
+        seen: set[tuple[str, str, str, str]] = set()
+        results: list[dict] = []
+        for proc in self.all_procedures:
+            if proc.source != "config":
+                continue
+            if proc.module != module or proc.part != part:
+                continue
+            if proc.name.lower() != target:
+                continue
+            key = (proc.module, proc.part, proc.machine_type, proc.name)
+            if key in seen:
+                continue
+            seen.add(key)
+            results.append(proc.to_dict())
+        return results
+
     def search(self, query: str, module: str | None, part: str | None, machine: str | None) -> dict:
         q = query.strip().lower()
         if not q:

@@ -69,6 +69,15 @@ def name_machines(
     return store.get_name_machines(module, part)
 
 
+@app.get("/api/procedure-variants")
+def procedure_variants(
+    name: str = Query(...),
+    module: str = Query(...),
+    part: str = Query(...),
+):
+    return store.get_procedure_variants(name, module, part)
+
+
 if FRONTEND_DIST.exists():
     app.mount("/assets", StaticFiles(directory=FRONTEND_DIST / "assets"), name="assets")
 

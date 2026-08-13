@@ -7,10 +7,10 @@ interface Props {
   selectedKeyword: string | null;
   onSelect: (keyword: string, procedures: TreeNode["procedures"]) => void;
   mapFilter?: string;
-  mapJumpPulsePath?: string | null;
+  mapJumpPulsePaths?: string[];
 }
 
-export function HwGraphMap({ nodes, selectedKeyword, onSelect, mapFilter = "", mapJumpPulsePath = null }: Props) {
+export function HwGraphMap({ nodes, selectedKeyword, onSelect, mapFilter = "", mapJumpPulsePaths = [] }: Props) {
   return (
     <div className="hw-graph-wrap">
       <p className="graph-hint">Click node to navigate</p>
@@ -21,7 +21,7 @@ export function HwGraphMap({ nodes, selectedKeyword, onSelect, mapFilter = "", m
           selectedKeyword={selectedKeyword}
           onSelect={onSelect}
           mapFilter={mapFilter}
-          mapJumpPulsePath={mapJumpPulsePath}
+          mapJumpPulsePaths={mapJumpPulsePaths}
         />
       </div>
 

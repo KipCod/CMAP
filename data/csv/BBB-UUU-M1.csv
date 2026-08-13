@@ -1,0 +1,23 @@
+name,title,tag,link
+bbb001.hw001,"[BBB/UUU/M1] Wafer load sequence — extended procedure including pre-check, main operation, and recovery steps",WAFER; HANDLER; LOAD,https://example.com/proc/BBB/UUU/M1/wafer-load
+bbb002.hw002,[BBB/UUU/M1] Wafer unload sequence,WAFER; HANDLER; UNLOAD,https://example.com/proc/BBB/UUU/M1/wafer-unload
+bbb003.hw003,[BBB/UUU/M1] Wafer align on chuck — detailed workflow for production environment with sign-off requirements,WAFER; HANDLER; ALIGN; STAGE; CHUCK,https://example.com/proc/BBB/UUU/M1/wafer-align
+bbb004.hw004,[BBB/UUU/M1] Stage heat soak,WAFER; STAGE; HEAT,https://example.com/proc/BBB/UUU/M1/stage-heat
+bbb005.hw005,[BBB/UUU/M1] Stage cool down,WAFER; STAGE; COOL,https://example.com/proc/BBB/UUU/M1/stage-cool
+bbb006.hw006,[BBB/UUU/M1] Etch chamber A recipe — operator guide with parameter reference and troubleshooting appendix,PROCESS; ETCH; CHAMBER_A,https://example.com/proc/BBB/UUU/M1/etch-a
+bbb007.hw007,[BBB/UUU/M1] Etch chamber B recipe,PROCESS; ETCH; CHAMBER_B,https://example.com/proc/BBB/UUU/M1/etch-b
+bbb008.hw008,[BBB/UUU/M1] Deposition layer 1,PROCESS; DEP; LAYER_1,https://example.com/proc/BBB/UUU/M1/dep-l1
+bbb009.hw009,[BBB/UUU/M1] Deposition layer 2,PROCESS; DEP; LAYER_2,https://example.com/proc/BBB/UUU/M1/dep-l2
+bbb010.hw010,[BBB/UUU/M1] Wet clean cycle,PROCESS; CLEAN; WET,https://example.com/proc/BBB/UUU/M1/clean-wet
+bbb011.hw011,[BBB/UUU/M1] CD measurement routine — detailed workflow for production environment with sign-off requirements,METROLOGY; CD,https://example.com/proc/BBB/UUU/M1/metro-cd
+bbb012.hw012,[BBB/UUU/M1] Overlay check,METROLOGY; OVERLAY,https://example.com/proc/BBB/UUU/M1/metro-ol
+bbb013.hw013,[BBB/UUU/M1] Defect review scan,METROLOGY; DEFECT,https://example.com/proc/BBB/UUU/M1/metro-def
+bbb014.ot101,[BBB/UUU/M1] SPC chart review,YIELD; SPC,https://example.com/proc/BBB/UUU/M1/yield-spc
+bbb015.ot102,[BBB/UUU/M1] OOC investigation,YIELD; OOC,https://example.com/proc/BBB/UUU/M1/yield-ooc
+bbb016.ot103,[BBB/UUU/M1] Rework disposition,YIELD; REWORK,https://example.com/proc/BBB/UUU/M1/yield-rw
+bbb017.ot104,[BBB/UUU/M1] Facility gas alarm,FACILITY; FAC_GAS,https://example.com/proc/BBB/UUU/M1/fac-gas
+bbb018.ot105,[BBB/UUU/M1] Escalation L2 handoff,ESCALATION; L2,https://example.com/proc/BBB/UUU/M1/esc-l2
+bbb019.ot106,[BBB/UUU/M1] Operator quick reference,REST,https://example.com/proc/BBB/UUU/M1/rest-bbb
+bbb.shared.homing_all,[BBB/UUU/M1] Shared all-axis homing,MOTOR; SERVO; AXIS_X; AXIS_Y; AXIS_Z,https://example.com/proc/BBB/UUU/M1/shared-homing
+bbb.shared.emergency_recovery,[BBB/UUU/M1] 비상 정지 복구 가이드,REST,https://example.com/proc/BBB/UUU/M1/shared-estop
+bbb.shared.daily_check,[BBB/UUU/M1] Shared daily operator check,MAINTENANCE; CALIBRATION; DAILY,https://example.com/proc/BBB/UUU/M1/shared-daily

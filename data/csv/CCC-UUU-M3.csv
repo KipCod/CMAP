@@ -1,0 +1,16 @@
+name,title,tag,link
+ccc001.hw001,[CCC/UUU/M3] Power node 01 check,POWER; NODE_01,https://example.com/proc/CCC/UUU/M3/pwr-01
+ccc002.hw002,[CCC/UUU/M3] Power node 02 check,POWER; NODE_02,https://example.com/proc/CCC/UUU/M3/pwr-02
+ccc003.hw003,[CCC/UUU/M3] Power node 03 check,POWER; NODE_03,https://example.com/proc/CCC/UUU/M3/pwr-03
+ccc004.hw004,[CCC/UUU/M3] Power node 04 check,POWER; NODE_04,https://example.com/proc/CCC/UUU/M3/pwr-04
+ccc005.hw005,[CCC/UUU/M3] Power node 05 check,POWER; NODE_05,https://example.com/proc/CCC/UUU/M3/pwr-05
+ccc006.hw006,[CCC/UUU/M3] Power node 06 check,POWER; NODE_06,https://example.com/proc/CCC/UUU/M3/pwr-06
+ccc007.hw007,[CCC/UUU/M3] Safety interlock test,SAFETY; NODE_01,https://example.com/proc/CCC/UUU/M3/safe-01
+ccc008.hw008,[CCC/UUU/M3] Comm loopback,COMM; NODE_02,https://example.com/proc/CCC/UUU/M3/comm-lb
+ccc009.hw009,[CCC/UUU/M3] Legacy IO migration,LEGACY; OLD_IO,https://example.com/proc/CCC/UUU/M3/leg-io
+ccc010.ot101,[CCC/UUU/M3] Open help portal,SUPPORT; HELP,https://example.com/proc/CCC/UUU/M3/help
+ccc011.ot102,[CCC/UUU/M3] FAQ index,SUPPORT; FAQ,https://example.com/proc/CCC/UUU/M3/faq
+ccc012.ot103,[CCC/UUU/M3] Unmapped general guide,REST,https://example.com/proc/CCC/UUU/M3/rest-ccc
+ccc.shared.homing_all,[CCC/UUU/M3] Shared all-axis homing,MOTOR; SERVO; AXIS_X; AXIS_Y; AXIS_Z,https://example.com/proc/CCC/UUU/M3/shared-homing
+ccc.shared.emergency_recovery,[CCC/UUU/M3] 비상 정지 복구 가이드,REST,https://example.com/proc/CCC/UUU/M3/shared-estop
+ccc.shared.daily_check,[CCC/UUU/M3] Shared daily operator check,MAINTENANCE; CALIBRATION; DAILY,https://example.com/proc/CCC/UUU/M3/shared-daily
